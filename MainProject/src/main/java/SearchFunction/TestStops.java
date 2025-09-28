@@ -11,6 +11,8 @@ public class TestStops {
         System.out.println("Stops created: " + fredrikstad.getName() +  " - " + ostfoldhallen.getName());
         System.out.println("Stops created: " + greaaker.getName() +  " - " + amfiBorg.getName());
         System.out.println("Stops created: " + amfiBorg.getName() +  " - " + torsbekke.getName());
+        System.out.println("Stops created: " + fredrikstad.getName() +  " - " + torsbekke.getName());
+
 
     }
 
