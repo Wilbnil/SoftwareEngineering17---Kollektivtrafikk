@@ -12,6 +12,12 @@ public class RouteService {
         if (from.equals("Fredrikstad") && to.equals("Ostfoldhallen")) {
             List<Stop> stops = Arrays.asList(new Stop("Fredrikstad", 1), new Stop("Ostfoldhallen", 2));
             return new Route(stops,  "bus 17");
+        } else if (from.equals("Greaaker") && to.equals("Amfi Borg")) {
+            List<Stop> stops = Arrays.asList(new Stop("Greaaker", 3), new Stop("Amfi Borg", 4));
+            return new Route(stops,  "bus 7");
+        } else if (from.equals("Torsbekke") && to.equals("Fredrikstad")) {
+            List<Stop> stops = Arrays.asList(new Stop("Torsbekke", 5), new Stop("Fredrikstad", 1));
+            return new Route(stops, "bus 33");
         }
         return null;
 

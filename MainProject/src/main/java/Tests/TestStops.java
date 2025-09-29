@@ -18,10 +18,10 @@ public class TestStops {
         System.out.println("Stops created: " + fredrikstad.getName() +  " - " + torsbekke.getName());
 
         RouteService service = new RouteService();
-        Route route = service.getRoute("Fredrikstad", "Ostfoldhallen");
-        if (route != null) {
-            System.out.println("Route: " + route.getStops().get(0).getName() + " to " +
-                    route.getStops().get(1).getName() + ", Bus number: " + route.getMode());
+        Route route1 = service.getRoute("Fredrikstad", "Ostfoldhallen");
+        if (route1 != null) {
+            System.out.println("Route: " + route1.getStops().get(0).getName() + " to " +
+                    route1.getStops().get(1).getName() + ", Bus number: " + route1.getMode());
         }
 
 
