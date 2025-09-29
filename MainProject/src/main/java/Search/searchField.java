@@ -1,4 +1,4 @@
-package SearchFunction;
+package Search;
 
 public class searchField {
 }

@@ -1,4 +1,8 @@
-package SearchFunction;
+package Tests;
+
+import Model.Route;
+import Model.Stop;
+import Service.RouteService;
 
 public class TestStops {
     public static void main(String[] args) {
@@ -12,6 +16,13 @@ public class TestStops {
         System.out.println("Stops created: " + greaaker.getName() +  " - " + amfiBorg.getName());
         System.out.println("Stops created: " + amfiBorg.getName() +  " - " + torsbekke.getName());
         System.out.println("Stops created: " + fredrikstad.getName() +  " - " + torsbekke.getName());
+
+        RouteService service = new RouteService();
+        Route route = service.getRoute("Fredrikstad", "Ostfoldhallen");
+        if (route != null) {
+            System.out.println("Route: " + route.getStops().get(0).getName() + " to " +
+                    route.getStops().get(1).getName() + ", Bus number: " + route.getMode());
+        }
 
 
     }
