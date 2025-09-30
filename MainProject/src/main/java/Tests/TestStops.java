@@ -1,8 +1,11 @@
 package Tests;
 
+
 import Model.Route;
 import Model.Stop;
-import Service.RouteService;
+import Search.SearchEngine;
+import Search.SearchField;
+
 
 public class TestStops {
     public static void main(String[] args) {
@@ -17,12 +20,22 @@ public class TestStops {
         System.out.println("Stops created: " + amfiBorg.getName() +  " - " + torsbekke.getName());
         System.out.println("Stops created: " + fredrikstad.getName() +  " - " + torsbekke.getName());
 
-        RouteService service = new RouteService();
-        Route route1 = service.getRoute("Fredrikstad", "Ostfoldhallen");
+        SearchEngine searchEngine = new SearchEngine();
+        SearchField  searchField = new SearchField();
+        Route route1 = searchEngine.search(searchField.getInput());
         if (route1 != null) {
-            System.out.println("Route: " + route1.getStops().get(0).getName() + " to " +
-                    route1.getStops().get(1).getName() + ", Bus number: " + route1.getMode());
+            System.out.println("Search results: From " + route1.getStops().get(0).getName() + " to " +
+                    route1.getStops().get(1).getName() + ", Take bus number: " + route1.getMode());
         }
+
+        Route route2 = searchEngine.search("Greaaker Amfi Borg");
+        if (route2 != null) {
+            System.out.println("Search results: From " + route2.getStops().get(0).getName() +
+                    " to " + route2.getStops().get(1).getName() +
+                    ", Take bus number: " + route2.getMode());
+        }
+
+
 
 
     }
