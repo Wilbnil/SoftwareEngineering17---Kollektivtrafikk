@@ -1,4 +1,4 @@
-package no.hiof.willian.databaseConnections.model;
+package org.gruppe17.kollektivtrafikk.model;
 
 public class Route {
     //wip

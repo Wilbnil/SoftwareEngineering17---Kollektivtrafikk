@@ -1,6 +1,7 @@
-package no.hiof.willian.databaseConnections;
-import no.hiof.willian.databaseConnections.model.Route;
+package org.gruppe17.kollektivtrafikk.databaseConnections;
+import org.gruppe17.kollektivtrafikk.databaseConnections.model.Route;
 
+import java.net.NoRouteToHostException;
 import java.sql.*;
 
 public class DatabaseMain {
