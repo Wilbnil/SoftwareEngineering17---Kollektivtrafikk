@@ -4,18 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d36602c1-fb54-4a69-88e7-1fc403fee53d" name="Changes" comment="" />
+    <list default="true" id="d36602c1-fb54-4a69-88e7-1fc403fee53d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/gruppe17/kollektivtrafikk/databaseConnections/DatabaseMain.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/gruppe17/kollektivtrafikk/databaseConnections/model/Route.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="33C9YHy8J31yjhNmRdpSDDEFfBO" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -27,23 +38,28 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "26-database-connection",
+    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/wilbn/OneDrive - Østfold University College/Dokumenter/Dataingeniør/3. Semester/Software Engineering/SoftwareEngineering17---Kollektivtrafikk/MainProject",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "onboarding.tips.debug.path": "C:/Users/wilbn/OneDrive - Østfold University College/Dokumenter/Dataingeniør/3. Semester/Software Engineering/SoftwareEngineering17---Kollektivtrafikk/MainProject/src/main/java/org/example/Main.java",
-    "settings.editor.selected.configurable": "preferences.keymap"
+    "settings.editor.selected.configurable": "editor.preferences.inline.completion",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26199.169" />
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.218" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.218" />
       </set>
     </attachedChunks>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="d36602c1-fb54-4a69-88e7-1fc403fee53d" name="Changes" comment="" />
@@ -51,8 +67,13 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1758810232858</updated>
-      <workItem from="1758810242832" duration="3026000" />
+      <workItem from="1758810242832" duration="3459000" />
+      <workItem from="1759067772243" duration="2728000" />
+      <workItem from="1759225374385" duration="1011000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>
