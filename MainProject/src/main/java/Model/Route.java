@@ -1,18 +1,18 @@
 package Model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Route {
 
-    private List<Stop> stops;
+    private ArrayList<Stop> stops;
     private String mode;
 
-    public Route(List<Stop> stops, String mode) {
+    public Route(ArrayList<Stop> stops, String mode) {
         this.stops = stops;
         this.mode = mode;
     }
 
-    public List<Stop> getStops() { return stops; }
+    public ArrayList<Stop> getStops() { return stops; }
     public String getMode() { return mode;}
 
 }
