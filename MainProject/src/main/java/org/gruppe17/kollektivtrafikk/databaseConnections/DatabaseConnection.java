@@ -1,10 +1,18 @@
-package org.gruppe17.kollektivtrafikk.databaseConnections;
-import org.gruppe17.kollektivtrafikk.databaseConnections.model.Route;
+/*
+En klasse for å koble til
 
-import java.net.NoRouteToHostException;
+ */
+
+
+package org.gruppe17.kollektivtrafikk.databaseConnections;
+import org.gruppe17.kollektivtrafikk.model.Route;
+
+
 import java.sql.*;
 
-public class DatabaseMain {
+
+
+public class DatabaseConnection {
 
 
     // Databaseinformasjon:
@@ -12,10 +20,6 @@ public class DatabaseMain {
     public final static String USERNAME = "[Username]";
     public final static String PASSWORD = "[Password]";
 
-    public static void main(String[] args) {
-
-        // ?
-    }
 
     public static Route getRouteFromDatabase(String userSearch) {
         // Forbindelse
