@@ -1,4 +1,4 @@
-package Model;
+package org.gruppe17.kollektivtrafikk.model;
 
 import java.util.ArrayList;
 

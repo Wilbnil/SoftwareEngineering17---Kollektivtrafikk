@@ -1,9 +1,7 @@
-package Search;
+package org.gruppe17.kollektivtrafikk.search;
 
-import Model.Route;
-import Service.RouteService;
-
-import java.util.Arrays;
+import org.gruppe17.kollektivtrafikk.model.Route;
+import org.gruppe17.kollektivtrafikk.service.RouteService;
 
 public class SearchEngine {
     private RouteService routeService;

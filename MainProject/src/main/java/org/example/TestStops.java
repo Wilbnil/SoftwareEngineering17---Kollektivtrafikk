@@ -1,10 +1,10 @@
-package Tests;
+package org.example;
 
 
-import Model.Route;
-import Model.Stop;
-import Search.SearchEngine;
-import Search.SearchField;
+import org.gruppe17.kollektivtrafikk.model.Route;
+import org.gruppe17.kollektivtrafikk.model.Stop;
+import org.gruppe17.kollektivtrafikk.search.SearchEngine;
+import org.gruppe17.kollektivtrafikk.search.SearchField;
 
 
 public class TestStops {
