@@ -1,5 +1,5 @@
 package org.gruppe17.kollektivtrafikk.service;
-
+/*
 public class StopComparison {
     public static Holdeplass finnClosest(Coordinates searchPunkt, Holdeplass[] holderplasser) {
         Holdeplass closest = null;
@@ -15,5 +15,5 @@ public class StopComparison {
         return closest;
     }
 }
-
+*/
 

@@ -1,27 +1,46 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
-
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+' Modelklasser:
+class Route {
+ - id : int
+ - stops : ArrayList<Integer>
+ - mode : String
+ + getStartStop : Integer
+ + getEndStop : Integer
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+class Tour {
+ - routeId : int
+ - arrivals : ArrayList<LocalTime>
+ - mode : String
+ + getDuration : LocalTime
+ + getStartTime : LocalTime
 }
+
+class Stop {
+- id : int
+- name : String
+- town : String
+- longitude : double
+- latitude : double
+- roof : boolean
+- accessibility : boolean
+}
+
+' VerktøyKlasse
+class DistanceCalculator {
+ + distance : double
+}
+' Serviceklasse:
+
+class RouteService {
+
+}
+class FrontendController {
+
+}
+
+' Grensesnittklasser:
 
 @enduml
