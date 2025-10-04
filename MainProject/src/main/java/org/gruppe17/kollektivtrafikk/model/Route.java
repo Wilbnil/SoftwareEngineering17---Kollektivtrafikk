@@ -2,6 +2,8 @@ package org.gruppe17.kollektivtrafikk.model;
 
 import java.util.ArrayList;
 
+//Represents a transport route with a list of stops and a transport mode.
+
 public class Route {
 
     private ArrayList<Stop> stops;
