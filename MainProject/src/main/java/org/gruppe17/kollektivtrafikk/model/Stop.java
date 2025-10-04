@@ -4,6 +4,7 @@ public class Stop {
     private String name;
     private int id;
 
+//Represents a transport stop with a name and an identifier
 
     public Stop(String name, int id) {
         this.name = name;
