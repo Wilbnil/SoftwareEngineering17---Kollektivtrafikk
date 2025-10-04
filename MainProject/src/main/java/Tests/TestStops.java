@@ -6,7 +6,7 @@ import Model.Stop;
 import Search.SearchEngine;
 import Search.SearchField;
 
-
+//Test class to demonstrate the functionality of transport stop and route management.
 public class TestStops {
     public static void main(String[] args) {
         Stop fredrikstad = new Stop("Fredrikstad", 1);
