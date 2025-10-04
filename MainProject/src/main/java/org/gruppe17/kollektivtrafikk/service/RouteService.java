@@ -5,10 +5,13 @@ import org.gruppe17.kollektivtrafikk.model.Stop;
 
 import java.util.ArrayList;
 
+//Provides services for retrieving transport routes between stops.
+
 public class RouteService {
 
     private ArrayList<Stop> stops = new ArrayList<>();
 
+    //Retrieves a route between two stops based on their names.
     public Route getRoute(String from, String to) {
         if (from.equals("Fredrikstad") && to.equals("Ostfoldhallen")) {
             stops.add(new Stop("Fredrikstad", 1));
@@ -23,7 +26,7 @@ public class RouteService {
             stops.add(new Stop("Fredrikstad", 1));
             return new Route(stops, "bus 33");
         }
-        return null;
+        return null; //Returns null if no route is found.
 
     }
 
