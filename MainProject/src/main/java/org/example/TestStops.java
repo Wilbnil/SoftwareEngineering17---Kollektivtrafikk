@@ -10,11 +10,11 @@ import org.gruppe17.kollektivtrafikk.search.SearchField;
 
 public class TestStops {
     public static void main(String[] args) {
-        Stop fredrikstad = new Stop("Fredrikstad", 1);
-        Stop ostfoldhallen = new Stop("Ostfoldhallen", 2);
-        Stop greaaker = new Stop("Greaaker", 3);
-        Stop amfiBorg = new Stop("Amfi Borg", 4);
-        Stop torsbekke = new Stop("Torsbekke", 5);
+        Stop fredrikstad = new Stop(1, "Fredrikstad");
+        Stop ostfoldhallen = new Stop(2, "Ostfoldhallen");
+        Stop greaaker = new Stop(3, "Greaaker");
+        Stop amfiBorg = new Stop(4, "Amfi Borg");
+        Stop torsbekke = new Stop(5, "Torsbekke");
 
         System.out.println("Stops created: " + fredrikstad.getName() +  " - " + ostfoldhallen.getName());
         System.out.println("Stops created: " + greaaker.getName() +  " - " + amfiBorg.getName());
@@ -24,17 +24,10 @@ public class TestStops {
         SearchEngine searchEngine = new SearchEngine();
         SearchField  searchField = new SearchField();
         Route route1 = searchEngine.search(searchField.getInput());
-        if (route1 != null) {
-            System.out.println("Search results: From " + route1.getStops().get(0).getName() + " to " +
-                    route1.getStops().get(1).getName() + ", Take bus number: " + route1.getMode());
-        }
+
 
         Route route2 = searchEngine.search("Greaaker Amfi Borg");
-        if (route2 != null) {
-            System.out.println("Search results: From " + route2.getStops().get(0).getName() +
-                    " to " + route2.getStops().get(1).getName() +
-                    ", Take bus number: " + route2.getMode());
-        }
+
 
 
 
@@ -42,3 +35,4 @@ public class TestStops {
     }
 
 }
+

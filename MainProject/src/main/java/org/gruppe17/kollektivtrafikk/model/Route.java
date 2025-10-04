@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class Route {
 
+    private int id;
     private ArrayList<Stop> stops;
     private String mode;
 
@@ -14,7 +15,12 @@ public class Route {
         this.mode = mode;
     }
 
-    public ArrayList<Stop> getStops() { return stops; }
-    public String getMode() { return mode;}
+    public int getStartStop() {
+        return 0;
+    }
+
+    public int getEndStop() {
+        return 0;
+    }
 
 }

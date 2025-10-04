@@ -1,3 +1,5 @@
+package org.gruppe17.kollektivtrafikk.model;
+
 public class Coordinates {
     private double x;
     private double y;

@@ -5,11 +5,10 @@ En klasse for å koble til
 
 
 package org.gruppe17.kollektivtrafikk.databaseConnections;
-import org.gruppe17.kollektivtrafikk.model.Route;
 
 
 import java.sql.*;
-
+import org.gruppe17.kollektivtrafikk.model.Route;
 
 
 public class DatabaseConnection {
@@ -33,7 +32,7 @@ public class DatabaseConnection {
         } catch (SQLException exception) {
             System.err.println(exception.getMessage());
         }
-        return route;
+        return null;
     }
 
 
