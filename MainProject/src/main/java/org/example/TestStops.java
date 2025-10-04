@@ -6,6 +6,7 @@ import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.gruppe17.kollektivtrafikk.search.SearchEngine;
 import org.gruppe17.kollektivtrafikk.search.SearchField;
 
+//Test class to demonstrate the functionality of transport stop and route management.
 
 public class TestStops {
     public static void main(String[] args) {
