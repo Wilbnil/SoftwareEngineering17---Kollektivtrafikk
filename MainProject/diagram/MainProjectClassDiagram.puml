@@ -4,7 +4,7 @@
 ' Modelklasser:
 class Route {
  - id : int
- - stops : ArrayList<Integer>
+ - stops : ArrayList<Stop>
  - mode : String
  + getStartStop : Integer
  + getEndStop : Integer
@@ -42,5 +42,9 @@ class FrontendController {
 }
 
 ' Grensesnittklasser:
+
+' Koblinger:
+Route o-- Stop
+
 
 @enduml

@@ -3,13 +3,24 @@
 
 autonumber
 
-== Initialization ==
+== Preliminary ==
 
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
+User -> Device: Open website.
+User -> Device: Navigate to search field.
 
-== Repetition ==
+== Search ==
 
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+User -> Device: Search for route.
+Device -> Database: Fetch for corresponding routes.
+
+== Result ==
+Database --> Device: Return matching routes.
+User <- Device: Show matching routes
+
+== View ==
+User -> Device: Select preferred route.
+Device -> Database: Fetch information about route.
+Device <-- Database: Return additional information.
+User <- Device: Show additional information.
+
 @enduml
