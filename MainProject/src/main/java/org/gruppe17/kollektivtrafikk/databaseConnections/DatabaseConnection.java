@@ -20,14 +20,19 @@ public class DatabaseConnection {
     public final static String PASSWORD = "[Password]";
 
 
-    public static Route getRouteFromDatabase(String userSearch) {
+    public static Route getRouteFromDatabase(String routeName) {
         // Forbindelse
         try (Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD))
         {
             // Erklæring (Statement)
-            String statement = "SELECT * FROM routes WHERE name LIKE %" + userSearch + "%";
+            String statement = "SELECT * FROM routes WHERE name LIKE %" + routeName + "%";
             // Kjør (Execute)
-            // Route route = ResultSet result...
+            ResultSet result = statement.executeQuery{
+
+            while (resultset.next()) {
+                String
+            }
+        }
 
         } catch (SQLException exception) {
             System.err.println(exception.getMessage());
