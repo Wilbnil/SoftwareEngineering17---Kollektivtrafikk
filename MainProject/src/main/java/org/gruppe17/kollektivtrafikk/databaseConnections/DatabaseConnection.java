@@ -29,8 +29,8 @@ public class DatabaseConnection {
             // Kjør (Execute)
             ResultSet result = statement.executeQuery{
 
-            while (resultset.next()) {
-                String
+            while (result.next()) {
+
             }
         }
 
