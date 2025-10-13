@@ -10,11 +10,13 @@ public class Tour {
     private String mode;
 
     public LocalTime getDuration() {
-        return null;
+        if (arrivals == null || arrivals.size() == 2) return null;
+        return arrivals.get(arrivals.size() - 1).minusHours(arrivals.get(0).getHour())
+                .minusMinutes(arrivals.get(0).getMinute());
     }
 
     public LocalTime getStartTime() {
-        return null;
+        return arrivals != null && !arrivals.isEmpty() ? arrivals.get(0) : null;
     }
 
 }
