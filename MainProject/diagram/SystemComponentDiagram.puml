@@ -1,34 +1,33 @@
 @startuml
 'https://plantuml.com/component-diagram
 
+actor user
+package "Model" {
 
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
+  [Modellklasser]
+  [DatabaseConnection]
 }
 
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
-
-cloud {
-  [Example 1]
-}
-
-
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
-  }
-  frame "Foo" {
-    [Frame 4]
+database "SQLite" {
+  frame "database" {
+    [Kollektivdatabase]
   }
 }
 
 
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
+
+package "Controller" {
+  [FrontendController]
+
+}
+
+package "View" {
+    [UserInterface]
+}
+[DatabaseConnection] <--> [Kollektivdatabase]
+[FrontendController] <--> [UserInterface]
+[FrontendController] <--> [Modellklasser]
+user <--> [UserInterface]
+
 
 @enduml
