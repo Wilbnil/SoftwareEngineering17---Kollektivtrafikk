@@ -2,7 +2,6 @@ package org.example;
 
 
 import org.gruppe17.kollektivtrafikk.model.Coordinates;
-import org.gruppe17.kollektivtrafikk.model.Holdeplass;
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.gruppe17.kollektivtrafikk.search.SearchEngine;
@@ -27,20 +26,18 @@ public class TestStops {
         SearchEngine searchEngine = new SearchEngine();
         SearchField  searchField = new SearchField();
         Route route1 = searchEngine.search(searchField.getInput());
-
-
         Route route2 = searchEngine.search("Greaaker Amfi Borg");
 
         // tester nærmeste holdeplass funksjon
-        Holdeplass[] holdeplasser = {
-                new Holdeplass("Fredrikstad", new Coordinates(10, 20)),
-                new Holdeplass("Ostfoldhallen", new Coordinates(20, 15)),
-                new Holdeplass("Greaaker", new Coordinates(40, 10)),
+        Stop[] stops = {
+                new Stop(1, "Fredrikstad", "Fredrikstad", 10, 20, true, true),
+                new Stop(2, "Ostfoldhallen", "Fredrikstad", 20, 15, true, true),
+                new Stop(3, "greaaker", "Sarsborg", 40, 10, true, true)
         };
 
         Coordinates searchCoordinates = new Coordinates(13, 22);
-        Holdeplass nearest = StopComparison.finnClosest(searchCoordinates, holdeplasser);
-        System.out.println("Nearmeste holdeplass: "+ nearest.getNavn());
+        Stop nearest = StopComparison.finnClosest(searchCoordinates, stops);
+        System.out.println("Nearest stop: "+ nearest.getName());
     }
 
 }
