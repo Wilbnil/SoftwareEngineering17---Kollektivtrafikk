@@ -1,18 +1,15 @@
 package org.gruppe17.kollektivtrafikk.model;
 
 public class DistanceCalculator {
-    private double distance;
 
     public DistanceCalculator() {
-        this.distance = 0.0;
+
     }
 
-    public void calculateDistance(Coordinates from, Coordinates to) {
-        this.distance = from.distance(to); //uses method from Coordinates
-    }
-
-    public double getDistance() {
-        return distance;
+    public double getDistance(double fromX, double fromY, double toX, double toY) {
+        double dx = toX - fromX;
+        double dy = toY - fromY;
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     public double calculateTravelTime(double distance, double averageSpeedKmH) {
