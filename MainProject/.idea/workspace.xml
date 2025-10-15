@@ -5,10 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d36602c1-fb54-4a69-88e7-1fc403fee53d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/diagram/UserSearchSequenceChart.puml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/diagram/MainProjectClassDiagram.puml" beforeDir="false" afterPath="$PROJECT_DIR$/diagram/MainProjectClassDiagram.puml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +25,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Wilbnil&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Wilbnil/SoftwareEngineering17---Kollektivtrafikk.git&quot;,
+    &quot;accountId&quot;: &quot;f1458e82-74f1-4a52-89d5-9c8c575b9a36&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 1
@@ -45,6 +55,8 @@
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/wilbn/OneDrive - Østfold University College/Dokumenter/Dataingeniør/3. Semester/Software Engineering/RapportBilder/Models/MainProjectClassDiagram.png",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Project",
@@ -60,6 +72,14 @@
       <recent name="C:\Users\wilbn\OneDrive - Østfold University College\Dokumenter\Dataingeniør\3. Semester\Software Engineering\SoftwareEngineering17---Kollektivtrafikk\MainProject\src\main\java\org\gruppe17\kollektivtrafikk\service" />
     </key>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26199.169" />
+        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-IU-252.26199.169" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -71,6 +91,8 @@
       <workItem from="1759413151927" duration="94000" />
       <workItem from="1759413286966" duration="68000" />
       <workItem from="1759413359453" duration="12000" />
+      <workItem from="1760545416477" duration="36000" />
+      <workItem from="1760545459106" duration="321000" />
     </task>
     <servers />
   </component>
