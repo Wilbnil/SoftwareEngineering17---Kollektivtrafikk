@@ -12,9 +12,4 @@ public class Coordinates {
     public double getX() {return x;}
     public double getY() {return y;}
 
-    public double distance(Coordinates p) {
-        double dx = x - p.getX();
-        double dy = y - p.getY();
-        return Math.sqrt(dx * dx + dy * dy);
-    }
 }

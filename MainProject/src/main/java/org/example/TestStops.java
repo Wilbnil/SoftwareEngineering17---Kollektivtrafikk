@@ -1,10 +1,12 @@
 package org.example;
 
 
+import org.gruppe17.kollektivtrafikk.model.Coordinates;
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.gruppe17.kollektivtrafikk.search.SearchEngine;
 import org.gruppe17.kollektivtrafikk.search.SearchField;
+import org.gruppe17.kollektivtrafikk.service.StopComparison;
 
 //Test class to demonstrate the functionality of transport stop and route management.
 
@@ -24,15 +26,20 @@ public class TestStops {
         SearchEngine searchEngine = new SearchEngine();
         SearchField  searchField = new SearchField();
         Route route1 = searchEngine.search(searchField.getInput());
-
-
         Route route2 = searchEngine.search("Greaaker Amfi Borg");
 
+        // tester nærmeste holdeplass funksjon
+        Stop[] stops = {
+                new Stop(1, "Fredrikstad", "Fredrikstad", 10, 20, true, true),
+                new Stop(2, "Ostfoldhallen", "Fredrikstad", 20, 15, true, true),
+                new Stop(3, "greaaker", "Sarsborg", 40, 10, true, true)
+        };
 
-
-
-
+        Coordinates searchCoordinates = new Coordinates(13, 22);
+        Stop nearest = StopComparison.finnClosest(searchCoordinates, stops);
+        System.out.println("Nearest stop: "+ nearest.getName());
     }
 
 }
+
 

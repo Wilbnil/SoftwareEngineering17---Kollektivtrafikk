@@ -15,12 +15,14 @@ public class Route {
         this.mode = mode;
     }
 
-    public int getStartStop() {
-        return 0;
+    //Return the index of the first stop, or -1 if stops is null or empty
+    public Stop getStartStop() {
+        return stops != null && !stops.isEmpty() ? stops.get(0) : null;
     }
 
-    public int getEndStop() {
-        return 0;
+    //Return the index of the last stop, or -1 if stops is null or empty
+    public Stop getEndStop() {
+        return stops != null && !stops.isEmpty() ? stops.get(stops.size() -1) : null;
     }
 
 }

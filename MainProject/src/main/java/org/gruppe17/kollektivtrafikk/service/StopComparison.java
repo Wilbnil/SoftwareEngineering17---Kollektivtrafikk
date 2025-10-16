@@ -1,17 +1,26 @@
 package org.gruppe17.kollektivtrafikk.service;
 
 import org.gruppe17.kollektivtrafikk.model.Coordinates;
+import org.gruppe17.kollektivtrafikk.model.DistanceCalculator;
+import org.gruppe17.kollektivtrafikk.model.Stop;
 
 public class StopComparison {
-    public static <Holdeplass> Holdeplass finnClosest(Coordinates searchPunkt, Holdeplass[] holderplasser) {
-        Holdeplass closest = null;
+    public static Stop finnClosest(Coordinates searchPoint, Stop[] stops) {
+        Stop closest = null;
         double minsteAvstand = Double.MAX_VALUE;
 
-        for (Holdeplass x : holderplasser) {
-            double avstand = searchPunkt.distance(x.getX());
-            if (avstand < minsteAvstand) {
-                minsteAvstand = avstand;
-                closest = x;
+        DistanceCalculator calculator = new DistanceCalculator();
+
+        for (Stop stop : stops) {
+            Coordinates stopCoord = new Coordinates(stop.getLongitude(), stop.getLatitude());
+            double distance = calculator.getDistance(
+                    searchPoint.getX(), searchPoint.getY(),
+                    stopCoord.getX(), stopCoord.getY()
+            );
+
+            if (distance < minsteAvstand) {
+                minsteAvstand = distance;
+                closest = stop;
             }
         }
         return closest;
