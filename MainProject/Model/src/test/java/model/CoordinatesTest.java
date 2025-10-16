@@ -1,4 +1,4 @@
-package org.gruppe17.kollektivtrafikk.model;
+package model;
 
 import org.junit.jupiter.api.Test;
 

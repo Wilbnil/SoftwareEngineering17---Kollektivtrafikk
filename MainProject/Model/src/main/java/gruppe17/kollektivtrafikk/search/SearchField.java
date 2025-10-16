@@ -1,4 +1,4 @@
-package org.gruppe17.kollektivtrafikk.search;
+package gruppe17.kollektivtrafikk.search;
 
 //Simulates a search field to provide input for route searches.
 public class SearchField {

@@ -1,4 +1,4 @@
-package org.gruppe17.kollektivtrafikk.search;
+package gruppe17.kollektivtrafikk.search;
 
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.service.RouteService;

@@ -1,4 +1,4 @@
-package org.gruppe17.kollektivtrafikk.model;
+package gruppe17.kollektivtrafikk.model;
 
 import java.util.Arrays;
 import java.util.List;

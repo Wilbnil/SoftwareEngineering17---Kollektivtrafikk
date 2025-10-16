@@ -1,4 +1,4 @@
-package org.example;
+package gruppe17.kollektivtrafikk.example;
 
 
 import org.gruppe17.kollektivtrafikk.model.Coordinates;
