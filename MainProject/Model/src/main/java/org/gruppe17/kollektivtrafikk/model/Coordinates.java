@@ -1,4 +1,4 @@
-package gruppe17.kollektivtrafikk.model;
+package org.kollektivtrafikk.model;
 
 public class Coordinates {
     private double x;

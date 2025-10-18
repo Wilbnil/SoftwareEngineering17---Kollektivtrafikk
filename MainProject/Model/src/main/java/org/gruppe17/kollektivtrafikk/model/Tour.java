@@ -1,4 +1,4 @@
-package gruppe17.kollektivtrafikk.model;
+package org.kollektivtrafikk.model;
 
 import java.time.LocalTime;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package gruppe17.kollektivtrafikk.service;
 
-import org.gruppe17.kollektivtrafikk.model.Route;
-import org.gruppe17.kollektivtrafikk.model.Stop;
+import gruppe17.kollektivtrafikk.model.Route;
+import gruppe17.kollektivtrafikk.model.Stop;
 
 import java.util.ArrayList;
 

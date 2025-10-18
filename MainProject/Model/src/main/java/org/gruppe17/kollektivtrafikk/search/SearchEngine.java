@@ -1,7 +1,7 @@
 package gruppe17.kollektivtrafikk.search;
 
-import org.gruppe17.kollektivtrafikk.model.Route;
-import org.gruppe17.kollektivtrafikk.service.RouteService;
+import gruppe17.kollektivtrafikk.model.Route;
+import gruppe17.kollektivtrafikk.service.RouteService;
 
 //Handles search functionality for transport routes based on user queries.
 
