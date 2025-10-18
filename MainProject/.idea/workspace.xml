@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d36602c1-fb54-4a69-88e7-1fc403fee53d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/gruppe17/kollektivtrafikk/model/Coordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/gruppe17/kollektivtrafikk/model/Coordinates.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/gruppe17/kollektivtrafikk/model/DistanceCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/gruppe17/kollektivtrafikk/model/DistanceCalculator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/model/DistanceCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/utility/DistanceCalculator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/service/StopComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/service/StopComparison.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +37,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Sprint2-searchfunction",
+    "git-widget-placeholder": "develop",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/snorr/Documents/Github/SoftwareEngineering17---Kollektivtrafikk/MainProject",
