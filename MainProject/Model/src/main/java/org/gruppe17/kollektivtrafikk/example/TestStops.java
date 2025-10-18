@@ -11,6 +11,7 @@ import org.gruppe17.kollektivtrafikk.service.StopComparison;
 //Test class to demonstrate the functionality of transport stop and route management.
 
 public class TestStops {
+    /*
     public static void main(String[] args) {
         Stop fredrikstad = new Stop(1, "Fredrikstad");
         Stop ostfoldhallen = new Stop(2, "Ostfoldhallen");
@@ -38,8 +39,10 @@ public class TestStops {
         Coordinates searchCoordinates = new Coordinates(13, 22);
         Stop nearest = StopComparison.finnClosest(searchCoordinates, stops);
         System.out.println("Nearest stop: "+ nearest.getName());
-    }
 
+
+    }
+*/
 }
 
 

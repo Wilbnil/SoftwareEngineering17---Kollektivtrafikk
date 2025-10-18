@@ -19,7 +19,7 @@ public class DatabaseConnection {
     public final static String USERNAME = "[Username]";
     public final static String PASSWORD = "[Password]";
 
-
+/*
     public static Route getRouteFromDatabase(String routeName) {
         // Forbindelse
         try (Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD))
@@ -39,7 +39,7 @@ public class DatabaseConnection {
         }
         return null;
     }
-
+*/
 
 
 }
