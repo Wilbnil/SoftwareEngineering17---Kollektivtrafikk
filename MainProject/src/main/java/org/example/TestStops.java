@@ -1,7 +1,6 @@
 package org.example;
 
 
-import org.gruppe17.kollektivtrafikk.model.Coordinates;
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.gruppe17.kollektivtrafikk.search.SearchEngine;
@@ -35,8 +34,9 @@ public class TestStops {
                 new Stop(3, "greaaker", "Sarsborg", 40, 10, true, true)
         };
 
-        Coordinates searchCoordinates = new Coordinates(13, 22);
-        Stop nearest = StopComparison.finnClosest(searchCoordinates, stops);
+        double searchLongitude = 40;
+        double searchLatitude = 10;
+        Stop nearest = StopComparison.finnClosest(searchLongitude, searchLatitude, stops);
         System.out.println("Nearest stop: "+ nearest.getName());
     }
 
