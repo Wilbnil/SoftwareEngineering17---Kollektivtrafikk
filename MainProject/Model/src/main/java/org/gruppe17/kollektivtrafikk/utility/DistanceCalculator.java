@@ -1,4 +1,4 @@
-package gruppe17.kollektivtrafikk.utility;
+package org.gruppe17.kollektivtrafikk.utility;
 
 import java.time.LocalDateTime;
 import java.time.Duration;

@@ -1,4 +1,4 @@
-package gruppe17.kollektivtrafikk.service;
+package org.gruppe17.kollektivtrafikk.service;
 
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;

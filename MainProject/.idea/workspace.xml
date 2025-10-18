@@ -5,9 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d36602c1-fb54-4a69-88e7-1fc403fee53d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/utility/DistanceCalculator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/model/DistanceCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/utility/DistanceCalculator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/service/StopComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/service/StopComparison.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/src/main/java/gruppe17/kollektivtrafikk/FrontendController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/src/main/java/org/gruppe17/kollektivtrafikk/FrontendController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Model/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/db/DatabaseConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/db/DatabaseConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/db/kollektivdatabase.db" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/db/kollektivdatabase.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/example/TestStops.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/example/TestStops.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/model/Coordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/Coordinates.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/model/Route.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/Route.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/model/Stop.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/Stop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/model/StopData.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/StopData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/model/Tour.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/Tour.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/search/SearchEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/search/SearchEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/search/SearchField.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/search/SearchField.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/service/RouteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/service/RouteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/service/StopComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/service/StopComparison.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/utility/DistanceCalculator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/test/java/model/CoordinatesTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/test/java/model/DistanceCalculatorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/test/java/model/DistanceCalculatorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/src/main/java/gruppe17/kollektivtrafikk/HTML/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/View/src/main/java/org/gruppe17/kollektivtrafikk/HTML/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,12 +54,13 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "JUnit.DistanceCalculatorTest.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "develop",
+    "git-widget-placeholder": "63-refaktorere-DistanceCalculator",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/snorr/Documents/Github/SoftwareEngineering17---Kollektivtrafikk/MainProject",
+    "last_opened_file_path": "C:/Users/wilbn/OneDrive - Østfold University College/Dokumenter/Dataingeniør/3. Semester/Software Engineering/IntelliJ/musicas",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",

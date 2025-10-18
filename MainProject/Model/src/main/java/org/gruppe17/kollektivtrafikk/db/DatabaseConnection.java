@@ -4,7 +4,7 @@ En klasse for å koble til
  */
 
 
-package gruppe17.kollektivtrafikk.db;
+package org.gruppe17.kollektivtrafikk.db;
 
 
 import java.sql.*;
