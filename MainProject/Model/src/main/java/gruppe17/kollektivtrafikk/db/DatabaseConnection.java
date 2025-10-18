@@ -27,7 +27,6 @@ public class DatabaseConnection {
             // Erklæring (Statement)
             String statement = "SELECT * FROM routes WHERE name LIKE %" + routeName + "%";
             // Kjør (Execute)
-            ResultSet result = statement.executeQuery{
 
             while (result.next()) {
 
