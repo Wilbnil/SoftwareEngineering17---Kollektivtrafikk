@@ -1,4 +1,4 @@
-package gruppe17.kollektivtrafikk.utility;
+package org.gruppe17.kollektivtrafikk.utility;
 
 public class DistanceCalculator {
 

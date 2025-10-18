@@ -1,7 +1,7 @@
-package org.kollektivtrafikk.example;
+package org.gruppe17.kollektivtrafikk.example;
 
-import gruppe17.kollektivtrafikk.db.DatabaseConnection;
-import gruppe17.kollektivtrafikk.model.Stop;
+import org.gruppe17.kollektivtrafikk.db.DatabaseConnection;
+import org.gruppe17.kollektivtrafikk.model.Stop;
 
 //Test class to demonstrate the functionality of transport stop and route management.
 
