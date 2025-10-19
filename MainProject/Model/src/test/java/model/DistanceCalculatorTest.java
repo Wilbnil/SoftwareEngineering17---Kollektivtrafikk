@@ -1,5 +1,6 @@
 package model;
 
+import gruppe17.kollektivtrafikk.utility.DistanceCalculator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

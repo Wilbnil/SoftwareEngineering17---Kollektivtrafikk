@@ -8,7 +8,7 @@ package gruppe17.kollektivtrafikk.db;
 
 
 import java.sql.*;
-import org.gruppe17.kollektivtrafikk.model.Route;
+import gruppe17.kollektivtrafikk.model.Route;
 
 
 public class DatabaseConnection {
@@ -24,22 +24,27 @@ public class DatabaseConnection {
         // Forbindelse
         try (Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD))
         {
+            Statement statement = connection.createStatement();
             // Erklæring (Statement)
-            String statement = "SELECT * FROM routes WHERE name LIKE %" + routeName + "%";
+            String sql = "SELECT * FROM routes WHERE name LIKE '%'" + routeName + "%";
             // Kjør (Execute)
-            ResultSet result = statement.executeQuery{
+            ResultSet result = statement.executeQuery(sql);
 
             while (result.next()) {
+                int id = result.getInt("id");
+                String mode = result.getString("mode");
+                java.util.ArrayList<gruppe17.kollektivtrafikk.model.Stop> stops = new java.util.ArrayList<>();
 
+                Route route = new Route(stops, mode);
+                route.setId(id);
+                return route;
             }
-        }
+
 
         } catch (SQLException exception) {
-            System.err.println(exception.getMessage());
+            System.err.println("Database error: " + exception.getMessage());
         }
         return null;
     }
-
-
 
 }

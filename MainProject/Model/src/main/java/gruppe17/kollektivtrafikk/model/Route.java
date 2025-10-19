@@ -25,4 +25,11 @@ public class Route {
         return stops != null && !stops.isEmpty() ? stops.get(stops.size() -1) : null;
     }
 
+    public String getMode() {
+        return mode;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
