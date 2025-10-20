@@ -1,0 +1,23 @@
+@startuml
+'https://plantuml.com/class-diagram
+' En tilstandsdiagram for syklusen til Tour. 
+
+' Startpunkt
+[*] --> Planlagt : ny tur lages via RouteService
+
+' Hovedflyt
+Planlagt --> Aktiv : bruker starter reisen sin / beregner distansen og tid
+Aktiv --> Fullført : ankomsten registrert / getArrivalTime()
+Aktiv --> Kansellert : brukeren avbryter søket eller reisen
+
+' Sluttpunkter
+Fullført --> [*]
+Kansellert --> [*]
+
+' Handlinger
+Planlagt : entry / starter routeId, stops og tider
+Aktiv : entry / beregner avstanden (DistanceCalculator.getDistanceFromStops)
+Aktiv : entry / henter tider (StopData.getDepartureTime, getArrivalTime)
+Fullført: entry / logg reisetid (Tour.getDuration)
+Kansellert : entry / nullstill data
+@enduml
