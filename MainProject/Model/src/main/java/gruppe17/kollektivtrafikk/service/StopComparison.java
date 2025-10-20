@@ -5,7 +5,7 @@ import gruppe17.kollektivtrafikk.utility.DistanceCalculator;
 import gruppe17.kollektivtrafikk.model.Stop;
 
 public class StopComparison {
-    public static Stop finnClosest(Coordinates searchPoint, Stop[] stops) {
+//    public static Stop finnClosest(Coordinates searchPoint, Stop[] stops) {
         Stop closest = null;
         double minsteAvstand = Double.MAX_VALUE;
 

@@ -11,6 +11,16 @@
 
     <artifactId>Model</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>io.javalin</groupId>
+            <artifactId>javalin-testtools</artifactId>
+            <version>6.2.0</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
