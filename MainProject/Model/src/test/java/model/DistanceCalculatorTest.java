@@ -26,7 +26,6 @@ public class DistanceCalculatorTest {
     }
     @Test
     public void testDistanceCalculatorDistance_ReasonableValues() {
-
         //Act
         double distance = DistanceCalculator.getDistance(0.0, 0.0, 3.0, 0.0);
 

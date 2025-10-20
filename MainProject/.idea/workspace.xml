@@ -5,28 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d36602c1-fb54-4a69-88e7-1fc403fee53d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/utility/DistanceCalculator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/src/main/java/gruppe17/kollektivtrafikk/FrontendController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/src/main/java/org/gruppe17/kollektivtrafikk/FrontendController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Model/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/db/DatabaseConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/db/DatabaseConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/db/kollektivdatabase.db" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/db/kollektivdatabase.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/example/TestStops.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/example/TestStops.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/model/Coordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/Coordinates.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/model/Route.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/Route.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/model/Stop.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/Stop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/model/StopData.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/StopData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/model/Tour.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/Tour.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/search/SearchEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/search/SearchEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/search/SearchField.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/search/SearchField.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/service/RouteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/service/RouteService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/service/StopComparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/service/StopComparison.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/gruppe17/kollektivtrafikk/utility/DistanceCalculator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/test/java/model/CoordinatesTest.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/src/test/java/model/DistanceCalculatorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/test/java/model/DistanceCalculatorTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/src/main/java/gruppe17/kollektivtrafikk/HTML/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/View/src/main/java/org/gruppe17/kollektivtrafikk/HTML/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +25,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Wilbnil"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Wilbnil/SoftwareEngineering17---Kollektivtrafikk.git",
+    "accountId": "f1458e82-74f1-4a52-89d5-9c8c575b9a36"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 1
@@ -52,26 +46,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JUnit.DistanceCalculatorTest.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "63-refaktorere-DistanceCalculator",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/wilbn/OneDrive - Østfold University College/Dokumenter/Dataingeniør/3. Semester/Software Engineering/IntelliJ/musicas",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "editor.preferences.inline.completion",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JUnit.DistanceCalculatorTest.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;63-refaktorere-DistanceCalculator&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/wilbn/OneDrive - Østfold University College/Dokumenter/Dataingeniør/3. Semester/Software Engineering/IntelliJ/musicas&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.inline.completion&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\snorr\Documents\Github\SoftwareEngineering17---Kollektivtrafikk\MainProject\src\main\java\org\gruppe17\kollektivtrafikk\model" />
@@ -82,8 +76,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
-        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.26830.84" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26199.169" />
+        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-IU-252.26199.169" />
       </set>
     </attachedChunks>
   </component>
@@ -102,6 +96,7 @@
       <workItem from="1759588588572" duration="2785000" />
       <workItem from="1759591430040" duration="25000" />
       <workItem from="1759591511409" duration="66000" />
+      <workItem from="1760977516794" duration="34000" />
     </task>
     <servers />
   </component>
