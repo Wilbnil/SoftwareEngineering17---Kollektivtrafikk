@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d36602c1-fb54-4a69-88e7-1fc403fee53d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Model/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/Tour.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/Tour.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/utility/DistanceCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/utility/DistanceCalculator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/src/test/java/model/DistanceCalculatorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/test/java/model/DistanceCalculatorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +97,7 @@
       <workItem from="1759588588572" duration="2785000" />
       <workItem from="1759591430040" duration="25000" />
       <workItem from="1759591511409" duration="66000" />
-      <workItem from="1760977516794" duration="34000" />
+      <workItem from="1760977516794" duration="4961000" />
     </task>
     <servers />
   </component>

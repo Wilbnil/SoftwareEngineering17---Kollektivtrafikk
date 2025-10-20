@@ -18,6 +18,7 @@ public class DistanceCalculator {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
+    // Regner ut tiden basert på dato- og tidsforskjell.
     public static LocalTime calculateTravelTime(LocalDateTime timeFrom, LocalDateTime timeTo) {
         // Regner ut tiden med Duration klassen.
         Duration travelTime = Duration.between(timeFrom, timeTo);
@@ -25,6 +26,14 @@ public class DistanceCalculator {
         return LocalTime.MIDNIGHT.plus(travelTime);
     }
 
+
+    // Tentativ løsning for å regne ut kun basert på tid.
+    public static LocalTime calculateTravelTime(LocalTime timeFrom, LocalTime timeTo) {
+        // Regner ut tiden med Duration klassen.
+        Duration travelTime = Duration.between(timeFrom, timeTo);
+        // Returnerer tiden som et LocalTime objekt.
+        return LocalTime.MIDNIGHT.plus(travelTime);
+    }
 
 
 }
