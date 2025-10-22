@@ -1,18 +1,24 @@
 package org.gruppe17.kollektivtrafikk.example;
 
-import org.gruppe17.kollektivtrafikk.db.DatabaseConnection;
+import org.gruppe17.kollektivtrafikk.db.DatabaseSQLAdapter;
+import org.gruppe17.kollektivtrafikk.db.SQLiteDatabase;
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 //Test class to demonstrate the functionality of transport stop and route management.
 
 public class TestStops {
-    public static void main(String[] args) {
-        DatabaseConnection dbc = new DatabaseConnection();
+    public static void main(String[] args) throws SQLException {
+        SQLiteDatabase sqLiteDatabase = new SQLiteDatabase();
 
-        ArrayList<Route> test = dbc.getRoutesFromDatabase(2, 5);
+        sqLiteDatabase.startDB();
+
+        DatabaseSQLAdapter sqlAdapter = new DatabaseSQLAdapter(sqLiteDatabase.getConnection());
+
+        ArrayList<Route> test = sqlAdapter.getRoutesFromDatabase(2, 5);
 
         for (Route routeX : test) {
             System.out.println("Route ---------------");
@@ -32,6 +38,8 @@ public class TestStops {
                 System.out.println("");
             }
         }
+
+        sqLiteDatabase.stopDB();
     }
 }
 
