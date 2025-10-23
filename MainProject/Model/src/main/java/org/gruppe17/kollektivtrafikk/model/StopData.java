@@ -1,9 +1,12 @@
 package org.gruppe17.kollektivtrafikk.model;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import java.time.LocalDateTime;
 >>>>>>> 65-FrontEnd-Controller
+=======
+>>>>>>> 63-refaktorere-DistanceCalculator
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +21,7 @@ public class StopData {
                 new Stop(5, "Torsbekke", "Sarsborg", 10.0, 0.0, true, true)
         );
     }
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 
@@ -44,4 +48,6 @@ public class StopData {
         } return null;
     }
 >>>>>>> 65-FrontEnd-Controller
+=======
+>>>>>>> 63-refaktorere-DistanceCalculator
 }

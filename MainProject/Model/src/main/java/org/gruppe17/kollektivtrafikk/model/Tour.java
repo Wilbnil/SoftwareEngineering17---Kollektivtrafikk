@@ -1,5 +1,8 @@
 package org.gruppe17.kollektivtrafikk.model;
 
+import org.gruppe17.kollektivtrafikk.utility.DistanceCalculator;
+
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -9,10 +12,10 @@ public class Tour {
     private ArrayList<LocalTime> arrivals;
     private String mode;
 
+
     public LocalTime getDuration() {
         if (arrivals == null || arrivals.size() == 2) return null;
-        return arrivals.get(arrivals.size() - 1).minusHours(arrivals.get(0).getHour())
-                .minusMinutes(arrivals.get(0).getMinute());
+        return DistanceCalculator.calculateTravelTime(arrivals.getFirst(), arrivals.getLast());
     }
 
     public LocalTime getStartTime() {

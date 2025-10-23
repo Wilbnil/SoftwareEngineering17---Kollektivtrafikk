@@ -23,6 +23,5 @@ public class StopComparison {
         }
         return closest;
     }
-}
-*/
+
 
