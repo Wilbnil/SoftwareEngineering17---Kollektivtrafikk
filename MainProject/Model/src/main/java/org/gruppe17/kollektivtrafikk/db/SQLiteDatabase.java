@@ -15,7 +15,7 @@ public class SQLiteDatabase {
             connection = DriverManager.getConnection(DB_URL);
             return connection;
         } catch (SQLException e) {
-            System.out.println("e");
+            System.err.println(e);
         }
         return null;
     }
@@ -28,7 +28,7 @@ public class SQLiteDatabase {
         try {
             connection.close();
         } catch (SQLException e) {
-            System.out.println("e");
+            System.err.println(e);
         }
     }
 }
