@@ -1,9 +1,9 @@
-package gruppe17.kollektivtrafikk.utility;
+package org.gruppe17.kollektivtrafikk.utility;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Duration;
-import gruppe17.kollektivtrafikk.model.StopData;
+import org.gruppe17.kollektivtrafikk.model.StopData;
 
 public class DistanceCalculator {
 

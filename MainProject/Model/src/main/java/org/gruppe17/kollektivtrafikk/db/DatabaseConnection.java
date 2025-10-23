@@ -4,11 +4,12 @@ En klasse for å koble til
  */
 
 
-package gruppe17.kollektivtrafikk.db;
+package org.gruppe17.kollektivtrafikk.db;
 
 
 import java.sql.*;
-import gruppe17.kollektivtrafikk.model.Route;
+import org.gruppe17.kollektivtrafikk.model.Route;
+import org.gruppe17.kollektivtrafikk.model.Stop;
 
 
 public class DatabaseConnection {
@@ -33,7 +34,7 @@ public class DatabaseConnection {
             while (result.next()) {
                 int id = result.getInt("id");
                 String mode = result.getString("mode");
-                java.util.ArrayList<gruppe17.kollektivtrafikk.model.Stop> stops = new java.util.ArrayList<>();
+                java.util.ArrayList<Stop> stops = new java.util.ArrayList<>();
 
                 Route route = new Route(stops, mode);
                 route.setId(id);

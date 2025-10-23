@@ -1,7 +1,8 @@
 package model;
 
-import gruppe17.kollektivtrafikk.model.Route;
-import gruppe17.kollektivtrafikk.service.RouteService;
+import org.gruppe17.kollektivtrafikk.model.Route;
+import org.gruppe17.kollektivtrafikk.service.RouteService;
+import org.gruppe17.kollektivtrafikk.service.RouteServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,7 +11,7 @@ public class RouteServiceTest {
 
     @Test
     public void testGetRouteExists() {
-        RouteService service = new RouteService();
+        RouteService service = new RouteServiceImpl();
         Route route = service.getRoute("Fredrikstad", "Ostfoldhallen");
 
         assertNotNull(route);
@@ -19,7 +20,7 @@ public class RouteServiceTest {
 
     @Test
     public void testGetRouteNotExists() {
-        RouteService service = new RouteService();
+        RouteService service = new RouteServiceImpl();
         Route route = service.getRoute("Fredrikstad", "UnknonStop");
 
         assertNotNull(route);

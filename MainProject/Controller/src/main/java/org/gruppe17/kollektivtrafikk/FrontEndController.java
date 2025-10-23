@@ -1,9 +1,10 @@
-package gruppe17.kollektivtrafikk;
+package org.gruppe17.kollektivtrafikk;
 
-import gruppe17.kollektivtrafikk.service.RouteService;
-import gruppe17.kollektivtrafikk.model.Route;
-import gruppe17.kollektivtrafikk.model.StopData;
-import gruppe17.kollektivtrafikk.utility.DistanceCalculator;
+import org.gruppe17.kollektivtrafikk.service.RouteService;
+import org.gruppe17.kollektivtrafikk.model.Route;
+import org.gruppe17.kollektivtrafikk.model.StopData;
+import org.gruppe17.kollektivtrafikk.service.RouteServiceImpl;
+import org.gruppe17.kollektivtrafikk.utility.DistanceCalculator;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import java.time.LocalDateTime;
@@ -11,34 +12,43 @@ import java.util.Map;
 
 public class FrontEndController {
     public static void main(String[] args) {
-
+        // Create Javalin server with static files
+        // Serve files from /public folder in the classpath
         Javalin app = Javalin.create(config -> {
             config.staticFiles.add(staticFiles -> {staticFiles.directory = "/public"; staticFiles.location = Location.CLASSPATH;});
-        }).start(8080);
+        }).start(8080); // Start server on port 8080
 
-        app.get("/", ctx -> ctx.redirect("index.html"));
+        // Redirect root "/" to index.html
+        app.get("/", context -> context.redirect("index.html"));
 
-        app.post("/search", ctx -> {
+        //  Define POST endpoint "/search"
+        app.post("/search", context -> {
             try {
-                String from = ctx.formParam("from");
-                String to = ctx.formParam("to");
+                // Get form parameters
+                String from = context.formParam("from");
+                String to = context.formParam("to");
 
+                // Return 400 if no parameters
                 if (from == null && to == null) {
-                    ctx.status(400).result("No data");
+                    context.status(400).result("No data");
                     return;
                 }
-                    RouteService service = new RouteService();
+                //  Use RouteService to get route
+                    RouteService service = new RouteServiceImpl();
                     Route route = service.getRoute(from, to);
+                //  Return 404 if route not found
                     if (route == null) {
-                        ctx.status(404).result("Route not found");
+                        context.status(404).result("Route not found");
                         return;
                     }
 
+                // Calculate additional info
                     double distance = DistanceCalculator.getDistanceFromStops(from, to);
                     LocalDateTime departure = StopData.getDepartureTime(from);
                     LocalDateTime arrival = StopData.getArrivalTime(from, to);
 
-                    ctx.json(Map.of(
+                // Return JSON response
+                context.json(Map.of(
                             "route", from + " to " + to,
                             "distance", distance,
                             "departure", departure != null ? departure.toString() : "N/A",
@@ -46,8 +56,9 @@ public class FrontEndController {
                             "bus", route.getMode() != null ? route.getMode() : "N/A"
                     ));
                 } catch (Exception e) {
+                //  Handle server errors --
                     e.printStackTrace();
-                    ctx.status(500).result("Server error: " + e.getMessage());
+                context.status(500).result("Server error: " + e.getMessage());
             }
         });
     }

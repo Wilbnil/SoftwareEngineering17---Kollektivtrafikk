@@ -1,6 +1,6 @@
 package model;
 
-import gruppe17.kollektivtrafikk.utility.DistanceCalculator;
+import org.gruppe17.kollektivtrafikk.utility.DistanceCalculator;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

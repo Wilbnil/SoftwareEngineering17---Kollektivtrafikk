@@ -1,4 +1,4 @@
-package gruppe17.kollektivtrafikk.service;
+package org.gruppe17.kollektivtrafikk.service;
 
 /*
 import gruppe17.kollektivtrafikk.utility.DistanceCalculator;

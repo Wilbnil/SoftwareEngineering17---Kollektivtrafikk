@@ -1,4 +1,4 @@
-package gruppe17.kollektivtrafikk;
+package org.gruppe17.kollektivtrafikk;
 
 public class FrontEndControllerAdmin {
 }
