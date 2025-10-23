@@ -1,8 +1,7 @@
-package gruppe17.kollektivtrafikk.service;
+package org.gruppe17.kollektivtrafikk.service;
 
-import gruppe17.kollektivtrafikk.db.DatabaseConnection;
-import gruppe17.kollektivtrafikk.model.Route;
-import gruppe17.kollektivtrafikk.model.Stop;
+import org.gruppe17.kollektivtrafikk.model.Route;
+import org.gruppe17.kollektivtrafikk.model.Stop;
 
 import java.util.ArrayList;
 
