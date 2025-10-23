@@ -1,11 +1,11 @@
-package gruppe17.kollektivtrafikk.model;
+package org.gruppe17.kollektivtrafikk.model;
 
 public class Stop {
     private int id;
     private String name;
     private String town;
-    private double longitude;
     private double latitude;
+    private double longitude;
     private boolean roof;
     private boolean accessibility;
 
@@ -17,12 +17,12 @@ public class Stop {
         this.name = name;
     }
 
-    public Stop(int id, String name, String town, double longitude, double latitude, boolean roof, boolean accessibility) {
+    public Stop(int id, String name, String town, double latitude, double longitude, boolean roof, boolean accessibility) {
         this.id = id;
         this.name = name;
         this.town = town;
-        this.longitude = longitude;
         this.latitude = latitude;
+        this.longitude = longitude;
         this.roof = roof;
         this.accessibility = accessibility;
 
@@ -69,7 +69,7 @@ public class Stop {
         this.latitude = latitude;
     }
 
-    public boolean isRoof() {
+    public boolean getRoof() {
         return roof;
     }
 
@@ -77,7 +77,7 @@ public class Stop {
         this.roof = roof;
     }
 
-    public boolean isAccessibility() {
+    public boolean getAccessibility() {
         return accessibility;
     }
 

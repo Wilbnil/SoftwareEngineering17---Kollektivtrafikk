@@ -1,6 +1,6 @@
-package gruppe17.kollektivtrafikk.service;
+package org.gruppe17.kollektivtrafikk.service;
 
-import gruppe17.kollektivtrafikk.utility.DistanceCalculator;
+import org.gruppe17.kollektivtrafikk.utility.DistanceCalculator;
 import org.gruppe17.kollektivtrafikk.model.Coordinates;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 

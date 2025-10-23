@@ -1,4 +1,4 @@
-package gruppe17.kollektivtrafikk.model;
+package org.gruppe17.kollektivtrafikk.model;
 
 import java.util.ArrayList;
 
@@ -7,12 +7,40 @@ import java.util.ArrayList;
 public class Route {
 
     private int id;
+    private String name;
     private ArrayList<Stop> stops;
     private String mode;
 
-    public Route(ArrayList<Stop> stops, String mode) {
+    public Route(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Route(int id, String name, ArrayList<Stop> stops, String mode) {
+        this.id = id;
+        this.name = name;
         this.stops = stops;
         this.mode = mode;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<Stop> getStops() {
+        return stops;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setStops(ArrayList<Stop> stops) {
+        this.stops = stops;
     }
 
     //Return the index of the first stop, or -1 if stops is null or empty
