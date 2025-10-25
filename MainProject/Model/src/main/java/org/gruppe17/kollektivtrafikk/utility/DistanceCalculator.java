@@ -13,6 +13,14 @@ public class DistanceCalculator {
 
     private DistanceCalculator() {}
 
+    /**
+     *
+     * @param fromX
+     * @param fromY
+     * @param toX
+     * @param toY
+     * @return
+     */
     public static double getDistance(double fromX, double fromY, double toX, double toY) {
         // Bruker Pytagoras for å finne lengden som en vektor av x og y lengder.
         double dx = toX - fromX;

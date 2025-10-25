@@ -17,6 +17,16 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ *
+ * Unit test for the FrontEndController's /search endpoint.
+ * Starts a temporary Javalin server with a mock RouteService and sends
+ * a POST request using Java's HttpClient to verify that the endpoint
+ * returns valid JSON data and correct status codes.
+ * Confirms that the route and bus mode fields match expected values.
+ *
+ */
+
 public class FrontEndControllerTest {
 
     @Test

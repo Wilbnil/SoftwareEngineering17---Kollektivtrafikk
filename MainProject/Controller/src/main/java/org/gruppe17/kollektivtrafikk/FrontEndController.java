@@ -10,6 +10,17 @@ import io.javalin.http.staticfiles.Location;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+
+/**
+ *
+ * Main entry point for application.
+ * Starts Javalin server on port 8080, serves static frontned files
+ * and defines a POST/search endpoint to find routes between stops.
+ * Uses RouteService, StopData, and DistanceCalculator to return
+ * route, distance, and timing information in JSON.
+ *
+ */
+
 public class FrontEndController {
     public static void main(String[] args) {
         // Create Javalin server with static files
@@ -34,30 +45,30 @@ public class FrontEndController {
                     return;
                 }
                 //  Use RouteService to get route
-                    RouteService service = new RouteServiceImpl();
-                    Route route = service.getRoute(from, to);
+                RouteService service = new RouteServiceImpl();
+                Route route = service.getRoute(from, to);
                 //  Return 404 if route not found
-                    if (route == null) {
-                        context.status(404).result("Route not found");
-                        return;
-                    }
+                if (route == null) {
+                    context.status(404).result("Route not found");
+                    return;
+                }
 
                 // Calculate additional info
-                    double distance = DistanceCalculator.getDistanceFromStops(from, to);
-                    LocalDateTime departure = StopData.getDepartureTime(from);
-                    LocalDateTime arrival = StopData.getArrivalTime(from, to);
+                double distance = DistanceCalculator.getDistanceFromStops(from, to);
+                LocalDateTime departure = StopData.getDepartureTime(from);
+                LocalDateTime arrival = StopData.getArrivalTime(from, to);
 
                 // Return JSON response
                 context.json(Map.of(
-                            "route", from + " to " + to,
-                            "distance", distance,
-                            "departure", departure != null ? departure.toString() : "N/A",
-                            "arrival", arrival != null ? arrival.toString() : "N/A",
-                            "bus", route.getMode() != null ? route.getMode() : "N/A"
-                    ));
-                } catch (Exception e) {
+                        "route", from + " to " + to,
+                        "distance", distance,
+                        "departure", departure != null ? departure.toString() : "N/A",
+                        "arrival", arrival != null ? arrival.toString() : "N/A",
+                        "bus", route.getMode() != null ? route.getMode() : "N/A"
+                ));
+            } catch (Exception e) {
                 //  Handle server errors --
-                    e.printStackTrace();
+                e.printStackTrace();
                 context.status(500).result("Server error: " + e.getMessage());
             }
         });
