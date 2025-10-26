@@ -16,6 +16,12 @@ public class Route {
         this.name = name;
     }
 
+    public Route(int id, String name, ArrayList<Stop> stops) {
+        this.id = id;
+        this.name = name;
+        this.stops = stops;
+    }
+
     public Route(int id, String name, ArrayList<Stop> stops, String mode) {
         this.id = id;
         this.name = name;

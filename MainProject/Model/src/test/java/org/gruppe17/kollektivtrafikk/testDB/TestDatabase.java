@@ -8,12 +8,17 @@ public abstract class TestDatabase {
 
     protected Connection connection;
 
+    // Abstract method to start a connection, this is further handled by the H2TestDatabase Class
     public abstract Connection startDB() throws Exception;
 
+    // Abstract method to stop a connection, this is further handled by the H2TestDatabase Class
     public abstract void stopDB() throws Exception;
 
+    // Creates the tables in the test database to mock the actual database
     public void createTables() throws Exception{
         try (Statement statement = connection.createStatement()) {
+
+            // Creates table "routes"
             statement.execute(
                     "CREATE TABLE routes(" +
                         "id INTEGER, " +
@@ -22,6 +27,7 @@ public abstract class TestDatabase {
                         "end_stop TEXT, " +
                         "PRIMARY KEY(id))");
 
+            // Creates table "stops"
             statement.execute(
                     "CREATE TABLE stops(" +
                     "id INTEGER, " +
@@ -33,6 +39,7 @@ public abstract class TestDatabase {
                     "accessibility INTEGER, " +
                     "PRIMARY KEY(id))");
 
+            // Creates table "route_stops"
             statement.execute(
                     "CREATE TABLE route_stops(" +
                     "route_id INTEGER NOT NULL, " +
@@ -42,11 +49,15 @@ public abstract class TestDatabase {
         }
     }
 
+    // Uses the InsertInto methods to add dummy data to the tables
     public void createDummyData() throws Exception{
         try (Statement statement = connection.createStatement()) {
-            insertIntoRoutes(1, "Rute 1", 1, 6);
-            insertIntoRoutes(2, "Rute 2", 6, 1);
 
+            // Inserts data into the "routes" table
+            insertIntoRoutes(1, "1", 1, 6);
+            insertIntoRoutes(2, "2", 6, 1);
+
+            // Inserts data into the "stops" table
             insertIntoStops(1, "Fredrikstad bussterminal", "Fredrikstad", 59.2139,10.9403,0,0);
             insertIntoStops(2, "Østfoldhallen", "Fredrikstad", 59.2516, 10.9931, 0, 0);
             insertIntoStops(3, "Greåker", "Sarpsborg", 59.2661, 11.0349, 0, 0);
@@ -54,6 +65,7 @@ public abstract class TestDatabase {
             insertIntoStops(5, "Torsbekken", "Sarpsborg", 59.284, 11.0984, 0, 0);
             insertIntoStops(6, "Sarpsborg bussterminal", "Sarpsborg", 59.283, 11.1071, 0, 0);
 
+            // Inserts data into the "route_stops" table
             insertIntoRouteStops(1, 1, 1);
             insertIntoRouteStops(1, 2, 2);
             insertIntoRouteStops(1, 3, 3);
@@ -69,11 +81,15 @@ public abstract class TestDatabase {
         }
     }
 
+    // Serves as a blueprint for inserting data into the "routes" table
     public void insertIntoRoutes(int id, String name, int start_stop, int end_stop)
             throws Exception{
+
+        // Creates an INSERT INTO statement for use
         String sql = "INSERT INTO routes (id, name, start_stop, end_stop) " +
                 "VALUES (?, ?, ?, ?)";
 
+        // Places the input parameter values of the method into the statement above
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, name);
@@ -83,10 +99,14 @@ public abstract class TestDatabase {
         }
     }
 
+    // Serves as a blueprint for inserting data into the "stop" table
     public void insertIntoStops(int id, String name, String town, double latitude, double longitude, int roof, int accessibility) throws Exception{
+
+        // Creates an INSERT INTO statement for use
         String sql = "INSERT INTO stops (id, name, town, latitude, longitude, roof, accessibility) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
+        // Places the input parameter values of the method into the statement above
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, name);
@@ -99,10 +119,14 @@ public abstract class TestDatabase {
         }
     }
 
+    // Serves as a blueprint for inserting data into the "route_stops" table
     public void insertIntoRouteStops(int route_id, int stop_id, int stop_order) throws Exception {
+
+        // Creates an INSERT INTO statement for use
         String sql = "INSERT INTO route_stops (route_id, stop_id, stop_order) " +
                 "VALUES (?, ?, ?)";
 
+        // Places the input parameter values of the method into the statement above
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, route_id);
             preparedStatement.setInt(2, stop_id);

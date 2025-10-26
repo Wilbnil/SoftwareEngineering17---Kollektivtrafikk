@@ -10,6 +10,7 @@ public class DatabaseSQLAdapter {
 
 private static Connection connection;
 
+    // Accepts a Connection when an SQL Adapter object is created
     public DatabaseSQLAdapter(Connection connection) {
         this.connection = connection;
     }
