@@ -13,6 +13,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,7 +38,7 @@ public class FrontEndControllerTest {
             public Route getRoute(String from, String to) {
                 // If the input matches, return a fake route
                 if ("Fredrikstad".equals(from) && "Ostfoldhallen".equals(to)) {
-                    return new Route(null, "bus 99");
+                    return new Route(1, "Fredrikstad to Ostfoldhallen", new ArrayList<>(), "bus 99");
                 }
                 // Otherwise, return null
                 return null;
