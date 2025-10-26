@@ -54,7 +54,21 @@ public class FrontEndController {
                 }
 
                 // Calculate additional info
-                double distance = DistanceCalculator.getDistanceFromStops(from, to);
+                var stops = StopData.getStops();
+                var fromStop = stops.stream().filter(stop -> stop.getName().equals(from)).findFirst();
+                var toStop = stops.stream().filter(stop -> stop.getName().equals(to)).findFirst();
+
+                double distance = 0.0;
+                if (fromStop.isPresent() && toStop.isPresent()) {
+                    distance = DistanceCalculator.getDistance(
+                            fromStop.get().getLongitude(),
+                            fromStop.get().getLatitude(),
+                            toStop.get().getLongitude(),
+                            toStop.get().getLatitude()
+                    );
+                }
+
+
                 LocalDateTime departure = StopData.getDepartureTime(from);
                 LocalDateTime arrival = StopData.getArrivalTime(from, to);
 

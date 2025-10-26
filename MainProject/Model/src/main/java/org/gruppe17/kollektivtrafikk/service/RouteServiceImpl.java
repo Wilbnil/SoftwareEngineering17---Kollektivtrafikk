@@ -20,6 +20,6 @@ public class RouteServiceImpl implements RouteService {
 
         String busName = "bus " + ((from.length() + to.length()) % 50);
 
-        return new Route(routeStops, busName);
+        return new Route(1, from + " - " + to, routeStops, busName);
     }
 }

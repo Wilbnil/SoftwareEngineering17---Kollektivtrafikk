@@ -1,6 +1,6 @@
 package org.gruppe17.kollektivtrafikk.service;
 
-import org.gruppe17.kollektivtrafikk.model.DistanceCalculator;
+import org.gruppe17.kollektivtrafikk.utility.DistanceCalculator;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 
 public class StopComparison {
@@ -9,7 +9,7 @@ public class StopComparison {
         double minsteAvstand = Double.MAX_VALUE;
 
         for (Stop stop : stops) {
-            double distance = calculator.getDistance(
+            double distance = DistanceCalculator.getDistance(
                     searchLongitude, searchLatitude,
                     stop.getLongitude(), stop.getLatitude()
             );
@@ -21,5 +21,6 @@ public class StopComparison {
         }
         return closest;
     }
+}
 
 
