@@ -1,6 +1,7 @@
 package org.gruppe17.kollektivtrafikk.model;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 //Represents a transport route with a list of stops and a transport mode.
 
@@ -61,5 +62,12 @@ public class Route {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public ArrayList<Stop> getStopsWithRoof() {
+        if (stops == null) return new ArrayList<>();
+        return stops.stream()
+                .filter(Stop::getRoof)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 }

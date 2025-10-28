@@ -3,6 +3,7 @@ package org.gruppe17.kollektivtrafikk.model;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //must be updated once database is ready
 public class StopData {
@@ -38,6 +39,12 @@ public class StopData {
                 return departure.plusMinutes(70); // 19:20 + 70 min = 20:30
             }
         } return null;
+    }
+
+    public static List<Stop> getStopsWithRoof() {
+        return getStops().stream()
+                .filter(Stop::getRoof)
+                .collect(Collectors.toList());
     }
 
 }

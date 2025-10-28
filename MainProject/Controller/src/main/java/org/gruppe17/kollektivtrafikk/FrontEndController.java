@@ -5,6 +5,8 @@ import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.StopData;
 import org.gruppe17.kollektivtrafikk.service.RouteServiceImpl;
 import org.gruppe17.kollektivtrafikk.utility.DistanceCalculator;
+import org.gruppe17.kollektivtrafikk.service.SearchService;
+import org.gruppe17.kollektivtrafikk.service.SearchServiceImpl;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import java.time.LocalDateTime;
@@ -26,7 +28,10 @@ public class FrontEndController {
         // Create Javalin server with static files
         // Serve files from /public folder in the classpath
         Javalin app = Javalin.create(config -> {
-            config.staticFiles.add(staticFiles -> {staticFiles.directory = "/public"; staticFiles.location = Location.CLASSPATH;});
+            config.staticFiles.add(staticFiles -> {
+                staticFiles.directory = "/public"; 
+                staticFiles.location = Location.CLASSPATH;
+            });
         }).start(8080); // Start server on port 8080
 
         // Redirect root "/" to index.html
@@ -38,6 +43,7 @@ public class FrontEndController {
                 // Get form parameters
                 String from = context.formParam("from");
                 String to = context.formParam("to");
+                boolean onlyWithRoof = Boolean.parseBoolean(context.formParam("onlyWithRoof"));
 
                 // Return 400 if no parameters
                 if (from == null && to == null) {
@@ -45,8 +51,9 @@ public class FrontEndController {
                     return;
                 }
                 //  Use RouteService to get route
-                RouteService service = new RouteServiceImpl();
-                Route route = service.getRoute(from, to);
+                RouteService routeService = new RouteServiceImpl();
+                SearchService searchService = new SearchServiceImpl(routeService);
+                Route route = searchService.findRoute(from, to, onlyWithRoof);
                 //  Return 404 if route not found
                 if (route == null) {
                     context.status(404).result("Route not found");
