@@ -1,5 +1,6 @@
 package org.gruppe17.kollektivtrafikk.testDB;
 
+import org.gruppe17.kollektivtrafikk.db.DatabaseAdminSQLAdapter;
 import org.gruppe17.kollektivtrafikk.db.DatabaseSQLAdapter;
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
@@ -42,6 +43,34 @@ public class DatabaseConnectionTest {
     @AfterAll
     public static void tearDownTestDB() throws Exception {
         testDB.stopDB();
+    }
+
+    @Test
+    @DisplayName("Route is inserted successfully")
+    public void insertRouteIntoDatabase_RouteInsertedCorrectly() throws Exception {
+        // Arrange
+        // Creates the Admin SQL Adapter connection to test the method
+        DatabaseAdminSQLAdapter adminSQLAdapter = new DatabaseAdminSQLAdapter(connection);
+
+        // Creates 2 Stop objects and puts them into an ArrayList for use by the Route object
+        Stop stop1 = new Stop(7, "testStop1");
+        Stop stop2 = new Stop(8, "testStop1");
+
+        ArrayList<Stop> testStops = new ArrayList<>();
+
+        testStops.add(stop1);
+        testStops.add(stop2);
+
+        // Creates a Route object to add to the test-database
+        Route testRoute = new Route(5, "Test Route", testStops);
+
+        // Act
+        // Runs the insertRouteIntoDatabase() method
+        adminSQLAdapter.insertRouteIntoDatabase(testRoute);
+
+        // Assert
+        // Counts the rows in the "routes" table after one route has been added
+        Assertions.assertEquals(3, testDB.countRowsInTable("routes"));
     }
 
     // A test that tests if the getRoutesFromDatabase method returns the correct data

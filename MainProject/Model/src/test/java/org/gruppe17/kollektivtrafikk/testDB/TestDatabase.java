@@ -2,6 +2,7 @@ package org.gruppe17.kollektivtrafikk.testDB;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 public abstract class TestDatabase {
@@ -132,6 +133,20 @@ public abstract class TestDatabase {
             preparedStatement.setInt(2, stop_id);
             preparedStatement.setInt(3, stop_order);
             preparedStatement.executeUpdate();
+        }
+    }
+
+    // Serves as a blueprint to count the rows in a table specified by the parameter
+    public int countRowsInTable(String tableName) throws Exception {
+
+        // Creates a SELECT statement that returns the number of rows
+        String sql ="SELECT COUNT(*) FROM " + tableName;
+
+        // Creates and runs a statement and returns the number of rows
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt(1);
         }
     }
 }
