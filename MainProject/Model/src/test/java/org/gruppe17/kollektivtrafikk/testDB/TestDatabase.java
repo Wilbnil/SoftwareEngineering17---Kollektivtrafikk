@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public abstract class TestDatabase {
 
@@ -147,6 +148,38 @@ public abstract class TestDatabase {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             return resultSet.getInt(1);
+        }
+    }
+
+    // Returns the name from a specified route in the database
+    public String getRouteName(int routeId) throws Exception {
+        // Creates a SELECT statement that returns the name from a route with a specified id
+        String sql = "SELECT name FROM routes WHERE id = ?";
+
+        // Creates and runs the statement and returns the name
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, routeId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getString("name");
+        }
+    }
+
+    // Returns the start_stop and end_stop of a specific route in the database
+    public ArrayList<Integer> getRouteStartEndStops(int routeId) throws Exception {
+
+        // Creates a SELECT statement that returns the start_stop and end_stop from a route with a specified id
+        String sql = "SELECT start_stop, end_stop FROM routes WHERE id = ?";
+
+        // Creates and runs the statement and returns an ArrayList that contains the start_stop and end_stop
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, routeId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            ArrayList<Integer> startEndStops = new ArrayList<>();
+            resultSet.next();
+            startEndStops.add(resultSet.getInt(1));
+            startEndStops.add(resultSet.getInt(2));
+            return startEndStops;
         }
     }
 }

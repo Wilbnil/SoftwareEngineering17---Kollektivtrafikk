@@ -67,10 +67,13 @@ public class DatabaseConnectionTest {
         // Act
         // Runs the insertRouteIntoDatabase() method
         adminSQLAdapter.insertRouteIntoDatabase(testRoute);
+        ArrayList<Integer> startEndStops = testDB.getRouteStartEndStops(testRoute.getId());
 
         // Assert
         // Counts the rows in the "routes" table after one route has been added
         Assertions.assertEquals(3, testDB.countRowsInTable("routes"));
+        Assertions.assertEquals("Test Route", testDB.getRouteName(5));
+        Assertions.assertTrue(startEndStops.get(0) == 7 && startEndStops.get(1) == 8);
     }
 
     // A test that tests if the getRoutesFromDatabase method returns the correct data
