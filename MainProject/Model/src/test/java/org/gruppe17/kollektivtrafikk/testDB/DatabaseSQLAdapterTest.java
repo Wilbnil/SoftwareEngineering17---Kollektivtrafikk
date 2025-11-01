@@ -1,6 +1,5 @@
 package org.gruppe17.kollektivtrafikk.testDB;
 
-import org.gruppe17.kollektivtrafikk.db.DatabaseAdminSQLAdapter;
 import org.gruppe17.kollektivtrafikk.db.DatabaseSQLAdapter;
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
@@ -9,7 +8,7 @@ import org.junit.jupiter.api.*;
 import java.sql.Connection;
 import java.util.ArrayList;
 
-public class DatabaseConnectionTest {
+public class DatabaseSQLAdapterTest {
     private final static TestDatabase testDB = new H2TestDatabase();
 
     private static Connection connection;
