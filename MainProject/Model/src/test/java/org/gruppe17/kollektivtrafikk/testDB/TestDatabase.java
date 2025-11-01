@@ -20,44 +20,44 @@ public abstract class TestDatabase {
     public void createTables() throws Exception{
         try (Statement statement = connection.createStatement()) {
 
-            // Creates table "routes"
-            statement.execute(
-                    "CREATE TABLE routes(" +
-                        "id INTEGER, " +
-                        "name TEXT, " +
-                        "start_stop INTEGER, " +
-                        "end_stop TEXT, " +
-                        "PRIMARY KEY(id))");
-
             // Creates table "stops"
             statement.execute(
                     "CREATE TABLE stops(" +
-                    "id INTEGER, " +
-                    "name TEXT NOT NULL, " +
-                    "town TEXT, " +
-                    "latitude FLOAT, " +
-                    "longitude FLOAT, " +
-                    "roof INTEGER, " +
-                    "accessibility INTEGER, " +
-                    "PRIMARY KEY(id))");
+                        "id INTEGER AUTO_INCREMENT, " +
+                        "name TEXT NOT NULL, " +
+                        "town TEXT, " +
+                        "latitude FLOAT, " +
+                        "longitude FLOAT, " +
+                        "roof INTEGER, " +
+                        "accessibility INTEGER, " +
+                        "PRIMARY KEY(id));");
+
+            // Creates table "routes"
+            statement.execute(
+                    "CREATE TABLE routes(" +
+                        "id INTEGER AUTO_INCREMENT, " +
+                        "name TEXT, " +
+                        "start_stop INTEGER, " +
+                        "end_stop TEXT, " +
+                        "PRIMARY KEY(id), " +
+                        "FOREIGN KEY(end_stop) REFERENCES stops(id), " +
+                        "FOREIGN KEY(start_stop) REFERENCES stops(id));");
 
             // Creates table "route_stops"
             statement.execute(
                     "CREATE TABLE route_stops(" +
-                    "route_id INTEGER NOT NULL, " +
-                    "stop_id INTEGER NOT NULL, " +
-                    "stop_order INTEGER NOT NULL, " +
-                    "PRIMARY KEY (route_id, stop_id))");
+                        "route_id INTEGER NOT NULL, " +
+                        "stop_id INTEGER NOT NULL, " +
+                        "stop_order INTEGER NOT NULL, " +
+                        "PRIMARY KEY (route_id, stop_id)," +
+                        "FOREIGN KEY (route_id) REFERENCES routes(id)," +
+                        "FOREIGN KEY (stop_id) REFERENCES stops(id));");
         }
     }
 
     // Uses the InsertInto methods to add dummy data to the tables
     public void createDummyData() throws Exception{
         try (Statement statement = connection.createStatement()) {
-
-            // Inserts data into the "routes" table
-            insertIntoRoutes(1, "1", 1, 6);
-            insertIntoRoutes(2, "2", 6, 1);
 
             // Inserts data into the "stops" table
             insertIntoStops(1, "Fredrikstad bussterminal", "Fredrikstad", 59.2139,10.9403,0,0);
@@ -66,6 +66,11 @@ public abstract class TestDatabase {
             insertIntoStops(4, "AMFI Borg", "Sarpsborg", 59.2741, 11.0822, 0, 0);
             insertIntoStops(5, "Torsbekken", "Sarpsborg", 59.284, 11.0984, 0, 0);
             insertIntoStops(6, "Sarpsborg bussterminal", "Sarpsborg", 59.283, 11.1071, 0, 0);
+
+
+            // Inserts data into the "routes" table
+            insertIntoRoutes(1, "1", 1, 6);
+            insertIntoRoutes(2, "2", 6, 1);
 
             // Inserts data into the "route_stops" table
             insertIntoRouteStops(1, 1, 1);
