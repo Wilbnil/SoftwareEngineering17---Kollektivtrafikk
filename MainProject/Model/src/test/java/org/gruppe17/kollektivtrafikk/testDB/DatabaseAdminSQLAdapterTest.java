@@ -142,34 +142,55 @@ public class DatabaseAdminSQLTest {
         // Arrange
         // Creates the SQL Adapters connection to test the method
         DatabaseAdminSQLAdapter adminSQLAdapter = new DatabaseAdminSQLAdapter(connection);
-        DatabaseSQLAdapter sqlAdapter = new DatabaseSQLAdapter(connection);
+
+        // Creates a new stop to add into the database
+        Stop testStop = new Stop(9, "Test Stop 9", "Test Town", 50, 50, true, false);
+
+        // Act
+        adminSQLAdapter.insertStopIntoDatabase(testStop);
+
+        // Assert
+        Assertions.assertEquals(9, testDB.countRowsInTable("stops"));
+        Assertions.assertEquals("Test Stop 9", testDB.getStopName(testStop.getId()));
     }
 
     // Tests if the Stops are updated correctly via the updateStopsInDatabase() method
     @Test
     @DisplayName("Stop is updated successfully")
-    public void updateStopIntoDatabase_StopUpdatedSuccessfully() throws Exception{
+    public void updateStopInDatabase_StopUpdatedSuccessfully() throws Exception{
         // Arrange
         // Creates the SQL Adapters connection to test the method
         DatabaseAdminSQLAdapter adminSQLAdapter = new DatabaseAdminSQLAdapter(connection);
         DatabaseSQLAdapter sqlAdapter = new DatabaseSQLAdapter(connection);
+
+        Stop stop_6 = sqlAdapter.getStopFromDatabaseWhere(6);
+
+        Stop newStop_6 = new Stop(6, "Test Stop 6", "Test Town", 60, 60, true, true);
+
+        // Act
+        adminSQLAdapter.updateStopInDatabase(stop_6, newStop_6);
+
+        // Assert
+        Assertions.assertEquals("Test Stop 6", testDB.getStopName(stop_6.getId()));
     }
 
     // Tests if the Stops are deleted correctly via the deleteStopsInDatabase()
     @Test
     @DisplayName("Stop is deleted successfully")
-    public void deleteStopIntoDatabase_StopDeletedSuccessfully() throws Exception{
+    public void deleteStopInDatabase_StopDeletedSuccessfully() throws Exception{
         // Arrange
         // Creates the SQL Adapters connection to test the method
         DatabaseAdminSQLAdapter adminSQLAdapter = new DatabaseAdminSQLAdapter(connection);
         DatabaseSQLAdapter sqlAdapter = new DatabaseSQLAdapter(connection);
 
         // Uses the getAllStopsFromDatabase() method to get Stop 1 for deleting
-        Stop oldStop = sqlAdapter.getAllStopsFromDatabase().getFirst();
+        Stop stop_1 = sqlAdapter.getAllStopsFromDatabase().getFirst();
 
         // Act
+        // Tries to delete stop 1 inside an expression that catches SQLExceptions
+        // Since stop 1 is already in use by a Route in route_stops, it should cause a Foreign key constraint
         SQLException thrown = Assertions.assertThrows(SQLException.class, () -> {
-            adminSQLAdapter.deleteStopInDatabase(oldStop);
+            adminSQLAdapter.deleteStopInDatabase(stop_1);
         });
 
         // Assert
