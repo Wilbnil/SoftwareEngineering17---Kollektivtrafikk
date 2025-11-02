@@ -66,7 +66,8 @@ public abstract class TestDatabase {
             insertIntoStops(4, "AMFI Borg", "Sarpsborg", 59.2741, 11.0822, 0, 0);
             insertIntoStops(5, "Torsbekken", "Sarpsborg", 59.284, 11.0984, 0, 0);
             insertIntoStops(6, "Sarpsborg bussterminal", "Sarpsborg", 59.283, 11.1071, 0, 0);
-
+            insertIntoStops(7, "Test Stop 7", "Test Town", 50, 50, 1, 1);
+            insertIntoStops(8, "Test Stop 8", "Test Town", 60, 60, 0, 1);
 
             // Inserts data into the "routes" table
             insertIntoRoutes(1, "1", 1, 6);
@@ -185,6 +186,20 @@ public abstract class TestDatabase {
             startEndStops.add(resultSet.getInt(1));
             startEndStops.add(resultSet.getInt(2));
             return startEndStops;
+        }
+    }
+
+    // Returns the name from a specified stop in the database
+    public String getStopName(int stopId) throws Exception {
+        // Creates a SELECT statement that returns the name from a stop with a specified id
+        String sql = "SELECT name FROM stops WHERE id = ?";
+
+        // Creates and runs the statement and returns the name
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, stopId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getString("name");
         }
     }
 }

@@ -121,7 +121,7 @@ public class DatabaseAdminSQLAdapter {
 
             // Executes the query and prints out the number of rows added
             int rowsAdded = insertStatement.executeUpdate();
-            System.out.println(rowsAdded + " Rows added in routes");
+            System.out.println(rowsAdded + " Rows added in stops");
 
         }
     }
@@ -150,7 +150,7 @@ public class DatabaseAdminSQLAdapter {
 
             // Executes the query and prints out the Stop that was updated
             updateStatement.executeUpdate();
-            System.out.println("Route " + stop.getName() + " has been updated");
+            System.out.println("Stop " + stop.getName() + " has been updated");
 
         }
     }
@@ -169,7 +169,7 @@ public class DatabaseAdminSQLAdapter {
 
             // Executes the query and prints out the Stop that was deleted
             deleteStatement.executeUpdate();
-            System.out.println("Route " + stop.getName() + " has been deleted");
+            System.out.println("Stop " + stop.getName() + " has been deleted");
 
         }
     }
