@@ -5,6 +5,7 @@ import org.gruppe17.kollektivtrafikk.model.Stop;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseSQLAdapter {
 
@@ -106,5 +107,33 @@ private static Connection connection;
             // Returns null if the database is unable to connect
             return null;
         }
+    }
+
+    /**
+     * Fetches all stops from the databse.
+     *
+     * @return List of Stop objects
+     * @throws SQLException if databse access fails
+     */
+
+    public List<Stop> getAllStops() throws SQLException {
+        List<Stop> stops = new ArrayList<>();
+        String sql = "SELECT id, name, town, latitude, longitude, roof, accessibility FROM stops;";
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                stops.add(new Stop(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("town"),
+                        rs.getFloat("latitude"),
+                        rs.getFloat("longitude"),
+                        rs.getInt("roof") != 0,
+                        rs.getInt("accessibility") != 0
+                ));
+            }
+        }
+        return stops;
     }
 }

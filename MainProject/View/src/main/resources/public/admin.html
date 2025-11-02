@@ -1,10 +1,90 @@
 <!DOCTYPE html>
+<!--
+admin.html
+Admin interface for managing public transport routes.nAllows the administrator to view all existing routes, add new ones, and delete selected routes.
+Uses JavaScript to communicate with the backend (FrontEndControllerAdmin) through REST API endpoints:
+ - GET /routes        → fetch and display all routes
+ - POST /addRoute     → add a new route (temporarily stored in JSON, not the main database)
+ - DELETE /deleteRoute/:id → remove a route by its ID
+The data updates dynamically without page reload using Fetch API.
+-->
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    input, button { margin: 5px; padding: 5px; }
+    table { border-collapse: collapse; width: 50%; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+  </style>
 </head>
 <body>
-$END$
+  <h2>Admin Panel - Manage Routes</h2>
+
+  <h3>Add Route</h3>
+  <form id="addRouteForm">
+    <input type="text" id="routeName" name="name" placeholder="Route name" required>
+    <button type="submit">Add</button>
+  </form>
+  <h3>Existing Routes</h3>
+  <table id="routesTable">
+    <thead>
+    <tr><th>ID</th><th>Name</th><th>Action</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    //Loads all routes from the server
+    async function loadRoutes() {
+      const response = await fetch('/routes'); //sen GET request to the backend
+      const routes = await response.json(); //convert respone to Json
+      const tbody = document.querySelector('#routesTable tbody'); //Find <tbody> in the table where routes will be displayed
+      tbody.innerHTML = ''; //Clear previos table rows
+
+      //For each route, create a new table row with its data
+      routes.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+                    <td>${r.id}</td>
+                    <td>${r.name}</td>
+                    <td><button onclick="deleteRoute(${r.id})">Delete</button></td>
+                `;
+        tbody.appendChild(tr); //add the new row to the table
+      });
+    }
+
+    // deletes a route whhen the "Delete" button is clicked
+    async function deleteRoute(id) {
+      if (!confirm('Are you sure?')) return; //asking for confirmation
+      await fetch('/deleteRoute/' + id, { method: 'DELETE' });//send delete request
+      loadRoutes();//reload the table after delete command
+    }
+
+    //handle the "Add route" form submission
+    document.getElementById('addRouteForm').addEventListener('submit', async e => {
+      e.preventDefault();//prevent the page from reloading when the form is submitted
+
+      //Get the value entered in the input field with id="routeName"
+      const name = document.getElementById('routeName').value;
+
+      //Send the new route name to the backend to( /addRoute endpoint)
+      await fetch('/addRoute', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'name=' + encodeURIComponent(name) //encode and the form data
+      });
+
+      //clear the input field agfter adding a route
+      document.getElementById('routeName').value = '';
+
+      //reload the updated list of routes
+      loadRoutes();
+    });
+
+    //load all routes when page opens
+    loadRoutes();
+  </script>
 </body>
 </html>

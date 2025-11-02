@@ -2,7 +2,7 @@
 
 <!-- index.html Simple frontend interface for the project. Allows the user to enter "from" and "to" stops,
  shows live suggestions, and sends a POST request to the backend (/search) to get route data. Displays the route, distance
- arrival, and mode of transposrtation (bus number).  Includes local test data (STOPS) for autocomplete functionality.-->
+ arrival, and mode of transportation (bus number).-->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,125 +19,163 @@
             background: white;
             z-index: 1;
         }
-    .suggestion-item {
+        .suggestion-item {
             padding: 5px;
-        cursor: pointer;
-    }
-    .suggestion-item:hover {
-        background-color: #f0f0f0;
-    }
+            cursor: pointer;
+        }
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
     </style>
 </head>
 <body>
-    <h2>Enter Transport Route</h2>
-    <form id="transportForm">
-        <label for="from">From:</label><br>
-        <input type="text" id="from" name="from" required autocomplete="off"><br><br>
-        <label for="to">To:</label><br>
-        <input type="text" id="to" name="to" required autocomplete="off"><br><br>
-        <button type="submit">Submit</button>
-    </form>
-    <div id="output"></div>
+<h2>Enter Transport Route</h2>
+<!--Form for user input: two text fields ("from" and "to") and a submit button to send the search request. -->
+<form id="transportForm">
+    <label for="from">From:</label><br>
+    <input type="text" id="from" name="from" required autocomplete="off"><br><br>
+    <label for="to">To:</label><br>
+    <input type="text" id="to" name="to" required autocomplete="off"><br><br>
+    <button type="submit">Submit</button>
+</form>
+<!-- Area where route results will be displayed -->
+<div id="output"></div>
 
-    <!-- this stop info is just for test -->
- <script>
-     const STOPS = [
-         { name: "Fredrikstad", x: 0.0, y: 0.0 },
-         { name: "Ostfoldhallen", x: 5.0, y: 0.0 },
-         { name: "Greaaker", x: 0.0, y: 3.0 },
-         { name: "Amfi Borg", x: 3.0, y: 3.0 },
-         { name: "Torsbekke", x: 10.0, y: 0.0 },
-     ];
+<script>
+    // Array that will hold all stops fetched from the backend
+    let STOPS = [];
 
-     function showSuggestions(inputId, suggestionsId) {
-         const input = document.getElementById(inputId);
-         const suggestionsDiv = document.getElementById(suggestionsId);
-         const query = input.value.toLowerCase();
+    /**
+     * Fetch the list of stops from the backend API (/api/stops)
+     * and store it in the STOPS array.
+     */
+    async function fetchStops() {
+        try {
+            const response = await fetch('/api/stops');
+            STOPS = await response.json(); // assign list of stops
+        } catch (error) {
+            console.error("Error fetching stops:", error);
+        }
+    }
 
-         suggestionsDiv.innerHTML = '';
-         if (query) {
-             const filteredStops = STOPS.filter(stop =>
-                 stop.name.toLowerCase().includes(query)
-             );
-             filteredStops.forEach(stop => {
-                 const div = document.createElement('div');
-                 div.className = 'suggestion-item';
-                 div.textContent = stop.name;
-                 div.onclick = () => {
-                     input.value = stop.name;
-                     suggestionsDiv.innerHTML = '';
-                 };
-                 suggestionsDiv.appendChild(div);
-             });
-             suggestionsDiv.style.display = filteredStops.length ? 'block' : 'none';
-         } else {
-             suggestionsDiv.style.display = 'none';
-         }
-     }
+    // call fetchStops when page loads
+    fetchStops();
+    /**
+     * Show autocomplete suggestions for either "from" or "to" input fields.
+     * Filters the STOPS array based on user input and displays a dropdown.
+     */
+    function showSuggestions(inputId, suggestionsId) {
+        const input = document.getElementById(inputId);//get the text input fields
+        const suggestionsDiv = document.getElementById(suggestionsId);//get the suggestion box div
+        const query = input.value.toLowerCase();//convert inout to lowercase for matching
 
-     document.addEventListener('click', (event) => {
-         const fromSuggestions = document.getElementById('from-suggestions');
-         const toSuggestions = document.getElementById('to-suggestions');
-         if (!event.target.closest('#transportForm')) {
-             fromSuggestions.style.display = 'none';
-             toSuggestions.style.display = 'none';
-         }
-     });
+        suggestionsDiv.innerHTML = ''; //clear previous suggestions
 
-     <!-- submit form handle-->
-     function handleSubmit(event) {
-         event.preventDefault();
-         const from = document.getElementById("from").value;
-         const to = document.getElementById("to").value;
+        //Only show suggestions if input is not empty
+        if (query) {
+            const filteredStops = STOPS.filter(stop =>
+                stop.name.toLowerCase().includes(query)
+            );
 
-         if (from && to && from !== to) {
-             fetch('/search', {
-                 method: 'POST',
-                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                 body: `from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`
-             })
-                 .then(response => {
-                     if (!response.ok) throw new Error('Network response was not ok');
-                     return response.json();
-                 })
-                 .then(data => {
-                     const formatTime = (datetime) => {
+            //create clickable divs for each matching stop
+            filteredStops.forEach(stop => {
+                const div = document.createElement('div');
+                div.className = 'suggestion-item';
+                div.textContent = stop.name;
+
+                //when suggestion is clicked, fill input and hide list
+                div.onclick = () => {
+                    input.value = stop.name;
+                    suggestionsDiv.innerHTML = '';
+                };
+                suggestionsDiv.appendChild(div);
+            });
+
+            //show or hide dropdown depending on matches
+            suggestionsDiv.style.display = filteredStops.length ? 'block' : 'none';
+        } else {
+            suggestionsDiv.style.display = 'none';
+        }
+    }
+
+    /**
+     * Hide autocomplete suggestions when the user clicks outside the form.
+     */
+
+    document.addEventListener('click', (event) => {
+        const fromSuggestions = document.getElementById('from-suggestions');
+        const toSuggestions = document.getElementById('to-suggestions');
+        if (!event.target.closest('#transportForm')) {
+            fromSuggestions.style.display = 'none';
+            toSuggestions.style.display = 'none';
+        }
+    });
+
+    /**
+     * Handle form submission.
+     * Sends a POST request to /search with "from" and "to" stops.
+     * Displays the route details in the #output div.
+     */
+    function handleSubmit(event) {
+        event.preventDefault();
+        const from = document.getElementById("from").value;
+        const to = document.getElementById("to").value;
+
+        //validates inputs (must be different and not empty)
+        if (from && to && from !== to) {
+            fetch('/search', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: `from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    //helping function to clean up datetime format
+                    const formatTime = (datetime) => {
                         if (!datetime || datetime === "N/A") return "N/A";
                         const parts = datetime.split('T');
                         return parts.length > 1 ? parts[1].substring(0, 5) : datetime;
-
-                     };
-                     document.getElementById('output').innerHTML = `
+                    };
+                    //displays route details returned by backend
+                    document.getElementById('output').innerHTML = `
                         Route: From ${data.route},
                         Distance: ${data.distance.toFixed(2)} km,
                         Departure: ${formatTime(data.departure)},
                         Arrival: ${formatTime(data.arrival)},
                         Mode: ${data.bus || 'N/A'}
                     `;
-                 })
-                 .catch(error => {
-                     console.error('Error:', error);
-                     document.getElementById('output').innerHTML = `Error: ${error.message}`;
-                 });
-         } else {
-             document.getElementById('output').innerHTML = 'Please select different start and destination stops.';
-         }
-     }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('output').innerHTML = `Error: ${error.message}`;
+                });
+        } else {
+            document.getElementById('output').innerHTML = 'Please select different start and destination stops.';
+        }
+    }
 
-     document.getElementById('from').addEventListener('input', () => {
-         showSuggestions('from', 'from-suggestions');
-     });
-     document.getElementById('to').addEventListener('input', () => {
-         showSuggestions('to', 'to-suggestions');
-     });
+    //listen for typing in the "From" input field and show suggestions
+    document.getElementById('from').addEventListener('input', () => {
+        showSuggestions('from', 'from-suggestions');
+    });
+    //listen for typing in the "To" input field and show suggestions
+    document.getElementById('to').addEventListener('input', () => {
+        showSuggestions('to', 'to-suggestions');
+    });
 
-     document.getElementById('transportForm').addEventListener('submit', function(event) {
-         event.preventDefault();
-         handleSubmit(event);
-     });
- </script>
-    <div id="from-suggestions" class="suggestions" style="display: none;"></div>
-    <div id="to-suggestions" class="suggestions" style="display: none;"></div>
+    //listen for form submission and call handleSubmit()
+    document.getElementById('transportForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        handleSubmit(event);
+    });
+</script>
+
+<!-- Div containers where autocomplete suggestions are displayed-->
+<div id="from-suggestions" class="suggestions" style="display: none;"></div>
+<div id="to-suggestions" class="suggestions" style="display: none;"></div>
 
 </body>
 </html>
