@@ -44,6 +44,8 @@ public class FrontEndController {
                 String from = context.formParam("from");
                 String to = context.formParam("to");
                 boolean onlyWithRoof = Boolean.parseBoolean(context.formParam("onlyWithRoof"));
+                boolean onlyDisability = Boolean.parseBoolean(context.formParam("onlyDisability"));
+
 
                 // Return 400 if no parameters
                 if (from == null && to == null) {
@@ -53,7 +55,7 @@ public class FrontEndController {
                 //  Use RouteService to get route
                 RouteService routeService = new RouteServiceImpl();
                 SearchService searchService = new SearchServiceImpl(routeService);
-                Route route = searchService.findRoute(from, to, onlyWithRoof);
+                Route route = searchService.findRoute(from, to, onlyWithRoof, onlyDisability);
                 //  Return 404 if route not found
                 if (route == null) {
                     context.status(404).result("Route not found");

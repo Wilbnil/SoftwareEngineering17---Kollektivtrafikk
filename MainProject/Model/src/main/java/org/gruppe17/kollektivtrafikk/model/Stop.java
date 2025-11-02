@@ -8,6 +8,7 @@ public class Stop {
     private double longitude;
     private boolean roof;
     private boolean accessibility;
+    private boolean disabilityAccess;
 
 //Represents a transport stop with a name and an identifier
 
@@ -25,9 +26,20 @@ public class Stop {
         this.longitude = longitude;
         this.roof = roof;
         this.accessibility = accessibility;
-
-
+        this.disabilityAccess = false;
     }
+
+    public Stop(int id, String name, String town, double latitude, double longitude, boolean roof, boolean accessibility, boolean disabilityAccess) {
+        this.id = id;
+        this.name = name;
+        this.town = town;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.roof = roof;
+        this.accessibility = accessibility;
+        this.disabilityAccess = disabilityAccess;
+    }
+
 
     public int getId() {
         return id;
@@ -83,5 +95,13 @@ public class Stop {
 
     public void setAccessibility(boolean accessibility) {
         this.accessibility = accessibility;
+    }
+
+    public boolean getDisabilityAccess() {
+        return disabilityAccess;
+    }
+
+    public void setDisabilityAccess(boolean disabilityAccess) {
+        this.disabilityAccess = disabilityAccess;
     }
 }

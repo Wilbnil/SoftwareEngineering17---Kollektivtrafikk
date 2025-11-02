@@ -39,6 +39,10 @@
             <input type="checkbox" id="onlyWithRoof" name="onlyWithRoof">
             Show stops with roof
         </label><br><br>
+        <label>
+            <input type="checkbox" id="onlyDisability" name="onlyDisability">
+            Show disability-friendly stops
+        </label><br><br>
         <button type="submit">Submit</button>
     </form>
     <div id="output"></div>
@@ -94,12 +98,13 @@
          const from = document.getElementById("from").value;
          const to = document.getElementById("to").value;
          const onlyWithRoof = document.getElementById("onlyWithRoof").checked;
+         const onlyDisability = document.getElementById("onlyDisability").checked;
 
          if (from && to && from !== to) {
              fetch('/search', {
                  method: 'POST',
                  headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                 body: `from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&onlyWithRoof=${onlyWithRoof}`
+                 body: `from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&onlyWithRoof=${onlyWithRoof}&onlyDisability=${onlyDisability}`
              })
                  .then(response => {
                      if (!response.ok) throw new Error('Network response was not ok');

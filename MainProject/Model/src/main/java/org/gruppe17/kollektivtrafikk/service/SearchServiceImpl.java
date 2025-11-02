@@ -10,12 +10,16 @@ public class SearchServiceImpl implements SearchService{
     }
 
     @Override
-    public Route findRoute(String from, String to, boolean onlyWithRoof) {
+    public Route findRoute(String from, String to, boolean onlyWithRoof, boolean onlyDisability) {
         Route route = routeService.getRoute(from, to);
 
         if (route == null) return null;
         if (onlyWithRoof) {
             route.setStops(route.getStopsWithRoof());
+        }
+
+        if (onlyDisability) {
+            route.setStops(route.getDisabilityStops());
         }
         return route;
     }

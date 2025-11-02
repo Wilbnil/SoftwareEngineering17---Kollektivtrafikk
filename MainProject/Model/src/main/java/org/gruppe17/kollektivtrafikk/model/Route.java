@@ -1,6 +1,7 @@
 package org.gruppe17.kollektivtrafikk.model;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 //Represents a transport route with a list of stops and a transport mode.
@@ -9,7 +10,7 @@ public class Route {
 
     private int id;
     private String name;
-    private ArrayList<Stop> stops;
+    private List<Stop> stops;
     private String mode;
 
     public Route(int id, String name) {
@@ -17,16 +18,16 @@ public class Route {
         this.name = name;
     }
 
-    public Route(int id, String name, ArrayList<Stop> stops) {
+    public Route(int id, String name, List<Stop> stops) {
         this.id = id;
         this.name = name;
-        this.stops = stops;
+        this.stops = new ArrayList<>(stops);
     }
 
-    public Route(int id, String name, ArrayList<Stop> stops, String mode) {
+    public Route(int id, String name, List<Stop> stops, String mode) {
         this.id = id;
         this.name = name;
-        this.stops = stops;
+        this.stops = new ArrayList<>(stops);
         this.mode = mode;
     }
 
@@ -38,7 +39,7 @@ public class Route {
         return name;
     }
 
-    public ArrayList<Stop> getStops() {
+    public List<Stop> getStops() {
         return stops;
     }
 
@@ -46,7 +47,7 @@ public class Route {
         return mode;
     }
 
-    public void setStops(ArrayList<Stop> stops) {
+    public void setStops(List<Stop> stops) {
         this.stops = stops;
     }
 
@@ -64,10 +65,18 @@ public class Route {
         this.id = id;
     }
 
-    public ArrayList<Stop> getStopsWithRoof() {
+    public List<Stop> getStopsWithRoof() {
         if (stops == null) return new ArrayList<>();
         return stops.stream()
                 .filter(Stop::getRoof)
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toList());
     }
+
+    public List<Stop> getDisabilityStops() {
+        if (stops == null) return new ArrayList<>();
+        return stops.stream()
+                .filter(Stop::getDisabilityAccess)
+                .collect(Collectors.toList());
+    }
+
 }
