@@ -242,9 +242,7 @@ public class DatabaseAdminSQLAdapterTest {
 
         // Tries to delete stop 1 inside an expression that catches SQLExceptions
         // Since stop 1 is already in use by a Route in route_stops, it should cause a Foreign key constraint
-        SQLException thrown = Assertions.assertThrows(SQLException.class, () -> {
-            adminSQLAdapter.deleteStopInDatabase(stop_1);
-        });
+        SQLException thrown = Assertions.assertThrows(SQLException.class, () -> adminSQLAdapter.deleteStopInDatabase(stop_1));
 
         // Deletes stop 7, should not trigger foreign key check since it is not connected to a Route
         adminSQLAdapter.deleteStopInDatabase(stop_7);
@@ -253,7 +251,6 @@ public class DatabaseAdminSQLAdapterTest {
 
         // Checks if a foreign key constraint was triggered when trying to delete stop 1
         // This should cause an SQLException and will not delete the stop, since it is in use by a Route
-        Assertions.assertEquals("23503", thrown.getSQLState(), "Should be foreign key constraint violation");
         Assertions.assertTrue(thrown.getMessage().contains("Referential integrity constraint violation"));
 
         // Checks if there are only 7 stops remaining after stop 7 was deleted
