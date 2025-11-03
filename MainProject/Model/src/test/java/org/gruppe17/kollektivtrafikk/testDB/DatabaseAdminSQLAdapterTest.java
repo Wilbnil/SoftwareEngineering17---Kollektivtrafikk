@@ -38,7 +38,7 @@ public class DatabaseAdminSQLAdapterTest {
     @AfterEach
     public void cleanUpTest() throws Exception{
         connection.rollback();
-        // This method is important since the AUTO_INCREMENT will not reset in between test without it
+        // This method is important since the AUTO_INCREMENT will not reset in between test without it, causing foreign key constraints
         testDB.updateAutoIncrement();
     }
 
