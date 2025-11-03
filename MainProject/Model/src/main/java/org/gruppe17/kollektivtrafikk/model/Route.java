@@ -51,12 +51,12 @@ public class Route {
 
     //Return the index of the first stop, or -1 if stops is null or empty
     public Stop getStartStop() {
-        return stops != null && !stops.isEmpty() ? stops.get(0) : null;
+        return stops.get(0);
     }
 
     //Return the index of the last stop, or -1 if stops is null or empty
     public Stop getEndStop() {
-        return stops != null && !stops.isEmpty() ? stops.get(stops.size() -1) : null;
+        return stops.get(stops.size() - 1);
     }
 
     public void setId(int id) {

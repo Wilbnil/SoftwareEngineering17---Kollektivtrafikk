@@ -11,13 +11,10 @@ public class SQLiteDatabase {
     public SQLiteDatabase() {}
 
     // Starts the Database by creating a Connection that other classes can use
-    public void startDB() throws SQLException {
-        try {
+    public Connection startDB() throws SQLException {
             // Creates the connection from the URL
             connection = DriverManager.getConnection(DB_URL);
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
+            return connection;
     }
 
     // Allows other classes to access the connection which is created

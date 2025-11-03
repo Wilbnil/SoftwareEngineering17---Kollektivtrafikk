@@ -1,5 +1,6 @@
 package org.gruppe17.kollektivtrafikk.example;
 
+import org.gruppe17.kollektivtrafikk.db.DatabaseAdminSQLAdapter;
 import org.gruppe17.kollektivtrafikk.db.DatabaseSQLAdapter;
 import org.gruppe17.kollektivtrafikk.db.SQLiteDatabase;
 import org.gruppe17.kollektivtrafikk.model.Route;
@@ -18,7 +19,7 @@ public class TestStops {
 
         DatabaseSQLAdapter sqlAdapter = new DatabaseSQLAdapter(sqLiteDatabase.getConnection());
 
-        ArrayList<Route> test = sqlAdapter.getRoutesFromDatabase(2, 5);
+        ArrayList<Route> test = sqlAdapter.getRoutesFromDatabaseFromTo(2, 5);
 
         for (Route routeX : test) {
             System.out.println("Route ---------------");
