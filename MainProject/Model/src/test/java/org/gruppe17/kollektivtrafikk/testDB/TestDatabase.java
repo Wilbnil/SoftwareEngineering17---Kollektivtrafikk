@@ -58,20 +58,19 @@ public abstract class TestDatabase {
     // Uses the InsertInto methods to add dummy data to the tables
     public void createDummyData() throws Exception{
         try (Statement statement = connection.createStatement()) {
-
             // Inserts data into the "stops" table
-            insertIntoStops(1, "Fredrikstad bussterminal", "Fredrikstad", 59.2139,10.9403,0,0);
-            insertIntoStops(2, "Østfoldhallen", "Fredrikstad", 59.2516, 10.9931, 0, 0);
-            insertIntoStops(3, "Greåker", "Sarpsborg", 59.2661, 11.0349, 0, 0);
-            insertIntoStops(4, "AMFI Borg", "Sarpsborg", 59.2741, 11.0822, 0, 0);
-            insertIntoStops(5, "Torsbekken", "Sarpsborg", 59.284, 11.0984, 0, 0);
-            insertIntoStops(6, "Sarpsborg bussterminal", "Sarpsborg", 59.283, 11.1071, 0, 0);
-            insertIntoStops(7, "Test Stop 7", "Test Town", 50, 50, 1, 1);
-            insertIntoStops(8, "Test Stop 8", "Test Town", 60, 60, 0, 1);
+            insertIntoStops("Fredrikstad bussterminal", "Fredrikstad", 59.2139,10.9403,0,0);
+            insertIntoStops("Østfoldhallen", "Fredrikstad", 59.2516, 10.9931, 0, 0);
+            insertIntoStops("Greåker", "Sarpsborg", 59.2661, 11.0349, 0, 0);
+            insertIntoStops("AMFI Borg", "Sarpsborg", 59.2741, 11.0822, 0, 0);
+            insertIntoStops("Torsbekken", "Sarpsborg", 59.284, 11.0984, 0, 0);
+            insertIntoStops("Sarpsborg bussterminal", "Sarpsborg", 59.283, 11.1071, 0, 0);
+            insertIntoStops("Test Stop 7", "Test Town", 50, 50, 1, 1);
+            insertIntoStops("Test Stop 8", "Test Town", 60, 60, 0, 1);
 
             // Inserts data into the "routes" table
-            insertIntoRoutes(1, "1", 1, 6);
-            insertIntoRoutes(2, "2", 6, 1);
+            insertIntoRoutes("1", 1, 6);
+            insertIntoRoutes("2", 6, 1);
 
             // Inserts data into the "route_stops" table
             insertIntoRouteStops(1, 1, 1);
@@ -89,40 +88,48 @@ public abstract class TestDatabase {
         }
     }
 
+    // Updates the AUTO_INCREMENTs to go back to starting at 1
+    public void updateAutoIncrement() throws Exception {
+        try (Statement statement = connection.createStatement()) {
+            statement.execute("ALTER TABLE stops ALTER COLUMN id RESTART WITH 1;");
+            statement.execute("ALTER TABLE routes ALTER COLUMN id RESTART WITH 1;");
+        }
+    }
+
     // Serves as a blueprint for inserting data into the "routes" table
-    public void insertIntoRoutes(int id, String name, int start_stop, int end_stop)
+    public void insertIntoRoutes(String name, int start_stop, int end_stop)
             throws Exception{
 
         // Creates an INSERT INTO statement for use
-        String sql = "INSERT INTO routes (id, name, start_stop, end_stop) " +
-                "VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO routes (name, start_stop, end_stop) " +
+                "VALUES (?, ?, ?)";
 
         // Places the input parameter values of the method into the statement above
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
-            preparedStatement.setString(2, name);
-            preparedStatement.setInt(3, start_stop);
-            preparedStatement.setInt(4, end_stop);
+            //preparedStatement.setInt(1, id);
+            preparedStatement.setString(1, name);
+            preparedStatement.setInt(2, start_stop);
+            preparedStatement.setInt(3, end_stop);
             preparedStatement.executeUpdate();
         }
     }
 
     // Serves as a blueprint for inserting data into the "stop" table
-    public void insertIntoStops(int id, String name, String town, double latitude, double longitude, int roof, int accessibility) throws Exception{
+    public void insertIntoStops(String name, String town, double latitude, double longitude, int roof, int accessibility) throws Exception{
 
         // Creates an INSERT INTO statement for use
-        String sql = "INSERT INTO stops (id, name, town, latitude, longitude, roof, accessibility) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO stops (name, town, latitude, longitude, roof, accessibility) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
 
         // Places the input parameter values of the method into the statement above
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
-            preparedStatement.setString(2, name);
-            preparedStatement.setString(3, town);
-            preparedStatement.setDouble(4, latitude);
-            preparedStatement.setDouble(5, longitude);
-            preparedStatement.setInt(6, roof);
-            preparedStatement.setInt(7, accessibility);
+            //preparedStatement.setInt(1, id);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, town);
+            preparedStatement.setDouble(3, latitude);
+            preparedStatement.setDouble(4, longitude);
+            preparedStatement.setInt(5, roof);
+            preparedStatement.setInt(6, accessibility);
             preparedStatement.executeUpdate();
         }
     }

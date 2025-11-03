@@ -38,6 +38,8 @@ public class DatabaseAdminSQLAdapterTest {
     @AfterEach
     public void cleanUpTest() throws Exception{
         connection.rollback();
+        // This method is important since the AUTO_INCREMENT will not reset in between test without it
+        testDB.updateAutoIncrement();
     }
 
     // Stops the test database
@@ -258,3 +260,4 @@ public class DatabaseAdminSQLAdapterTest {
         Assertions.assertEquals(7, testDB.countRowsInTable("stops"));
     }
 }
+
