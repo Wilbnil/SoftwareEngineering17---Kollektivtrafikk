@@ -5,6 +5,7 @@ import org.gruppe17.kollektivtrafikk.model.Stop;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseSQLAdapter {
 
