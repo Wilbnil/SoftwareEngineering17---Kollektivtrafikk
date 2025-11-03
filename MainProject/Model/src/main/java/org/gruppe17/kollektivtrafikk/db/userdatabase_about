@@ -1,0 +1,9 @@
+The user database consists of one table: administrators.
+Email and password is saved as text. To safely store passwords, hashing should be used.
+
+There is no data type for handling dates specifically in SQLite.
+Instead an Integer is used in the following format: yyyymmdd
+
+The year is first because the first decimal of an integer cannot be 0,
+which could be the case for months and days, if you want a consistent length.
+
