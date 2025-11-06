@@ -268,4 +268,19 @@ private static Connection connection;
 
         return null;
     }
+
+    // Route Stop Time
+    public static int getRouteStopTime(Route route, Stop Stop) {
+        String routeStopTimeQuery =
+                "SELECT time_from_start FROM route_stop_time " +
+                "WHERE route_id = ? AND stop_id = ?";
+
+        try(PreparedStatement routeStopTimeStatement = connection.prepareStatement(routeStopTimeQuery)) {
+
+
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
 }

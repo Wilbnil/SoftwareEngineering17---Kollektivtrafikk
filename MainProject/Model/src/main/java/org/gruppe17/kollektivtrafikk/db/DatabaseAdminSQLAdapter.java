@@ -69,12 +69,13 @@ public class DatabaseAdminSQLAdapter {
             if(!(compare_1.equals(compare_2))) {
                 deleteRouteStopsInDatabase(route);
                 insertRouteStopsIntoDatabase(newRoute);
+
+
             }
 
             // Executes the query and prints out the Route that was updated
             updateStatement.executeUpdate();
             System.out.println("Route " + route.getName() + " has been updated");
-
         }
     }
 
@@ -84,9 +85,10 @@ public class DatabaseAdminSQLAdapter {
                 "DELETE FROM routes " +
                 "WHERE id = ?;";
 
-        // Deletes all the rows in the route_stops table connected to the deleted route
+        // Deletes all the rows in the route_stops, route_stop_time and timetables tables connected to the deleted route
         // This has to be done first, as it will trigger a foreign key constraint
         deleteRouteStopsInDatabase(route);
+        deleteRouteStopTime(route);
 
         // Creates at statement based on the query and inserts the values based on the parameter Route object
         try(PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
@@ -151,7 +153,6 @@ public class DatabaseAdminSQLAdapter {
             // Executes the query and prints out the Stop that was updated
             updateStatement.executeUpdate();
             System.out.println("Stop " + stop.getName() + " has been updated");
-
         }
     }
 
@@ -174,15 +175,52 @@ public class DatabaseAdminSQLAdapter {
         }
     }
 
+    // Route Stop Time
+    public static void insertRouteStopTime(Route route, Stop stop, int timeFromStart) throws SQLException {
+        // When we insert a new Route, we must add it into the route_stops table
+        String insertRouteStopTimeQuery =
+                "INSERT INTO route_stop_time (route_id, stop_id, time_from_start) " +
+                "VALUES (?, ?, ?);";
+
+        try (PreparedStatement insertRouteStopTimeStatement = connection.prepareStatement(insertRouteStopTimeQuery)) {
+
+            insertRouteStopTimeStatement.setInt(1, route.getId());
+            insertRouteStopTimeStatement.setInt(2, stop.getId());
+            insertRouteStopTimeStatement.setInt(3, timeFromStart);
+
+            int rowsAdded = insertRouteStopTimeStatement.executeUpdate();
+            System.out.println(rowsAdded + " Rows added in route_stop_time");
+
+        }
+    }
+
+    public static void updateRouteStopTime(Route route, Stop stop, int newTimeFromStart) throws SQLException {
+        // Creates a sql-query which updates times in the route_stop_time table
+        String updateRouteStopTimeQuery =
+                "UPDATE route_stop_time " +
+                "SET time_from_start = ? " +
+                "WHERE route_id = ? AND stop_id = ?;";
+
+        try(PreparedStatement updateRouteStopTimeStatement = connection.prepareStatement(updateRouteStopTimeQuery)) {
+            updateRouteStopTimeStatement.setInt(1, newTimeFromStart);
+            updateRouteStopTimeStatement.setInt(2, route.getId());
+            updateRouteStopTimeStatement.setInt(3, stop.getId());
+
+            // Executes the query and prints out the time_from_start that was updated
+            updateRouteStopTimeStatement.executeUpdate();
+            System.out.println("time_from_start for " + stop.getName() + " has been updated");
+        }
+    }
+
     // Route_Stops
     // These are not used as public standalone methods, but are only used by the insert-, update- and delete Route methods in this Class
-    private static void insertRouteStopsIntoDatabase(Route route) throws SQLException{
+    private static void insertRouteStopsIntoDatabase (Route route) throws SQLException {
         // When we insert a new Route, we must add it into the route_stops table
         String insertRouteStopsQuery =
                 "INSERT INTO route_stops (route_id, stop_id, stop_order) " +
                 "VALUES (?, ?, ?);";
 
-        try(PreparedStatement insertRouteStopsStatement = connection.prepareStatement(insertRouteStopsQuery)) {
+        try (PreparedStatement insertRouteStopsStatement = connection.prepareStatement(insertRouteStopsQuery)) {
 
             insertRouteStopsStatement.setInt(1, route.getId());
 
@@ -190,23 +228,22 @@ public class DatabaseAdminSQLAdapter {
 
             for (int i = 0; i < size; i++) {
                 insertRouteStopsStatement.setInt(2, route.getStops().get(i).getId());
-                insertRouteStopsStatement.setInt(3, i+1);
+                insertRouteStopsStatement.setInt(3, i + 1);
 
                 int rowsAdded = insertRouteStopsStatement.executeUpdate();
                 System.out.println(rowsAdded + " Rows added in route_stops");
             }
-
         }
     }
 
-    private static void deleteRouteStopsInDatabase(Route route) throws SQLException{
+    private static void deleteRouteStopsInDatabase (Route route) throws SQLException {
         // When deleting a Route, we must also delete the Route from the route_stops table
         String deleteRouteStopsQuery =
                 "DELETE FROM route_stops " +
                 "WHERE route_id = ?;";
 
         // Creates at statement based on the query and inserts the values based on the parameter Route objects
-        try(PreparedStatement deleteRouteStopsStatement = connection.prepareStatement(deleteRouteStopsQuery)) {
+        try (PreparedStatement deleteRouteStopsStatement = connection.prepareStatement(deleteRouteStopsQuery)) {
             deleteRouteStopsStatement.setInt(1, route.getId());
 
             // Executes the query and prints out the Route that was deleted in route_stops
@@ -216,22 +253,37 @@ public class DatabaseAdminSQLAdapter {
         }
     }
 
-    private static ArrayList<Integer> getStopIdsFromArrayListStop(ArrayList<Stop> stops) {
+    private static void deleteRouteStopTime (Route route) throws SQLException {
+        // When deleting a Route, we must also delete the Route from the route_stops_time table
+        String deleteRouteStopTimeQuery =
+                "DELETE FROM route_stop_time " +
+                        "WHERE route_id = ?;";
+
+        // Creates at statement based on the query and inserts the values based on the parameter Route objects
+        try (PreparedStatement deleteRouteStopTimeStatement = connection.prepareStatement(deleteRouteStopTimeQuery)) {
+            deleteRouteStopTimeStatement.setInt(1, route.getId());
+
+            // Executes the query and prints out the Route that was deleted in route_stop_time
+            deleteRouteStopTimeStatement.executeUpdate();
+            System.out.println("Route id " + route.getId() + " has been deleted from route_stop_time");
+        }
+    }
+
+    private static ArrayList<Integer> getStopIdsFromArrayListStop (ArrayList < Stop > stops) {
         ArrayList<Integer> returnList = new ArrayList<>();
 
-        for(Stop stopX : stops) {
+        for (Stop stopX : stops) {
             returnList.add(stopX.getId());
         }
 
         return returnList;
     }
 
-    private static int returnIntFromBool(boolean bool) {
-        if(bool == true) {
+    private static int returnIntFromBool ( boolean bool){
+        if (bool == true) {
             return 1;
         } else {
             return 0;
         }
     }
-
 }
