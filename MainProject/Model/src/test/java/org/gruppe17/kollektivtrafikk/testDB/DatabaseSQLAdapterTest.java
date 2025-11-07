@@ -1,6 +1,5 @@
 package org.gruppe17.kollektivtrafikk.testDB;
 
-import org.gruppe17.kollektivtrafikk.repository.DatabaseSQLAdapter_OLD;
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.junit.jupiter.api.*;
