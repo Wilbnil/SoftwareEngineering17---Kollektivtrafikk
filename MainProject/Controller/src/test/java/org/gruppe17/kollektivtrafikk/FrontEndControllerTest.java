@@ -1,4 +1,4 @@
-package model;
+package org.gruppe17.kollektivtrafikk;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

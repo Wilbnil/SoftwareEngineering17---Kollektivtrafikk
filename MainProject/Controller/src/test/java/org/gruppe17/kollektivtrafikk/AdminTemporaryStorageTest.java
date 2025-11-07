@@ -1,4 +1,4 @@
-package model;
+package org.gruppe17.kollektivtrafikk;
 
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.utility.AdminTemporaryStorage_OLD;

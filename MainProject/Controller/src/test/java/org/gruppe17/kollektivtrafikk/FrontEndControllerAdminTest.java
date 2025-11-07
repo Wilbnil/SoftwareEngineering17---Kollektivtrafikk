@@ -1,10 +1,9 @@
-package model;
+package org.gruppe17.kollektivtrafikk;
 
 import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
 import org.junit.jupiter.api.Test;
 
-import static java.lang.classfile.Attributes.code;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FrontEndControllerAdminTest {
