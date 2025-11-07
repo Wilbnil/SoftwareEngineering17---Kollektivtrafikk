@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class AdminTemporaryStorage {
+public class AdminTemporaryStorage_OLD {
     private static List<Route> routes = new ArrayList<>();
     private static final String FILE_PATH = "routes.json";
 

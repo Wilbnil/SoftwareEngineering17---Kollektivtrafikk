@@ -1,4 +1,4 @@
-package org.gruppe17.kollektivtrafikk.db;
+package org.gruppe17.kollektivtrafikk.repository;
 
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
@@ -8,11 +8,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class DatabaseAdminSQLAdapter {
+public class DatabaseAdminSQLAdapter_OLD {
 
     private static Connection connection;
 
-    public DatabaseAdminSQLAdapter(Connection connection) {
+    public DatabaseAdminSQLAdapter_OLD(Connection connection) {
         this.connection = connection;
     }
 

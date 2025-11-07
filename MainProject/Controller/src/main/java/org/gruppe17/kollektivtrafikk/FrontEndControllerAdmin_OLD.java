@@ -5,7 +5,7 @@ import io.javalin.http.staticfiles.Location;
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.utility.AdminTemporaryStorage;
 
-public class FrontEndControllerAdmin {
+public class FrontEndControllerAdmin_OLD {
 
     public static void main(String[] args) {
 

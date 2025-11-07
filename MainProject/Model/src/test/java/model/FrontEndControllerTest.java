@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 import org.gruppe17.kollektivtrafikk.model.Route;
-import org.gruppe17.kollektivtrafikk.service.RouteService;
+import org.gruppe17.kollektivtrafikk.service.RouteService_OLD;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
@@ -33,7 +33,7 @@ public class FrontEndControllerTest {
     @Test
     void testSearchReturnsValidJson() throws Exception {
         //Create a stub for RouteService
-        RouteService mockService = new RouteService() {
+        RouteService_OLD mockService = new RouteService_OLD() {
             @Override
             public Route getRoute(String from, String to) {
                 // If the input matches, return a fake route

@@ -1,7 +1,7 @@
 package org.gruppe17.kollektivtrafikk.testDB;
 
-import org.gruppe17.kollektivtrafikk.db.DatabaseAdminSQLAdapter;
-import org.gruppe17.kollektivtrafikk.db.DatabaseSQLAdapter;
+import org.gruppe17.kollektivtrafikk.repository.DatabaseAdminSQLAdapter_OLD;
+import org.gruppe17.kollektivtrafikk.repository.DatabaseSQLAdapter_OLD;
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.junit.jupiter.api.*;
@@ -56,8 +56,8 @@ public class DatabaseAdminSQLAdapterTest {
         // Arrange -------------------------------------------------------------------------
 
         // Creates the SQL Adapters connection to test the method
-        DatabaseAdminSQLAdapter adminSQLAdapter = new DatabaseAdminSQLAdapter(connection);
-        DatabaseSQLAdapter sqlAdapter = new DatabaseSQLAdapter(connection);
+        DatabaseAdminSQLAdapter_OLD adminSQLAdapter = new DatabaseAdminSQLAdapter_OLD(connection);
+        DatabaseSQLAdapter_OLD sqlAdapter = new DatabaseSQLAdapter_OLD(connection);
 
         // Gets all the stops from Route with id "1"
         ArrayList<Stop> stopsFromRoute1 = sqlAdapter.getAllStopsFromDatabaseInRoute(1);
@@ -104,8 +104,8 @@ public class DatabaseAdminSQLAdapterTest {
         // Arrange -------------------------------------------------------------------------
 
         // Creates the SQL Adapters connection to test the method
-        DatabaseAdminSQLAdapter adminSQLAdapter = new DatabaseAdminSQLAdapter(connection);
-        DatabaseSQLAdapter sqlAdapter = new DatabaseSQLAdapter(connection);
+        DatabaseAdminSQLAdapter_OLD adminSQLAdapter = new DatabaseAdminSQLAdapter_OLD(connection);
+        DatabaseSQLAdapter_OLD sqlAdapter = new DatabaseSQLAdapter_OLD(connection);
 
         // Creates an object of Route 1 for updating
         Route oldRoute = sqlAdapter.getRouteFromDatabaseWhere(1);
@@ -146,8 +146,8 @@ public class DatabaseAdminSQLAdapterTest {
         // Arrange -------------------------------------------------------------------------
 
         // Creates the SQL Adapters connection to test the method
-        DatabaseAdminSQLAdapter adminSQLAdapter = new DatabaseAdminSQLAdapter(connection);
-        DatabaseSQLAdapter sqlAdapter = new DatabaseSQLAdapter(connection);
+        DatabaseAdminSQLAdapter_OLD adminSQLAdapter = new DatabaseAdminSQLAdapter_OLD(connection);
+        DatabaseSQLAdapter_OLD sqlAdapter = new DatabaseSQLAdapter_OLD(connection);
 
         // Creates an object of Route 1 for deletion
         Route oldRoute = sqlAdapter.getRouteFromDatabaseWhere(1);
@@ -177,7 +177,7 @@ public class DatabaseAdminSQLAdapterTest {
         // Arrange -------------------------------------------------------------------------
 
         // Creates the SQL Adapters connection to test the method
-        DatabaseAdminSQLAdapter adminSQLAdapter = new DatabaseAdminSQLAdapter(connection);
+        DatabaseAdminSQLAdapter_OLD adminSQLAdapter = new DatabaseAdminSQLAdapter_OLD(connection);
 
         // Creates a new stop to add into the database
         Stop testStop = new Stop(9, "Test Stop 9", "Test Town", 50, 50, true, false);
@@ -205,8 +205,8 @@ public class DatabaseAdminSQLAdapterTest {
         // Arrange -------------------------------------------------------------------------
 
         // Creates the SQL Adapters connection to test the method
-        DatabaseAdminSQLAdapter adminSQLAdapter = new DatabaseAdminSQLAdapter(connection);
-        DatabaseSQLAdapter sqlAdapter = new DatabaseSQLAdapter(connection);
+        DatabaseAdminSQLAdapter_OLD adminSQLAdapter = new DatabaseAdminSQLAdapter_OLD(connection);
+        DatabaseSQLAdapter_OLD sqlAdapter = new DatabaseSQLAdapter_OLD(connection);
 
         // Creates an object of stop 6 which will be updated
         Stop stop_6 = sqlAdapter.getStopFromDatabaseWhere(6);
@@ -233,8 +233,8 @@ public class DatabaseAdminSQLAdapterTest {
         // Arrange -------------------------------------------------------------------------
 
         // Creates the SQL Adapters connection to test the method
-        DatabaseAdminSQLAdapter adminSQLAdapter = new DatabaseAdminSQLAdapter(connection);
-        DatabaseSQLAdapter sqlAdapter = new DatabaseSQLAdapter(connection);
+        DatabaseAdminSQLAdapter_OLD adminSQLAdapter = new DatabaseAdminSQLAdapter_OLD(connection);
+        DatabaseSQLAdapter_OLD sqlAdapter = new DatabaseSQLAdapter_OLD(connection);
 
         // Creates an object from the stop with id 1 and 7
         Stop stop_1 = sqlAdapter.getStopFromDatabaseWhere(1);

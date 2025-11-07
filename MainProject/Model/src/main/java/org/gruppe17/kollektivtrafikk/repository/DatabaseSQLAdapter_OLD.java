@@ -1,18 +1,17 @@
-package org.gruppe17.kollektivtrafikk.db;
+package org.gruppe17.kollektivtrafikk.repository;
 
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
-public class DatabaseSQLAdapter {
+public class DatabaseSQLAdapter_OLD {
 
 private static Connection connection;
 
     // Accepts a Connection when an SQL Adapter object is created
-    public DatabaseSQLAdapter(Connection connection) {
+    public DatabaseSQLAdapter_OLD(Connection connection) {
         this.connection = connection;
     }
 

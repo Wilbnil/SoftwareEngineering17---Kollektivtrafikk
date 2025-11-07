@@ -6,7 +6,7 @@ import org.gruppe17.kollektivtrafikk.model.Stop;
 import java.util.ArrayList;
 
 
-public class RouteServiceImpl implements RouteService {
+public class RouteServiceImpl_OLD implements RouteService_OLD {
 
     private final String[] stops = {"Fredrikstad", "Ostfoldhallen", "Greaaker", "Amfi Borg", "Torsbekke"};
 

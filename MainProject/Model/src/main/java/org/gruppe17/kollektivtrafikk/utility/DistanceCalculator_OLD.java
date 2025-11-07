@@ -3,15 +3,14 @@ package org.gruppe17.kollektivtrafikk.utility;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Duration;
-import org.gruppe17.kollektivtrafikk.model.StopData;
 
 
 // Verktøy klasse for å regne ut lengde og tid.
 // Formålet er å kunne regne ut kortest reisetid og avstand i andre klasser.
 
-public class DistanceCalculator {
+public class DistanceCalculator_OLD {
 
-    private DistanceCalculator() {}
+    private DistanceCalculator_OLD() {}
 
     /**
      *

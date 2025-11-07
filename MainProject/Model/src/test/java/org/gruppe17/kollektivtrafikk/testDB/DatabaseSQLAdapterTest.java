@@ -1,6 +1,6 @@
 package org.gruppe17.kollektivtrafikk.testDB;
 
-import org.gruppe17.kollektivtrafikk.db.DatabaseSQLAdapter;
+import org.gruppe17.kollektivtrafikk.repository.DatabaseSQLAdapter_OLD;
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.junit.jupiter.api.*;
@@ -54,7 +54,7 @@ public class DatabaseSQLAdapterTest {
         // Arrange -------------------------------------------------------------------------
 
         // Creates the SQL Adapters connection to test the method
-        DatabaseSQLAdapter sqlAdapter = new DatabaseSQLAdapter(connection);
+        DatabaseSQLAdapter_OLD sqlAdapter = new DatabaseSQLAdapter_OLD(connection);
 
         // Sets the test to find routes where stop 5 and 2 exists and stop 5 is before stop 2
         int start_stop = 5;
@@ -91,7 +91,7 @@ public class DatabaseSQLAdapterTest {
         // Arrange -------------------------------------------------------------------------
 
         // Creates the SQL Adapters connection to test the method
-        DatabaseSQLAdapter sqlAdapter = new DatabaseSQLAdapter(connection);
+        DatabaseSQLAdapter_OLD sqlAdapter = new DatabaseSQLAdapter_OLD(connection);
 
         // Creates an ArrayList of Routes
         ArrayList<Route> returnedRoutes;
@@ -125,7 +125,7 @@ public class DatabaseSQLAdapterTest {
         // Arrange -------------------------------------------------------------------------
 
         // Creates the SQL Adapters connection to test the method
-        DatabaseSQLAdapter sqlAdapter = new DatabaseSQLAdapter(connection);
+        DatabaseSQLAdapter_OLD sqlAdapter = new DatabaseSQLAdapter_OLD(connection);
 
         // Creates the returnedRoute variable
         Route returnedRoute;
@@ -156,7 +156,7 @@ public class DatabaseSQLAdapterTest {
         // Arrange -------------------------------------------------------------------------
 
         // Creates the SQL Adapters connection to test the method
-        DatabaseSQLAdapter sqlAdapter = new DatabaseSQLAdapter(connection);
+        DatabaseSQLAdapter_OLD sqlAdapter = new DatabaseSQLAdapter_OLD(connection);
 
         // Creates an ArrayList of Stops
         ArrayList<Stop> returnedStops;
@@ -182,7 +182,7 @@ public class DatabaseSQLAdapterTest {
         // Arrange -------------------------------------------------------------------------
 
         // Creates the SQL Adapters connection to test the method
-        DatabaseSQLAdapter sqlAdapter = new DatabaseSQLAdapter(connection);
+        DatabaseSQLAdapter_OLD sqlAdapter = new DatabaseSQLAdapter_OLD(connection);
 
         // Creates an ArrayList of Stops
         ArrayList<Stop> returnedStops;
@@ -208,7 +208,7 @@ public class DatabaseSQLAdapterTest {
         // Arrange -------------------------------------------------------------------------
 
         // Creates the SQL Adapters connection to test the method
-        DatabaseSQLAdapter sqlAdapter = new DatabaseSQLAdapter(connection);
+        DatabaseSQLAdapter_OLD sqlAdapter = new DatabaseSQLAdapter_OLD(connection);
 
         // Creates the returnedStop variable
         Stop returnedStop;

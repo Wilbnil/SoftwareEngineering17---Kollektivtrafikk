@@ -20,7 +20,7 @@ import java.util.*;
  *  - /api/stops  -> returns all stops (for suggestions in the form)
  *  - /search     -> finds a route between two stops and returns details
  */
-public class FrontEndController {
+public class FrontEndController_OLD {
 
     public static void main(String[] args) {
         try {
