@@ -9,5 +9,10 @@
         <module name="MainProject" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Controller" target="23" />
+      <module name="Model" target="23" />
+      <module name="View" target="23" />
+    </bytecodeTargetLevel>
   </component>
 </project>
