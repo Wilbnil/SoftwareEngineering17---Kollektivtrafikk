@@ -281,5 +281,6 @@ private static Connection connection;
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
+        return 0;
     }
 }

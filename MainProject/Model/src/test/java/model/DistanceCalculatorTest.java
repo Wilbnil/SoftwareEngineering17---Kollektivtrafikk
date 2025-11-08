@@ -1,6 +1,6 @@
 package model;
 
-import org.gruppe17.kollektivtrafikk.utility.DistanceCalculator_OLD;
+import org.gruppe17.kollektivtrafikk.utility.DistanceCalculator;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -27,9 +27,9 @@ public class DistanceCalculatorTest {
         LocalDateTime timeTo3 = LocalDateTime.of
                 (LocalDate.of(2025, 11, 4), LocalTime.of(0, 30));
         // Act
-        LocalTime time1 = DistanceCalculator_OLD.calculateTravelTime(timeFrom1, timeTo1);
-        LocalTime time2 = DistanceCalculator_OLD.calculateTravelTime(timeFrom2, timeTo2);
-        LocalTime time3 = DistanceCalculator_OLD.calculateTravelTime(timeFrom3, timeTo3);
+        LocalTime time1 = DistanceCalculator.calculateTravelTime(timeFrom1, timeTo1);
+        LocalTime time2 = DistanceCalculator.calculateTravelTime(timeFrom2, timeTo2);
+        LocalTime time3 = DistanceCalculator.calculateTravelTime(timeFrom3, timeTo3);
 
         // Assert
         assertEquals(LocalTime.of(0, 30), time1);
@@ -48,9 +48,9 @@ public class DistanceCalculatorTest {
         LocalTime timeOnlyTo3 = LocalTime.of(23, 59);
 
         // Act
-        LocalTime timeOnly1 = DistanceCalculator_OLD.calculateTravelTime(timeOnlyFrom1, timeOnlyTo1);
-        LocalTime timeOnly2 = DistanceCalculator_OLD.calculateTravelTime(timeOnlyFrom2, timeOnlyTo2);
-        LocalTime timeOnly3 = DistanceCalculator_OLD.calculateTravelTime(timeOnlyFrom3, timeOnlyTo3);
+        LocalTime timeOnly1 = DistanceCalculator.calculateTravelTime(timeOnlyFrom1, timeOnlyTo1);
+        LocalTime timeOnly2 = DistanceCalculator.calculateTravelTime(timeOnlyFrom2, timeOnlyTo2);
+        LocalTime timeOnly3 = DistanceCalculator.calculateTravelTime(timeOnlyFrom3, timeOnlyTo3);
 
         // Assert
         assertEquals(LocalTime.of(0, 1), timeOnly1);
@@ -75,9 +75,9 @@ public class DistanceCalculatorTest {
         LocalDateTime timeTo3 = LocalDateTime.of
                 (LocalDate.of(2025, 11, 4), LocalTime.of(0, 30));
         // Act
-        LocalTime time1 = DistanceCalculator_OLD.calculateTravelTime(timeTo1, timeFrom1);
-        LocalTime time2 = DistanceCalculator_OLD.calculateTravelTime(timeTo2, timeFrom2);
-        LocalTime time3 = DistanceCalculator_OLD.calculateTravelTime(timeTo3, timeFrom3);
+        LocalTime time1 = DistanceCalculator.calculateTravelTime(timeTo1, timeFrom1);
+        LocalTime time2 = DistanceCalculator.calculateTravelTime(timeTo2, timeFrom2);
+        LocalTime time3 = DistanceCalculator.calculateTravelTime(timeTo3, timeFrom3);
 
         // Assert
         assertEquals(LocalTime.of(23, 30), time1);
@@ -102,12 +102,12 @@ public class DistanceCalculatorTest {
         LocalDateTime timeTo7 = LocalDateTime.of(LocalDate.now(), LocalTime.of(7,0));
 
         // Act
-        LocalTime time4 = DistanceCalculator_OLD.calculateTravelTime(timeFrom4, timeTo4);
-        LocalTime time4Reversed = DistanceCalculator_OLD.calculateTravelTime(timeTo4, timeFrom4);
-        LocalTime time5 = DistanceCalculator_OLD.calculateTravelTime(timeFrom5, timeTo5);
-        LocalTime time6 = DistanceCalculator_OLD.calculateTravelTime(timeFrom6, timeTo6);
-        LocalTime time6Reversed = DistanceCalculator_OLD.calculateTravelTime(timeTo6, timeFrom6);
-        LocalTime time7 = DistanceCalculator_OLD.calculateTravelTime(timeFrom7, timeTo7);
+        LocalTime time4 = DistanceCalculator.calculateTravelTime(timeFrom4, timeTo4);
+        LocalTime time4Reversed = DistanceCalculator.calculateTravelTime(timeTo4, timeFrom4);
+        LocalTime time5 = DistanceCalculator.calculateTravelTime(timeFrom5, timeTo5);
+        LocalTime time6 = DistanceCalculator.calculateTravelTime(timeFrom6, timeTo6);
+        LocalTime time6Reversed = DistanceCalculator.calculateTravelTime(timeTo6, timeFrom6);
+        LocalTime time7 = DistanceCalculator.calculateTravelTime(timeFrom7, timeTo7);
 
         // Assert
         assertEquals(LocalTime.of(0, 0), time4);
@@ -123,7 +123,7 @@ public class DistanceCalculatorTest {
     @Test
     public void testDistanceCalculatorDistance_ReasonableValues() {
         //Act
-        double distance = DistanceCalculator_OLD.getDistance(0.0, 0.0, 3.0, 0.0);
+        double distance = DistanceCalculator.getDistance(0.0, 0.0, 3.0, 0.0);
 
         // Assert
         assertEquals(3, distance);
@@ -133,12 +133,12 @@ public class DistanceCalculatorTest {
     @Test
     public void testDistanceCalculatorDistance_UnexpectedValues() {
         //Act
-        double distance1 = DistanceCalculator_OLD.getDistance(2.0, 0.0, 2.0, 0.0);
-        double distance2 = DistanceCalculator_OLD.getDistance(0.0, 0.0, 0.0, 0.0);
-        double distance3 = DistanceCalculator_OLD.getDistance(0.1, 0.1, 0.1, 0.1);
+        double distance1 = DistanceCalculator.getDistance(2.0, 0.0, 2.0, 0.0);
+        double distance2 = DistanceCalculator.getDistance(0.0, 0.0, 0.0, 0.0);
+        double distance3 = DistanceCalculator.getDistance(0.1, 0.1, 0.1, 0.1);
 
-        double distance4 = DistanceCalculator_OLD.getDistance(4.0, 3.0, 0.0, 0.0);
-        double distance5 = DistanceCalculator_OLD.getDistance(1.0, 10.0, 1.0, 0.0);
+        double distance4 = DistanceCalculator.getDistance(4.0, 3.0, 0.0, 0.0);
+        double distance5 = DistanceCalculator.getDistance(1.0, 10.0, 1.0, 0.0);
 
         // Assert
         // Tomme lengder:
