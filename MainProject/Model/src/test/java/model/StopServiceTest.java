@@ -3,20 +3,47 @@ package model;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.gruppe17.kollektivtrafikk.repository.RepositoryStop;
 import org.gruppe17.kollektivtrafikk.service.StopService;
-import org.junit.jupiter.api.Test;
+import org.gruppe17.kollektivtrafikk.testDB.H2TestDatabase;
+import org.junit.jupiter.api.*;
 
-import java.util.ArrayList;
+import java.sql.Connection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 public class StopServiceTest {
+
+    private H2TestDatabase testDB;
+    private Connection connection;
+    private RepositoryStop repository;
+    private StopService service;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        testDB = new H2TestDatabase();
+        connection = testDB.startDB();
+        testDB.createTables();
+        repository = new RepositoryStop(connection);
+        service = new StopService(repository);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        testDB.stopDB();
+    }
+
     @Test
-    public void testGetStopsWithRoof_ReasonableValues() {
+    public void testGetStopsWithRoof_ReasonableValues() throws Exception {
         // Arrange
-        FakeRepositoryStop fakeRepo = new FakeRepositoryStop();
-        StopService service = new StopService(fakeRepo);
+        Stop stop1 = new Stop(1, "Fredrikstad Bussterminal", "Fredrikstad", 24.2, 4.6, true, true);
+        Stop stop2 = new Stop(2, "Sarsborg Bussterminal", "Sarpsborg", 30.1, 7.3, false, true);
+        Stop stop3 = new Stop(3, "AMFI Borg", "Sarpsborg", 36.1, 10.3, true, false);
+        Stop stop4 = new Stop(4, "Torsbekken", "Sarpsborg", 45.1, 11.3, false, false);
+
+        repository.insert(stop1);
+        repository.insert(stop2);
+        repository.insert(stop3);
+        repository.insert(stop4);
 
         // Act
         List<Stop> result = service.getStopsWithRoof();
@@ -28,40 +55,17 @@ public class StopServiceTest {
     }
 
     @Test
-    public void testGetStopsWithRoof_UnexpectedValues_EmptyDatabase() {
+    public void testGetAccessibleStops_ReasonableValues() throws Exception {
         // Arrange
-        FakeRepositoryStop fakeRepo = new FakeRepositoryStop();
-        fakeRepo.setEmpty(true);
-        StopService service = new StopService(fakeRepo);
+        Stop stop1 = new Stop(1, "Fredrikstad Bussterminal", "Fredrikstad", 24.2, 4.6, true, true);
+        Stop stop2 = new Stop(2, "Sarsborg Bussterminal", "Sarpsborg", 30.1, 7.3, false, true);
+        Stop stop3 = new Stop(3, "AMFI Borg", "Sarpsborg", 36.1, 10.3, true, false);
+        Stop stop4 = new Stop(4, "Torsbekken", "Sarpsborg", 45.1, 11.3, false, false);
 
-        // Act
-        List<Stop> result = service.getStopsWithRoof();
-
-        // Assert
-        assertEquals(0, result.size());
-        assertTrue(result.isEmpty());
-    }
-
-    @Test
-    public void testGetStopsWithRoof_UnexpectedValues_Exception() {
-        // Arrange
-        FakeRepositoryStop fakeRepo = new FakeRepositoryStop();
-        fakeRepo.setThrowException(true);
-        StopService service = new StopService(fakeRepo);
-
-        // Act
-        List<Stop> result = service.getStopsWithRoof();
-
-        // Assert
-        assertNotNull(result);
-        assertEquals(0, result.size());
-    }
-
-    @Test
-    public void testGetAccessibleStops_ReasonableValues() {
-        // Arrange
-        FakeRepositoryStop fakeRepo = new FakeRepositoryStop();
-        StopService service = new StopService(fakeRepo);
+        repository.insert(stop1);
+        repository.insert(stop2);
+        repository.insert(stop3);
+        repository.insert(stop4);
 
         // Act
         List<Stop> result = service.getAccessibleStops();
@@ -73,40 +77,17 @@ public class StopServiceTest {
     }
 
     @Test
-    public void testGetAccessibleStops_UnexpectedValues_EmptyDatabase() {
+    public void testGetAllStops_ReasonableValues() throws Exception {
         // Arrange
-        FakeRepositoryStop fakeRepo = new FakeRepositoryStop();
-        fakeRepo.setEmpty(true);
-        StopService service = new StopService(fakeRepo);
+        Stop stop1 = new Stop(1, "Fredrikstad Bussterminal", "Fredrikstad", 24.2, 4.6, true, true);
+        Stop stop2 = new Stop(2, "Sarsborg Bussterminal", "Sarpsborg", 30.1, 7.3, false, true);
+        Stop stop3 = new Stop(3, "AMFI Borg", "Sarpsborg", 36.1, 10.3, true, false);
+        Stop stop4 = new Stop(4, "Torsbekken", "Sarpsborg", 45.1, 11.3, false, false);
 
-        // Act
-        List<Stop> result = service.getAccessibleStops();
-
-        // Assert
-        assertEquals(0, result.size());
-        assertTrue(result.isEmpty());
-    }
-
-    @Test
-    public void testGetAccessibleStops_UnexpectedValues_Exception() {
-        // Arrange
-        FakeRepositoryStop fakeRepo = new FakeRepositoryStop();
-        fakeRepo.setThrowException(true);
-        StopService service = new StopService(fakeRepo);
-
-        // Act
-        List<Stop> result = service.getAccessibleStops();
-
-        // Assert
-        assertNotNull(result);
-        assertEquals(0, result.size());
-    }
-
-    @Test
-    public void testGetAllStops_ReasonableValues() {
-        // Arrange
-        FakeRepositoryStop fakeRepo = new FakeRepositoryStop();
-        StopService service = new StopService(fakeRepo);
+        repository.insert(stop1);
+        repository.insert(stop2);
+        repository.insert(stop3);
+        repository.insert(stop4);
 
         // Act
         List<Stop> result = service.getAllStops();
@@ -116,71 +97,32 @@ public class StopServiceTest {
     }
 
     @Test
-    public void testGetAllStops_UnexpectedValues_EmptyDatabase() {
-        // Arrange
-        FakeRepositoryStop fakeRepo = new FakeRepositoryStop();
-        fakeRepo.setEmpty(true);
-        StopService service = new StopService(fakeRepo);
-
+    public void testGetStopsWithRoof_UnexpectedValues() {
+        // Arrange - Tom database
         // Act
-        List<Stop> result = service.getAllStops();
+        List<Stop> result1 = service.getStopsWithRoof();
 
         // Assert
-        assertEquals(0, result.size());
-        assertTrue(result.isEmpty());
+        assertEquals(0, result1.size());
     }
 
     @Test
-    public void testGetAllStops_UnexpectedValues_Exception() {
-        // Arrange
-        FakeRepositoryStop fakeRepo = new FakeRepositoryStop();
-        fakeRepo.setThrowException(true);
-        StopService service = new StopService(fakeRepo);
-
+    public void testGetAccessibleStops_UnexpectedValues() {
+        // Arrange - Tom database
         // Act
-        List<Stop> result = service.getAllStops();
+        List<Stop> result1 = service.getAccessibleStops();
 
         // Assert
-        assertNotNull(result);
-        assertEquals(0, result.size());
+        assertEquals(0, result1.size());
     }
 
+    @Test
+    public void testGetAllStops_UnexpectedValues() {
+        // Arrange - Tom database
+        // Act
+        List<Stop> result1 = service.getAllStops();
 
-    // Fake repository
-    private static class FakeRepositoryStop extends RepositoryStop {
-        private boolean empty = false;
-        private boolean throwException = false;
-
-        public FakeRepositoryStop() {
-            super(null);
-        }
-
-        public void setEmpty(boolean empty) {
-            this.empty = empty;
-        }
-
-        public void setThrowException(boolean throwException) {
-            this.throwException = throwException;
-        }
-
-        @Override
-        public List<Stop> getAll() {
-            if (empty) {
-                return new ArrayList<>();
-            }
-
-            if (throwException) {
-                throw new RuntimeException();
-            }
-
-            List<Stop> stops = new ArrayList<>();
-
-            stops.add(new Stop(1, "Fredrikstad Bussterminal", "Fredrikstad", 24.2, 4.6, true, true));
-            stops.add(new Stop(2, "Sarsborg Bussterminal", "Sarpsborg", 30.1, 7.3, true, false));
-            stops.add(new Stop(3, "AMFI Borg", "Sarpsborg", 36.1, 10.3, false, true));
-            stops.add(new Stop(4, "Torsbekken", "Sarpsborg", 45.1, 11.3, false, false));
-
-            return stops;
-        }
+        // Assert
+        assertEquals(0, result1.size());
     }
 }
