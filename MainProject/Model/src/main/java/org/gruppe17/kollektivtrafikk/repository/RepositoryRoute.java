@@ -2,7 +2,7 @@ package org.gruppe17.kollektivtrafikk.repository;
 
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
-import org.gruppe17.kollektivtrafikk.repository.interfaces.RouteRepository_Interface;
+import org.gruppe17.kollektivtrafikk.repository.interfaces.I_RouteRepo;
 import org.gruppe17.kollektivtrafikk.utility.DatabaseUtility;
 
 import java.sql.Connection;
@@ -10,11 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class RouteRepository implements RouteRepository_Interface {
+public class RepositoryRoute implements I_RouteRepo {
 
     private static Connection connection;
 
-    public RouteRepository(Connection connection) {
+    public RepositoryRoute(Connection connection) {
         this.connection = connection;
     }
 

@@ -2,7 +2,7 @@ package org.gruppe17.kollektivtrafikk.repository.interfaces;
 
 import java.util.ArrayList;
 
-public interface Repository_Interface<Object> {
+public interface I_Repo<Object> {
 
     Object getById(int id) throws Exception;
     Object getByName(String name) throws Exception;

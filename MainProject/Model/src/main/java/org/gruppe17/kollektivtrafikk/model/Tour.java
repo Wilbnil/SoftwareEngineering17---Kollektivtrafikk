@@ -9,8 +9,19 @@ public class Tour {
 
     private int routeId;
     private ArrayList<LocalTime> arrivals;
-    private String mode;
+    private String type;
 
+    public int getRouteId() {
+        return routeId;
+    }
+
+    public ArrayList<LocalTime> getArrivals() {
+        return new ArrayList<>(arrivals);
+    }
+
+    public String getType() {
+        return type;
+    }
 
     public LocalTime getDuration() {
         if (arrivals == null || arrivals.size() == 2) return null;

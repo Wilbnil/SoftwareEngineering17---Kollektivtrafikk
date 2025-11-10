@@ -4,9 +4,7 @@ import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.gruppe17.kollektivtrafikk.model.Tour;
 
-import java.sql.SQLException;
-
-public interface TimetableRepository_Interface extends Repository_Interface<Tour> {
+public interface I_TimetableRepo extends I_Repo<Tour> {
     int getRouteStopTime(Route route, Stop stop) throws Exception;
     void insertRouteStopTime(Route route, Stop stop, int timeFromStart) throws Exception;
     void updateRouteStopTime(Route route, Stop stop, int newTimeFromStart) throws Exception;

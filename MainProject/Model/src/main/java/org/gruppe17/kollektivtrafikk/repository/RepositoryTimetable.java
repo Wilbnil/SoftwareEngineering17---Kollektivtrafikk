@@ -3,17 +3,17 @@ package org.gruppe17.kollektivtrafikk.repository;
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.gruppe17.kollektivtrafikk.model.Tour;
-import org.gruppe17.kollektivtrafikk.repository.interfaces.TimetableRepository_Interface;
+import org.gruppe17.kollektivtrafikk.repository.interfaces.I_TimetableRepo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
-public class TimetableRepository implements TimetableRepository_Interface {
+public class RepositoryTimetable implements I_TimetableRepo {
 
     private static Connection connection;
 
-    public TimetableRepository(Connection connection) {
+    public RepositoryTimetable(Connection connection) {
         this.connection = connection;
     }
 

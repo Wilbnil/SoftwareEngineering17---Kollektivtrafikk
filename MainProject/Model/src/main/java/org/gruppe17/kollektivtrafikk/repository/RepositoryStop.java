@@ -1,7 +1,7 @@
 package org.gruppe17.kollektivtrafikk.repository;
 
 import org.gruppe17.kollektivtrafikk.model.Stop;
-import org.gruppe17.kollektivtrafikk.repository.interfaces.StopRepository_Interface;
+import org.gruppe17.kollektivtrafikk.repository.interfaces.I_StopRepo;
 import org.gruppe17.kollektivtrafikk.utility.DatabaseUtility;
 
 import java.sql.Connection;
@@ -9,11 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class StopRepository implements StopRepository_Interface {
+public class RepositoryStop implements I_StopRepo {
 
     private static Connection connection;
 
-    public StopRepository(Connection connection) {
+    public RepositoryStop(Connection connection) {
         this.connection = connection;
     }
 

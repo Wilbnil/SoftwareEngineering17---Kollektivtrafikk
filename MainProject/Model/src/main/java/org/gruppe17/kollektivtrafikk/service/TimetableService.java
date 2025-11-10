@@ -2,18 +2,17 @@ package org.gruppe17.kollektivtrafikk.service;
 
 import java.time.*;
 
-import org.gruppe17.kollektivtrafikk.model.Timetable;
 import org.gruppe17.kollektivtrafikk.repository.DatabaseSQLAdapter_OLD;
-import org.gruppe17.kollektivtrafikk.repository.TimetableRepository;
+import org.gruppe17.kollektivtrafikk.repository.RepositoryTimetable;
 
 import java.util.ArrayList;
 
 
 public class TimetableService {
 
-    private static TimetableRepository repo;
+    private static RepositoryTimetable repo;
 
-    public static void init(TimetableRepository repository) {
+    public static void init(RepositoryTimetable repository) {
         repo = repository;
     }
 

@@ -39,7 +39,7 @@ public class Route {
     }
 
     public ArrayList<Stop> getStops() {
-        return stops;
+        return new ArrayList<>(stops);
     }
 
     public String getType() {
