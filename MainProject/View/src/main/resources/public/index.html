@@ -145,7 +145,7 @@
                         Distance: ${data.distance.toFixed(2)} km,
                         Departure: ${formatTime(data.departure)},
                         Arrival: ${formatTime(data.arrival)},
-                        Mode: ${data.bus || 'N/A'}
+                        Mode: ${data.mode || 'N/A'}
                     `;
                 })
                 .catch(error => {
