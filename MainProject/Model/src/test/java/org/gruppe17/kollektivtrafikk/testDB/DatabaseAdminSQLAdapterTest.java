@@ -1,7 +1,5 @@
 package org.gruppe17.kollektivtrafikk.testDB;
 
-import org.gruppe17.kollektivtrafikk.repository.DatabaseAdminSQLAdapter_OLD;
-import org.gruppe17.kollektivtrafikk.repository.DatabaseSQLAdapter_OLD;
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.junit.jupiter.api.*;
@@ -68,7 +66,7 @@ public class DatabaseAdminSQLAdapterTest {
         testStops.add(stopsFromRoute1.get(5));
 
         // Creates a Route object to add to the test-database
-        Route testRoute = new Route(3, "Test Route", testStops);
+        Route testRoute = new Route(3, "Test Route", testStops, "buss");
 
         // Act -----------------------------------------------------------------------------
 

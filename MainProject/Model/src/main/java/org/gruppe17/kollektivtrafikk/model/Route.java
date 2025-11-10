@@ -9,24 +9,25 @@ public class Route {
     private int id;
     private String name;
     private ArrayList<Stop> stops;
-    private String mode;
+    private String type;
 
-    public Route(int id, String name) {
+    public Route(int id, String name, String type) {
         this.id = id;
         this.name = name;
+        this.type = type;
     }
 
-    public Route(int id, String name, ArrayList<Stop> stops) {
+    public Route(String name, ArrayList<Stop> stops, String type) {
+        this.name = name;
+        this.stops = stops;
+        this.type = type;
+    }
+
+    public Route(int id, String name, ArrayList<Stop> stops, String type) {
         this.id = id;
         this.name = name;
         this.stops = stops;
-    }
-
-    public Route(int id, String name, ArrayList<Stop> stops, String mode) {
-        this.id = id;
-        this.name = name;
-        this.stops = stops;
-        this.mode = mode;
+        this.type = type;
     }
 
     public int getId() {
@@ -41,8 +42,8 @@ public class Route {
         return stops;
     }
 
-    public String getMode() {
-        return mode;
+    public String getType() {
+        return type;
     }
 
     public void setStops(ArrayList<Stop> stops) {

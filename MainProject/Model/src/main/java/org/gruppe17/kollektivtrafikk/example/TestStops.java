@@ -1,6 +1,5 @@
 package org.gruppe17.kollektivtrafikk.example;
 
-import org.gruppe17.kollektivtrafikk.repository.DatabaseSQLAdapter_OLD;
 import org.gruppe17.kollektivtrafikk.db.SQLiteDatabase;
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
