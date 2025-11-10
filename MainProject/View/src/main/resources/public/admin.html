@@ -4,9 +4,8 @@ admin.html
 Admin interface for managing public transport routes.nAllows the administrator to view all existing routes, add new ones, and delete selected routes.
 Uses JavaScript to communicate with the backend (FrontEndControllerAdmin) through REST API endpoints:
  - GET /routes        → fetch and display all routes
- - POST /addRoute     → add a new route (temporarily stored in JSON, not the main database)
- - DELETE /deleteRoute/:id → remove a route by its ID
-The data updates dynamically without page reload using Fetch API.
+ - POST /addRoute     → add a new route to the database
+ - DELETE /deleteRoute/:id → remove a route fromt he db now
 -->
 <html lang="en">
 <head>

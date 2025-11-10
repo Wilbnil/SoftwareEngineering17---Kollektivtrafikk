@@ -8,7 +8,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class AdminTemporaryStorage_OLD {
     private static List<Route> routes = new ArrayList<>();
     private static final String FILE_PATH = "routes.json";
@@ -22,7 +21,11 @@ public class AdminTemporaryStorage_OLD {
         return routes;
     }
 
-    //save routes to Json
+    public static void removeRoute(int id) {
+        routes.removeIf(r -> r.getId() == id);
+        saveToFile();
+    }
+
     private static void saveToFile() {
         try (Writer writer = new FileWriter(FILE_PATH)) {
             new Gson().toJson(routes, writer);
@@ -31,16 +34,16 @@ public class AdminTemporaryStorage_OLD {
         }
     }
 
-    //read routes from Json  when server starts
     public static void loadFromFile() {
         try (Reader reader = new FileReader(FILE_PATH)) {
             routes = new Gson().fromJson(reader, new TypeToken<List<Route>>(){}.getType());
-            if (routes == null) routes = new ArrayList<>();
+            if (routes == null) {
+                routes = new ArrayList<>();
+            }
         } catch (FileNotFoundException e) {
             routes = new ArrayList<>();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }
