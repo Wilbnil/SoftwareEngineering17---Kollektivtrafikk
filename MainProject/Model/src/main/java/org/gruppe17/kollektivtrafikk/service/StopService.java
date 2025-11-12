@@ -27,6 +27,18 @@ public class StopService {
         }
     }
 
+    // Returns a stop by its name
+    public Stop getStopByName(String name) {
+        try {
+            return stopRepository.getByName(name);
+        } catch (Exception e) {
+            // Catches in case anything goes wrong
+            System.err.println(e.getMessage());
+            // Returns null if no stop gets found
+            return null;
+        }
+    }
+
     // Returns a stop by its id
     public Stop getStopById(int id) {
         try {
