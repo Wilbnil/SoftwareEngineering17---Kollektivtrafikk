@@ -5,10 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SQLiteDatabase {
-    public final static String DB_URL = "jdbc:sqlite:MainProject/Model/src/main/java/org/gruppe17/kollektivtrafikk/db/kollektivdatabase.db";
     private Connection connection;
+    private String DB_URL;
 
-    public SQLiteDatabase() {}
+    public SQLiteDatabase(String DB_URL) {
+        this.DB_URL = DB_URL;
+    }
 
     // Starts the Database by creating a Connection that other classes can use
     public Connection startDB() throws SQLException {

@@ -1,16 +1,16 @@
 package org.gruppe17.kollektivtrafikk.service;
 
 import org.gruppe17.kollektivtrafikk.model.Stop;
-import org.gruppe17.kollektivtrafikk.repository.RepositoryStop;
+import org.gruppe17.kollektivtrafikk.repository.StopRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StopService {
-    private RepositoryStop stopRepository;
+    private StopRepository stopRepository;
 
     // Accepts a StopRepository when a StopService object is created
-    public StopService(RepositoryStop stopRepository) {
+    public StopService(StopRepository stopRepository) {
         this.stopRepository = stopRepository;
     }
 

@@ -9,11 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class RepositoryStop implements I_StopRepo {
+public class StopRepository implements I_StopRepo {
 
     private static Connection connection;
 
-    public RepositoryStop(Connection connection) {
+    public StopRepository(Connection connection) {
         this.connection = connection;
     }
 
@@ -120,22 +120,21 @@ public class RepositoryStop implements I_StopRepo {
     public void insert(Stop object) throws Exception {
         // Creates a sql-query which inserts values into the "stops" table
         String sql =
-                "INSERT INTO stops (id, name, town, latitude, longitude, roof, accessibility) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?);";
+                "INSERT INTO stops (name, town, latitude, longitude, roof, accessibility) " +
+                "VALUES (?, ?, ?, ?, ?, ?);";
 
         // Creates at statement based on the query and inserts the values based on the parameter Stop object
         PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, object.getId());
-            statement.setString(2, object.getName());
-            statement.setString(3, object.getTown());
-            statement.setFloat(4, (float) object.getLatitude());
-            statement.setFloat(5, (float) object.getLongitude());
+            statement.setString(1, object.getName());
+            statement.setString(2, object.getTown());
+            statement.setFloat(3, (float) object.getLatitude());
+            statement.setFloat(4, (float) object.getLongitude());
             // Converts the boolean into an int
             DatabaseUtility dbUtil = new DatabaseUtility();
             int roofInt = dbUtil.returnIntFromBool(object.getRoof());
             int accessibilityInt = dbUtil.returnIntFromBool(object.getAccessibility());
-            statement.setInt(6, roofInt);
-            statement.setInt(7, accessibilityInt);
+            statement.setInt(5, roofInt);
+            statement.setInt(6, accessibilityInt);
 
             // Executes the query and prints out the number of rows added
             int rowsAdded = statement.executeUpdate();
