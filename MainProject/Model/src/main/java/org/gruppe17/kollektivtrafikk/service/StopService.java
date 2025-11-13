@@ -27,6 +27,30 @@ public class StopService {
         }
     }
 
+    // Returns a stop by its name
+    public Stop getStopByName(String name) {
+        try {
+            return stopRepository.getByName(name);
+        } catch (Exception e) {
+            // Catches in case anything goes wrong
+            System.err.println(e.getMessage());
+            // Returns null if no stop gets found
+            return null;
+        }
+    }
+
+    // Returns a stop by its id
+    public Stop getStopById(int id) {
+        try {
+            return stopRepository.getById(id);
+        } catch (Exception e) {
+            // Catches in case anything goes wrong
+            System.err.println(e.getMessage());
+            // Returns null if no stop gets found
+            return null;
+        }
+    }
+
     // Returns all stops that has roofs
     public List<Stop> getStopsWithRoof() {
         try {
@@ -73,5 +97,29 @@ public class StopService {
             // Returns an empty ArrayList if unable to connect to the repository
             return new ArrayList<>();
         }
+    }
+
+    // Adds a stop to the database
+    public void addStop(Stop stop, boolean isAdmin) throws Exception {
+        if (!isAdmin) {
+            throw new Exception("You do not have access to add stops.");
+        }
+        stopRepository.insert(stop);
+    }
+
+    // Updates a stop in the database
+    public void updateStop(Stop oldStop, Stop newStop, boolean isAdmin) throws Exception {
+        if (!isAdmin) {
+            throw new Exception("You do not have access to update stops.");
+        }
+        stopRepository.update(oldStop, newStop);
+    }
+
+    // Deletes a stop from the database
+    public void deleteStop(Stop stop, boolean isAdmin) throws Exception {
+        if (!isAdmin) {
+            throw new Exception("You do not have access to delete stops.");
+        }
+        stopRepository.delete(stop);
     }
 }

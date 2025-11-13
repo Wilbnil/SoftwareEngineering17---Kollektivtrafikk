@@ -3,17 +3,37 @@ package model;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.gruppe17.kollektivtrafikk.repository.StopRepository;
 import org.gruppe17.kollektivtrafikk.service.StopService;
-import org.junit.jupiter.api.Test;
+import org.gruppe17.kollektivtrafikk.testDB.H2TestDatabase;
+import org.junit.jupiter.api.*;
 
-import java.util.ArrayList;
+import java.sql.Connection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 public class StopServiceTest {
+
+    private H2TestDatabase testDB;
+    private Connection connection;
+    private RepositoryStop repository;
+    private StopService service;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        testDB = new H2TestDatabase();
+        connection = testDB.startDB();
+        testDB.createTables();
+        repository = new RepositoryStop(connection);
+        service = new StopService(repository);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        testDB.stopDB();
+    }
+
     @Test
-    public void testGetStopsWithRoof_ReasonableValues() {
+    public void testGetStopsWithRoof_ReasonableValues() throws Exception {
         // Arrange
         FakeStopRepository fakeRepo = new FakeStopRepository();
         StopService service = new StopService(fakeRepo);
@@ -28,7 +48,7 @@ public class StopServiceTest {
     }
 
     @Test
-    public void testGetStopsWithRoof_UnexpectedValues_EmptyDatabase() {
+    public void testGetAccessibleStops_ReasonableValues() throws Exception {
         // Arrange
         FakeStopRepository fakeRepo = new FakeStopRepository();
         fakeRepo.setEmpty(true);
@@ -73,7 +93,7 @@ public class StopServiceTest {
     }
 
     @Test
-    public void testGetAccessibleStops_UnexpectedValues_EmptyDatabase() {
+    public void testGetAllStops_ReasonableValues() throws Exception {
         // Arrange
         FakeStopRepository fakeRepo = new FakeStopRepository();
         fakeRepo.setEmpty(true);
@@ -123,11 +143,10 @@ public class StopServiceTest {
         StopService service = new StopService(fakeRepo);
 
         // Act
-        List<Stop> result = service.getAllStops();
+        List<Stop> result1 = service.getStopsWithRoof();
 
         // Assert
-        assertEquals(0, result.size());
-        assertTrue(result.isEmpty());
+        assertEquals(0, result1.size());
     }
 
     @Test
@@ -138,13 +157,17 @@ public class StopServiceTest {
         StopService service = new StopService(fakeRepo);
 
         // Act
-        List<Stop> result = service.getAllStops();
+        List<Stop> result1 = service.getAccessibleStops();
 
         // Assert
-        assertNotNull(result);
-        assertEquals(0, result.size());
+        assertEquals(0, result1.size());
     }
 
+    @Test
+    public void testGetAllStops_UnexpectedValues() {
+        // Arrange - Tom database
+        // Act
+        List<Stop> result1 = service.getAllStops();
 
     // Fake repository
     private static class FakeStopRepository extends StopRepository {
