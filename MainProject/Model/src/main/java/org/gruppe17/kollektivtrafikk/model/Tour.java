@@ -10,7 +10,7 @@ public class Tour {
 
     private int routeId;
     private ArrayList<LocalTime> arrivals;
-    private String type;
+    private String transportType;
     private LocalDate date;
 
     public int getRouteId() {
@@ -25,8 +25,12 @@ public class Tour {
         return new ArrayList<>(arrivals);
     }
 
-    public String getType() {
-        return type;
+    public String getTransportType() {
+        return transportType;
+    }
+
+    public void setTransportType(String transportType) {
+        this.transportType = transportType;
     }
 
     public LocalTime getDuration() {
