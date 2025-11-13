@@ -3,16 +3,16 @@ package org.gruppe17.kollektivtrafikk.service;
 import java.time.*;
 
 import org.gruppe17.kollektivtrafikk.repository.DatabaseSQLAdapter_OLD;
-import org.gruppe17.kollektivtrafikk.repository.RepositoryTimetable;
+import org.gruppe17.kollektivtrafikk.repository.TimetableRepository;
 
 import java.util.ArrayList;
 
 
 public class TimetableService {
 
-    private static RepositoryTimetable repo;
+    private static TimetableRepository repo;
 
-    public  void init(RepositoryTimetable repository) {
+    public static void init(TimetableRepository repository) {
         repo = repository;
     }
 

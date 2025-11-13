@@ -10,11 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class RepositoryRoute implements I_RouteRepo {
+public class RouteRepository implements I_RouteRepo {
 
     private static Connection connection;
 
-    public RepositoryRoute(Connection connection) {
+    public RouteRepository(Connection connection) {
         this.connection = connection;
     }
 
@@ -202,30 +202,28 @@ public class RepositoryRoute implements I_RouteRepo {
         return stops;
     }
 
+    // Use insertRouteStops as well after !!!
     @Override
     public void insert(Route route) throws Exception {
         // Creates a sql-query which inserts values into the "routes" table
         String sql =
-                "INSERT INTO routes (id, name, start_stop, end_stop, type) " +
-                "VALUES (?, ?, ?, ?, ?);";
+                "INSERT INTO routes (name, start_stop, end_stop, type) " +
+                "VALUES (?, ?, ?, ?);";
 
         // Creates at statement based on the query and inserts the values based on the parameter Route object
         PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, route.getId());
-            statement.setString(2, route.getName());
-            statement.setInt(3, route.getStartStop().getId());
-            statement.setInt(4, route.getEndStop().getId());
-            statement.setString(5, route.getType());
+            statement.setString(1, route.getName());
+            statement.setInt(2, route.getStartStop().getId());
+            statement.setInt(3, route.getEndStop().getId());
+            statement.setString(4, route.getType());
 
             // Executes the query and prints out the number of rows added
             int rowsAdded = statement.executeUpdate();
             System.out.println(rowsAdded + " Rows added in routes");
-
-            // Inserts the neccessary data into the route_stops table
-            // This has to be done last, as it will trigger foreing key constraints
-            insertRouteStops(route);
     }
 
+    // Check if the stops changed after the update and if it did, use deleteRouteStops,
+    // deleteRouteStopTime, insertRouteStops and (insertRouteStopTime for the new stops) !!!
     @Override
     public void update(Route object, Route newObject) throws Exception {
         // Creates a sql-query which updates Routes in the "routes" table
@@ -244,36 +242,18 @@ public class RepositoryRoute implements I_RouteRepo {
             // WHERE
             statement.setInt(5, object.getId());
 
-            // Creates two Integer ArrayLists that consists of the ids of the route and the newRoute
-            // This is to allow us to compare the two ArrayLists, since comparing objects will not work
-            DatabaseUtility dbUtil = new DatabaseUtility();
-            ArrayList<Integer> compare_1 = dbUtil.getStopIdsFromStops(newObject.getStops());
-            ArrayList<Integer> compare_2 = dbUtil.getStopIdsFromStops(object.getStops());
-
-            // If the ArrayLists are not equal:
-            // Delete all rows in the route_stops table for the old route
-            // Insert new rows in the route_stops table for the updated route
-            if(!(compare_1.equals(compare_2))) {
-                deleteRouteStops(object);
-                insertRouteStops(newObject);
-            }
-
             // Executes the query and prints out the Route that was updated
             statement.executeUpdate();
             System.out.println("Route " + object.getName() + " has been updated");
     }
 
+    // Use deleteRouteStops, deleteRouteStopTime, deleteTimetable as well first !!!
     @Override
     public void delete(Route object) throws Exception {
         // Creates a sql-query which updates Routes in the "routes" table
         String sql =
                 "DELETE FROM routes " +
                 "WHERE id = ?;";
-
-        // Deletes all the rows in the route_stops, route_stop_time and timetables tables connected to the deleted route
-        // This has to be done first, as it will trigger a foreign key constraint
-        deleteRouteStops(object);
-        deleteRouteStopTime(object);
 
         // Creates at statement based on the query and inserts the values based on the parameter Route object
         PreparedStatement statement = connection.prepareStatement(sql);

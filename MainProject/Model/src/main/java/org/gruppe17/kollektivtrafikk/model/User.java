@@ -17,6 +17,12 @@ public class User {
         this.created_on = created_on;
     }
 
+    public User(String email, String password, LocalDate created_on) {
+        this.email = email;
+        this.password = password;
+        this.created_on = created_on;
+    }
+
     public int getId() {
         return id;
     }
