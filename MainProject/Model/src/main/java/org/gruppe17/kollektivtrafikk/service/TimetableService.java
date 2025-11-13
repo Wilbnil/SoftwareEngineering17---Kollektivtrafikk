@@ -2,6 +2,7 @@ package org.gruppe17.kollektivtrafikk.service;
 
 import java.time.*;
 
+import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Timetable;
 import org.gruppe17.kollektivtrafikk.repository.TimetableRepository;
 
@@ -20,16 +21,16 @@ public class TimetableService {
         return repo.getAll();
     }
 
-    public boolean addTimetable(Timetable timetable) throws Exception {
+    public void addTimetable(Timetable timetable) throws Exception {
         repo.insert(timetable);
     }
 
-    public boolean deleteTimetable(int id) throws Exception {
-        repo.delete(id);
+    public void deleteTimetable(Timetable timetable) throws Exception {
+        repo.delete(timetable);
     }
 
-    public static Timetable getTimetableForRoute(int routeId) throws Exception {
-        return repo.getTimetableForRoute(routeId);
+    public static ArrayList<Timetable> getTimetableForRoute(Route route) throws Exception {
+        return repo.getTimetablesInRoute(route);
     }
 
     public LocalTime getBussArrival() {

@@ -38,7 +38,7 @@ public class RouteService {
         }
     }
 
-    public  List<Route> getRouteBetweenStops(int fromStopId, int toStopId) {
+    public List<Route> getRouteBetweenStops(int fromStopId, int toStopId) {
        try {
            return routeRepository.getAllFromTo(fromStopId, toStopId);
        } catch (Exception e) {
@@ -57,20 +57,18 @@ public class RouteService {
     }
 
     // Adds a route to the database
-    public boolean addRoute(Route route) {
+    public void addRoute(Route route) {
         try {
             routeRepository.insert(route);
             routeRepository.insertRouteStops(route);
             System.out.println("Route added successfully with stops.");
-            return true;
         } catch (Exception e) {
             System.err.println("Error adding route: " + e.getMessage());
-            return false;
         }
     }
 
     //updates a route in databse
-    public boolean updateRoute(Route oldRoute, Route newRoute) {
+    public void updateRoute(Route oldRoute, Route newRoute) {
         DatabaseUtility dbUtil = new DatabaseUtility();
         try {
             if (dbUtil.getStopIdsFromStops(oldRoute.getStops()) == dbUtil.getStopIdsFromStops(newRoute.getStops())) {
@@ -81,15 +79,13 @@ public class RouteService {
             } else {
                 routeRepository.update(oldRoute, newRoute);
             }
-            return true;
         } catch (Exception e) {
             System.err.println("Error updating route: " + e.getMessage());
-            return false;
         }
     }
 
     // Deletes a route from the database
-    public boolean deleteRoute(Route route) {
+    public void deleteRoute(Route route) {
         try {
             routeRepository.deleteRouteStops(route);
             timetableRepository.deleteTimetablesInRoute(route);
@@ -97,10 +93,8 @@ public class RouteService {
 
             routeRepository.delete(route);
             System.out.println("Route deleted successfully");
-            return true;
         } catch (Exception e) {
             System.err.println(e.getMessage());
-            return false;
         }
     }
 }
