@@ -2,7 +2,7 @@ package org.gruppe17.kollektivtrafikk.service;
 
 import java.time.*;
 
-import org.gruppe17.kollektivtrafikk.repository.DatabaseSQLAdapter_OLD;
+import org.gruppe17.kollektivtrafikk.model.Timetable;
 import org.gruppe17.kollektivtrafikk.repository.TimetableRepository;
 
 import java.util.ArrayList;
@@ -12,20 +12,20 @@ public class TimetableService {
 
     private static TimetableRepository repo;
 
-    public static void init(TimetableRepository repository) {
-        repo = repository;
+    public TimetableService(TimetableRepository repository) {
+        this.repo = repository;
     }
 
     public static ArrayList<Timetable> getAllTimetables() throws Exception {
-        return repo.getAllTimetables();
+        return repo.getAll();
     }
 
     public boolean addTimetable(Timetable timetable) throws Exception {
-        repo.insertTimetable(timetable);
+        repo.insert(timetable);
     }
 
     public boolean deleteTimetable(int id) throws Exception {
-        repo.deleteTimetable(id);
+        repo.delete(id);
     }
 
     public static Timetable getTimetableForRoute(int routeId) throws Exception {

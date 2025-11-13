@@ -2,8 +2,8 @@ package org.gruppe17.kollektivtrafikk.service;
 
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
-import org.gruppe17.kollektivtrafikk.repository.RepositoryRoute;
-import org.gruppe17.kollektivtrafikk.repository.RepositoryTimetable;
+import org.gruppe17.kollektivtrafikk.repository.RouteRepository;
+import org.gruppe17.kollektivtrafikk.repository.TimetableRepository;
 import org.gruppe17.kollektivtrafikk.utility.DatabaseUtility;
 import org.gruppe17.kollektivtrafikk.utility.DistanceCalculator;
 
@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RouteService {
-    private RepositoryRoute routeRepository;
-    private RepositoryTimetable timetableRepository;
+    private RouteRepository routeRepository;
+    private TimetableRepository timetableRepository;
 
-    public RouteService(RepositoryRoute routeRepository) {
+    public RouteService(RouteRepository routeRepository) {
         this.routeRepository = routeRepository;
     }
 
