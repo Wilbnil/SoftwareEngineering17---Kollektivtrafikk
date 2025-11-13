@@ -10,13 +10,13 @@ public class Timetable {
     private LocalTime last_time;
     private int time_interval;
 
-    public Timetable(int id, int route_id, String day, LocalTime first_time, LocalTime last_time, int interval) {
+    public Timetable(int id, int route_id, String day_of_week, LocalTime first_time, LocalTime last_time, int time_interval) {
         this.id = id;
         this.route_id = route_id;
-        this.day = day;
+        this.day_of_week = day_of_week;
         this.first_time = first_time;
         this.last_time = last_time;
-        this.interval = interval;
+        this.time_interval = time_interval;
     }
 
     public Timetable(int route_id, String day_of_week, LocalTime first_time, LocalTime last_time, int time_interval) {
