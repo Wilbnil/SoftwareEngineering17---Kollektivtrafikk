@@ -12,7 +12,7 @@ public class TimetableService {
 
     private static RepositoryTimetable repo;
 
-    public static void init(RepositoryTimetable repository) {
+    public  void init(RepositoryTimetable repository) {
         repo = repository;
     }
 
@@ -20,11 +20,11 @@ public class TimetableService {
         return repo.getAllTimetables();
     }
 
-    public static void addTimetable(Timetable timetable) throws Exception {
+    public boolean addTimetable(Timetable timetable) throws Exception {
         repo.insertTimetable(timetable);
     }
 
-    public static void deleteTimetable(int id) throws Exception {
+    public boolean deleteTimetable(int id) throws Exception {
         repo.deleteTimetable(id);
     }
 
