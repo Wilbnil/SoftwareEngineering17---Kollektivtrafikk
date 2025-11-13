@@ -1,4 +1,4 @@
-package org.gruppe17.kollektivtrafikk.controller;
+package org.gruppe17.kollektivtrafikk;
 
 import io.javalin.Javalin;
 
