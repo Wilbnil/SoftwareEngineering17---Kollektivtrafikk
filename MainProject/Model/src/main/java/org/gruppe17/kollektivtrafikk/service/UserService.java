@@ -3,9 +3,7 @@ package org.gruppe17.kollektivtrafikk.service;
 import org.gruppe17.kollektivtrafikk.model.User;
 import org.gruppe17.kollektivtrafikk.repository.UserRepository;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public class UserService {
     private UserRepository userRepository;
@@ -16,7 +14,7 @@ public class UserService {
     }
 
     // Returns all users from the database
-    public List<User> getAllUsers() {
+    public ArrayList<User> getAllUsers() {
         try {
             // Gets all users from the repository
             return userRepository.getAll();
@@ -41,20 +39,10 @@ public class UserService {
     // Returns a user by their email
     public User getUserByEmail(String email) {
         try {
-            return userRepository.getByEmail(email);
+            return userRepository.getByName(email);
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return null;
-        }
-    }
-
-    // Checks if email already exists in the database
-    public boolean emailExists(String email) {
-        try {
-            return userRepository.emailExists(email);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return false;
         }
     }
 
@@ -63,8 +51,10 @@ public class UserService {
         if (!isAdmin) {
             throw new Exception("You do not have access to add users.");
         }
-        if (emailExists(user.getEmail())) {
-            throw new Exception("Email already exists");
+        // Checks if the email already exists
+        User existingUser = userRepository.getByName(user.getEmail());
+        if (existingUser != null) {
+            throw new Exception("Email already exists.");
         }
         userRepository.insert(user);
     }
@@ -84,14 +74,22 @@ public class UserService {
         }
         userRepository.delete(user);
     }
-    
+
     // Login method that checks if email and password is correct, then updates last_login
     public boolean login(String email, String password) {
         try {
-            User user = userRepository.getByEmail(email);
-            
+            User user = userRepository.getByName(email);
+
             if (user.getPassword().equals(password)) {
-                userRepository.updateLastLogin(user.getId());
+                // Creates a new User with an updated last_login
+                User updatedUser = new User(
+                        user.getId(),
+                        user.getEmail(),
+                        user.getPassword(),
+                        java.time.LocalDate.now(),
+                        user.getCreated_on()
+                );
+                userRepository.update(user, updatedUser);
                 return true;
             }
             return false;
@@ -99,5 +97,10 @@ public class UserService {
             System.err.println(e.getMessage());
             return false;
         }
+    }
+
+    // Fake login method that always returns true (Used for testing)
+    public boolean fakeLogin(String email, String password) {
+        return true;
     }
 }

@@ -3,43 +3,22 @@ package model;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.gruppe17.kollektivtrafikk.repository.StopRepository;
 import org.gruppe17.kollektivtrafikk.service.StopService;
-import org.gruppe17.kollektivtrafikk.testDB.H2TestDatabase;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-import java.util.List;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StopServiceTest {
 
-    private H2TestDatabase testDB;
-    private Connection connection;
-    private RepositoryStop repository;
-    private StopService service;
-
-    @BeforeEach
-    public void setUp() throws Exception {
-        testDB = new H2TestDatabase();
-        connection = testDB.startDB();
-        testDB.createTables();
-        repository = new RepositoryStop(connection);
-        service = new StopService(repository);
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-        testDB.stopDB();
-    }
-
     @Test
-    public void testGetStopsWithRoof_ReasonableValues() throws Exception {
+    public void testGetStopsWithRoof_ReasonableValues() {
         // Arrange
         FakeStopRepository fakeRepo = new FakeStopRepository();
         StopService service = new StopService(fakeRepo);
 
         // Act
-        List<Stop> result = service.getStopsWithRoof();
+        ArrayList<Stop> result = service.getStopsWithRoof();
 
         // Assert
         assertEquals(2, result.size());
@@ -48,14 +27,14 @@ public class StopServiceTest {
     }
 
     @Test
-    public void testGetAccessibleStops_ReasonableValues() throws Exception {
+    public void testGetStopsWithRoof_UnexpectedValues_EmptyDatabase() {
         // Arrange
         FakeStopRepository fakeRepo = new FakeStopRepository();
-        fakeRepo.setEmpty(true);
+        fakeRepo.empty = true;
         StopService service = new StopService(fakeRepo);
 
         // Act
-        List<Stop> result = service.getStopsWithRoof();
+        ArrayList<Stop> result = service.getStopsWithRoof();
 
         // Assert
         assertEquals(0, result.size());
@@ -66,11 +45,11 @@ public class StopServiceTest {
     public void testGetStopsWithRoof_UnexpectedValues_Exception() {
         // Arrange
         FakeStopRepository fakeRepo = new FakeStopRepository();
-        fakeRepo.setThrowException(true);
+        fakeRepo.throwError = true;
         StopService service = new StopService(fakeRepo);
 
         // Act
-        List<Stop> result = service.getStopsWithRoof();
+        ArrayList<Stop> result = service.getStopsWithRoof();
 
         // Assert
         assertNotNull(result);
@@ -84,7 +63,7 @@ public class StopServiceTest {
         StopService service = new StopService(fakeRepo);
 
         // Act
-        List<Stop> result = service.getAccessibleStops();
+        ArrayList<Stop> result = service.getAccessibleStops();
 
         // Assert
         assertEquals(2, result.size());
@@ -93,14 +72,14 @@ public class StopServiceTest {
     }
 
     @Test
-    public void testGetAllStops_ReasonableValues() throws Exception {
+    public void testGetAccessibleStops_UnexpectedValues_EmptyDatabase() {
         // Arrange
         FakeStopRepository fakeRepo = new FakeStopRepository();
-        fakeRepo.setEmpty(true);
+        fakeRepo.empty = true;
         StopService service = new StopService(fakeRepo);
 
         // Act
-        List<Stop> result = service.getAccessibleStops();
+        ArrayList<Stop> result = service.getAccessibleStops();
 
         // Assert
         assertEquals(0, result.size());
@@ -111,11 +90,11 @@ public class StopServiceTest {
     public void testGetAccessibleStops_UnexpectedValues_Exception() {
         // Arrange
         FakeStopRepository fakeRepo = new FakeStopRepository();
-        fakeRepo.setThrowException(true);
+        fakeRepo.throwError = true;
         StopService service = new StopService(fakeRepo);
 
         // Act
-        List<Stop> result = service.getAccessibleStops();
+        ArrayList<Stop> result = service.getAccessibleStops();
 
         // Assert
         assertNotNull(result);
@@ -129,7 +108,7 @@ public class StopServiceTest {
         StopService service = new StopService(fakeRepo);
 
         // Act
-        List<Stop> result = service.getAllStops();
+        ArrayList<Stop> result = service.getAllStops();
 
         // Assert
         assertEquals(4, result.size());
@@ -139,70 +118,54 @@ public class StopServiceTest {
     public void testGetAllStops_UnexpectedValues_EmptyDatabase() {
         // Arrange
         FakeStopRepository fakeRepo = new FakeStopRepository();
-        fakeRepo.setEmpty(true);
+        fakeRepo.empty = true;
         StopService service = new StopService(fakeRepo);
 
         // Act
-        List<Stop> result1 = service.getStopsWithRoof();
+        ArrayList<Stop> result = service.getAllStops();
 
         // Assert
-        assertEquals(0, result1.size());
+        assertEquals(0, result.size());
+        assertTrue(result.isEmpty());
     }
 
     @Test
     public void testGetAllStops_UnexpectedValues_Exception() {
         // Arrange
         FakeStopRepository fakeRepo = new FakeStopRepository();
-        fakeRepo.setThrowException(true);
+        fakeRepo.throwError = true;
         StopService service = new StopService(fakeRepo);
 
         // Act
-        List<Stop> result1 = service.getAccessibleStops();
+        ArrayList<Stop> result = service.getAllStops();
 
         // Assert
-        assertEquals(0, result1.size());
+        assertNotNull(result);
+        assertEquals(0, result.size());
     }
 
-    @Test
-    public void testGetAllStops_UnexpectedValues() {
-        // Arrange - Tom database
-        // Act
-        List<Stop> result1 = service.getAllStops();
-
     // Fake repository
-    private static class FakeStopRepository extends StopRepository {
-        private boolean empty = false;
-        private boolean throwException = false;
+    class FakeStopRepository extends StopRepository {
+        public boolean empty = false;
+        public boolean throwError = false;
 
-        public FakeStopRepository() {
+        FakeStopRepository() {
             super(null);
         }
 
-        public void setEmpty(boolean empty) {
-            this.empty = empty;
-        }
-
-        public void setThrowException(boolean throwException) {
-            this.throwException = throwException;
-        }
-
-        @Override
-        public List<Stop> getAll() {
+        public ArrayList<Stop> getAll() throws Exception {
+            if (throwError) {
+                throw new Exception("Error");
+            }
             if (empty) {
                 return new ArrayList<>();
             }
 
-            if (throwException) {
-                throw new RuntimeException();
-            }
-
-            List<Stop> stops = new ArrayList<>();
-
+            ArrayList<Stop> stops = new ArrayList<>();
             stops.add(new Stop(1, "Fredrikstad Bussterminal", "Fredrikstad", 24.2, 4.6, true, true));
-            stops.add(new Stop(2, "Sarsborg Bussterminal", "Sarpsborg", 30.1, 7.3, true, false));
+            stops.add(new Stop(2, "Sarpsborg Bussterminal", "Sarpsborg", 30.1, 7.3, true, false));
             stops.add(new Stop(3, "AMFI Borg", "Sarpsborg", 36.1, 10.3, false, true));
             stops.add(new Stop(4, "Torsbekken", "Sarpsborg", 45.1, 11.3, false, false));
-
             return stops;
         }
     }
