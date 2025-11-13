@@ -92,7 +92,7 @@ public class FrontEndController {
                     context.status(404).result("No timetable for this route.");
                     return;
                 }
-                
+
 
                 // Respond with JSON
                 context.json(Map.of(
