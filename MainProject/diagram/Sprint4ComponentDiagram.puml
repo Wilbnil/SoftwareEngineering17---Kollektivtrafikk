@@ -7,6 +7,8 @@ package "Model" {
     [Route]
     [Stop]
     [Tour]
+    [Timetable]
+    [User]
 
   }
   frame "util" {
@@ -45,12 +47,13 @@ package "Controller" {
 
 package "View" {
     [UserInterface]
-    [AdminInterface?]
+    [AdminInterface]
 }
-'[DatabaseConnection] <--> [Kollektivdatabase]
-'[FrontendController] <--> [UserInterface]
-'[FrontendController] <--> [Modellklasser]
-'user <--> [UserInterface]
+[user] <--> [View]
+[View] <--> [Controller]
+[Controller] <--> [service]
+[repository] <--> [service]
+[repository] <--> [db]
 
 
 @enduml
