@@ -92,9 +92,7 @@ public class FrontEndController {
                     context.status(404).result("No timetable for this route.");
                     return;
                 }
-
-                // for when time is ready ? Map<String, String> times = timetableService.getNextDepartureAndArrival(timetable);
-
+                
 
                 // Respond with JSON
                 context.json(Map.of(
