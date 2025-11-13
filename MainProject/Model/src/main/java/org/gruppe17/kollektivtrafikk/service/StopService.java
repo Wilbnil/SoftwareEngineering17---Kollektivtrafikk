@@ -100,17 +100,26 @@ public class StopService {
     }
 
     // Adds a stop to the database
-    public void addStop(Stop stop) throws Exception {
+    public void addStop(Stop stop, boolean isAdmin) throws Exception {
+        if (!isAdmin) {
+            throw new Exception("You do not have access to add stops.");
+        }
         stopRepository.insert(stop);
     }
 
     // Updates a stop in the database
-    public void updateStop(Stop oldStop, Stop newStop) throws Exception {
+    public void updateStop(Stop oldStop, Stop newStop, boolean isAdmin) throws Exception {
+        if (!isAdmin) {
+            throw new Exception("You do not have access to update stops.");
+        }
         stopRepository.update(oldStop, newStop);
     }
 
     // Deletes a stop from the database
-    public void deleteStop(Stop stop) throws Exception {
+    public void deleteStop(Stop stop, boolean isAdmin) throws Exception {
+        if (!isAdmin) {
+            throw new Exception("You do not have access to delete stops.");
+        }
         stopRepository.delete(stop);
     }
 }

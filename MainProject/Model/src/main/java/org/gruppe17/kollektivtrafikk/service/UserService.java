@@ -3,6 +3,7 @@ package org.gruppe17.kollektivtrafikk.service;
 import org.gruppe17.kollektivtrafikk.model.User;
 import org.gruppe17.kollektivtrafikk.repository.UserRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +59,10 @@ public class UserService {
     }
 
     // Adds a user to the database (checks if the email already exists first)
-    public void addUser(User user) throws Exception {
+    public void addUser(User user, boolean isAdmin) throws Exception {
+        if (!isAdmin) {
+            throw new Exception("You do not have access to add users.");
+        }
         if (emailExists(user.getEmail())) {
             throw new Exception("Email already exists");
         }
@@ -66,12 +70,18 @@ public class UserService {
     }
 
     // Updates a user in the database
-    public void updateUser(User oldUser, User newUser) throws Exception {
+    public void updateUser(User oldUser, User newUser, boolean isAdmin) throws Exception {
+        if (!isAdmin) {
+            throw new Exception("You do not have access to update users.");
+        }
         userRepository.update(oldUser, newUser);
     }
 
     // Deletes a user from the database
-    public void deleteUser(User user) throws Exception {
+    public void deleteUser(User user, boolean isAdmin) throws Exception {
+        if (!isAdmin) {
+            throw new Exception("You do not have access to delete users.");
+        }
         userRepository.delete(user);
     }
     
