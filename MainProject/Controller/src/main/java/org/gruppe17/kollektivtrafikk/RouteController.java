@@ -9,8 +9,6 @@ import org.gruppe17.kollektivtrafikk.service.StopService;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 public class RouteController {
 
     public static void register(Javalin app, RouteService routeService, StopService stopService) {
