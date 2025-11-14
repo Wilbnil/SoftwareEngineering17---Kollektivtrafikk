@@ -4,7 +4,6 @@ import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.gruppe17.kollektivtrafikk.repository.StopRepository;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class StopService {
     private StopRepository stopRepository;
@@ -15,7 +14,7 @@ public class StopService {
     }
 
     // Returns all bus stops from the database
-    public List<Stop> getAllStops() {
+    public ArrayList<Stop> getAllStops() {
         try {
             // Gets all bus stops from the repository
             return stopRepository.getAll();
@@ -52,12 +51,12 @@ public class StopService {
     }
 
     // Returns all stops that has roofs
-    public List<Stop> getStopsWithRoof() {
+    public ArrayList<Stop> getStopsWithRoof() {
         try {
             // Gets all the stops from the repository
-            List<Stop> allStops = stopRepository.getAll();
+            ArrayList<Stop> allStops = stopRepository.getAll();
             // A list that is going to hold the stops that includes a roof
-            List<Stop> stopsWithRoof = new ArrayList<>();
+            ArrayList<Stop> stopsWithRoof = new ArrayList<>();
 
             // Goes through every stop and adds roof included to stopsWithRoof
             for (Stop stop : allStops) {
@@ -76,12 +75,12 @@ public class StopService {
     }
 
     // Returns all stops that is accessible
-    public List<Stop> getAccessibleStops() {
+    public ArrayList<Stop> getAccessibleStops() {
         try {
             // Gets all the stops from the repository
-            List<Stop> allStops = stopRepository.getAll();
+            ArrayList<Stop> allStops = stopRepository.getAll();
             // A list that is going to hold the stops that is accessible
-            List<Stop> accessibleStops = new ArrayList<>();
+            ArrayList<Stop> accessibleStops = new ArrayList<>();
 
             // Goes through every stop and adds accessible stops to accessibleStops
             for (Stop stop : allStops) {
