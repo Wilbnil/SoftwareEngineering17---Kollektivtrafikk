@@ -144,6 +144,62 @@ public class StopServiceTest {
         assertEquals(0, result.size());
     }
 
+    @Test
+    public void testGetStopById_ReasonableValues() {
+        // Arrange
+        FakeStopRepository fakeRepo = new FakeStopRepository();
+        StopService service = new StopService(fakeRepo);
+
+        // Act
+        Stop result = service.getStopById(1);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.getId());
+        assertEquals("Fredrikstad Bussterminal", result.getName());
+    }
+
+    @Test
+    public void testGetStopById_UnexpectedValues() {
+        // Arrange
+        FakeStopRepository fakeRepo = new FakeStopRepository();
+        StopService service = new StopService(fakeRepo);
+
+        // Act
+        Stop resultNonExistent = service.getStopById(67);
+
+        // Assert
+        assertNull(resultNonExistent);
+    }
+
+    @Test
+    public void testGetStopByName_ReasonableValues() {
+        // Arrange
+        FakeStopRepository fakeRepo = new FakeStopRepository();
+        StopService service = new StopService(fakeRepo);
+
+        // Act
+        Stop result = service.getStopByName("AMFI Borg");
+
+        // Assert
+        assertNotNull(result);
+        assertEquals("AMFI Borg", result.getName());
+        assertEquals(3, result.getId());
+    }
+
+    @Test
+    public void testGetStopByName_UnexpectedValues() {
+        // Arrange
+        FakeStopRepository fakeRepo = new FakeStopRepository();
+        StopService service = new StopService(fakeRepo);
+
+        // Act
+        Stop resultNonExistent = service.getStopByName("Nonexistent Stop");
+
+        // Assert
+        assertNull(resultNonExistent);
+    }
+
     // Fake repository
     class FakeStopRepository extends StopRepository {
         public boolean empty = false;
@@ -167,6 +223,40 @@ public class StopServiceTest {
             stops.add(new Stop(3, "AMFI Borg", "Sarpsborg", 36.1, 10.3, false, true));
             stops.add(new Stop(4, "Torsbekken", "Sarpsborg", 45.1, 11.3, false, false));
             return stops;
+        }
+
+        public Stop getById(int id) throws Exception {
+            if (throwError) {
+                throw new Exception("Error");
+            }
+            if (empty) {
+                return null;
+            }
+
+            ArrayList<Stop> stops = getAll();
+            for (Stop stop : stops) {
+                if (stop.getId() == id) {
+                    return stop;
+                }
+            }
+            return null;
+        }
+
+        public Stop getByName(String name) throws Exception {
+            if (throwError) {
+                throw new Exception("Error");
+            }
+            if (empty) {
+                return null;
+            }
+
+            ArrayList<Stop> stops = getAll();
+            for (Stop stop : stops) {
+                if (stop.getName().equals(name)) {
+                    return stop;
+                }
+            }
+            return null;
         }
     }
 }
