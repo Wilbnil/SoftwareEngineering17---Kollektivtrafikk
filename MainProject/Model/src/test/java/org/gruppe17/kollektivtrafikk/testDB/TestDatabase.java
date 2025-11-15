@@ -4,9 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
-
-import static org.h2.util.ParserUtil.FOREIGN;
 
 public abstract class TestDatabase {
 
@@ -75,6 +74,17 @@ public abstract class TestDatabase {
                         "time_from_start INTEGER, " +
                         "PRIMARY KEY(route_id, stop_id), " +
                         "FOREIGN KEY(route_id,stop_id) REFERENCES route_stops(route_id,stop_id));");
+
+            // Creates table "administrators"
+            statement.execute(
+                    "CREATE TABLE administrators (" +
+                        "id INTEGER AUTO_INCREMENT, " +
+                        "email TEXT NOT NULL, " +
+                        "password TEXT, " +
+                        "last_login TEXT, " +
+                        "created_on TEXT NOT NULL, " +
+                        "PRIMARY KEY(id));"
+            );
         }
     }
 
@@ -138,6 +148,11 @@ public abstract class TestDatabase {
             insertIntoRouteStopTime(2, 3, 19);
             insertIntoRouteStopTime(2, 2, 24);
             insertIntoRouteStopTime(2, 1, 25);
+
+            // Inserts data into the "administrators" table
+            insertIntoAdministrators("anton@publictransport.com", null, "2025-10-30", "2025-10-30");
+            insertIntoAdministrators("worker@publictransport.com", null, null, "2025-10-30");
+            insertIntoAdministrators("withPassword@publictransport.com", "password", null, "2020-03-01");
         }
     }
 
@@ -147,6 +162,7 @@ public abstract class TestDatabase {
             statement.execute("ALTER TABLE stops ALTER COLUMN id RESTART WITH 1;");
             statement.execute("ALTER TABLE routes ALTER COLUMN id RESTART WITH 1;");
             statement.execute("ALTER TABLE timetables ALTER COLUMN id RESTART WITH 1;");
+            statement.execute("ALTER TABLE administrators ALTER COLUMN id RESTART WITH 1;");
         }
     }
 
@@ -234,6 +250,22 @@ public abstract class TestDatabase {
         }
     }
 
+    public void insertIntoAdministrators(String email, String password, String last_login, String created_on) throws Exception{
+
+        // Creates an INSERT INTO statement for use
+        String sql = "INSERT INTO administrators (email, password, last_login, created_on) " +
+                "VALUES (?, ?, ?, ?)";
+
+        // Places the input parameter values of the method into the statement above
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, password);
+            preparedStatement.setString(3, last_login);
+            preparedStatement.setString(4, created_on);
+            preparedStatement.executeUpdate();
+        }
+    }
+
     // Test Methods
     // Serves as a blueprint to count the rows in a table specified by the parameter
     public int countRowsInTable(String tableName) throws Exception {
@@ -292,6 +324,56 @@ public abstract class TestDatabase {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             return resultSet.getString("name");
+        }
+    }
+
+    // User database
+    public int getIdFromEmail(String email) throws Exception {
+
+        String sql = "SELECT id FROM administrators WHERE email = ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt("id");
+    }
+
+    public String getEmailFromId(int id) throws Exception {
+
+        String sql = "SELECT email FROM administrators WHERE id = ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getString("email");
+    }
+
+    public String getPasswordFromId(int id) throws Exception {
+
+        String sql = "SELECT password FROM administrators WHERE id = ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getString("password");
+    }
+
+    public LocalDate getLastLoginFromId(int id) throws Exception {
+
+        String sql = "SELECT last_login FROM administrators WHERE id = ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+
+        if(resultSet.getString("last_login") == null) {
+            return null;
+        } else {
+            return LocalDate.parse(resultSet.getString("last_login"));
         }
     }
 }

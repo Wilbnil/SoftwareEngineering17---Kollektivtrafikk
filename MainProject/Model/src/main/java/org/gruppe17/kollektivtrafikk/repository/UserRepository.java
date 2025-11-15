@@ -32,7 +32,15 @@ public class UserRepository implements I_UserRepo {
             int returnId = result.getInt("id");
             String email = result.getString("email");
             String password = result.getString("password");
-            LocalDate last_login = LocalDate.parse(result.getString("last_login"));
+
+            // Since last_login can be null, the .parse method will cause a NullPointerException
+            // last_login is null. Therefore we check if last_login is null before assigning it to the .parse method
+            LocalDate last_login;
+            if(result.getString("last_login") == null) {
+                last_login = null;
+            } else {
+                last_login = LocalDate.parse(result.getString("last_login"));
+            }
             LocalDate created_on = LocalDate.parse(result.getString("created_on"));
             User returnUser = new User(returnId, email, password, last_login, created_on);
 
@@ -54,7 +62,15 @@ public class UserRepository implements I_UserRepo {
             int returnId = result.getInt("id");
             String email = result.getString("email");
             String password = result.getString("password");
-            LocalDate last_login = LocalDate.parse(result.getString("last_login"));
+
+            // Since last_login can be null, the .parse method will cause a NullPointerException when
+            // last_login is null. Therefore we check if last_login is null before assigning it to the .parse method
+            LocalDate last_login;
+            if(result.getString("last_login") == null) {
+                last_login = null;
+            } else {
+                last_login = LocalDate.parse(result.getString("last_login"));
+            }
             LocalDate created_on = LocalDate.parse(result.getString("created_on"));
             User returnUser = new User(returnId, email, password, last_login, created_on);
 
@@ -75,7 +91,15 @@ public class UserRepository implements I_UserRepo {
             int returnId = result.getInt("id");
             String email = result.getString("email");
             String password = result.getString("password");
-            LocalDate last_login = LocalDate.parse(result.getString("last_login"));
+
+            // Since last_login can be null, the .parse method will cause a NullPointerException when
+            // last_login is null. Therefore we check if last_login is null before assigning it to the .parse method
+            LocalDate last_login;
+            if(result.getString("last_login") == null) {
+                last_login = null;
+            } else {
+                last_login = LocalDate.parse(result.getString("last_login"));
+            }
             LocalDate created_on = LocalDate.parse(result.getString("created_on"));
             returnUsers.add(new User(returnId, email, password, last_login, created_on));
         }
@@ -110,7 +134,12 @@ public class UserRepository implements I_UserRepo {
 
             statement.setString(1, newObject.getEmail());
             statement.setString(2, newObject.getPassword());
-            statement.setString(3, newObject.getLast_login().toString());
+
+            if(newObject.getLast_login() == null) {
+                statement.setString(3, null);
+            } else {
+                statement.setString(3, newObject.getLast_login().toString());
+            }
             // WHERE
             statement.setInt(4, object.getId());
 

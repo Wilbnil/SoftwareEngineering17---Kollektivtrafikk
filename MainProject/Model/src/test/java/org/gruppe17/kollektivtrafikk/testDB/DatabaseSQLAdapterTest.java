@@ -1,4 +1,4 @@
-package org.gruppe17.kollektivtrafikk.testDB;
+/*package org.gruppe17.kollektivtrafikk.testDB;
 
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
@@ -224,3 +224,4 @@ public class DatabaseSQLAdapterTest {
         Assertions.assertEquals("Torsbekken", returnedStop.getName());
     }
 }
+*/

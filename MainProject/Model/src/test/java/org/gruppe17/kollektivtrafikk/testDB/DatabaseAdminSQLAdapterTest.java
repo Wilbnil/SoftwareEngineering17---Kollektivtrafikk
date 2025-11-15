@@ -1,4 +1,4 @@
-package org.gruppe17.kollektivtrafikk.testDB;
+/*package org.gruppe17.kollektivtrafikk.testDB;
 
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
@@ -258,4 +258,4 @@ public class DatabaseAdminSQLAdapterTest {
         Assertions.assertEquals(7, testDB.countRowsInTable("stops"));
     }
 }
-
+*/

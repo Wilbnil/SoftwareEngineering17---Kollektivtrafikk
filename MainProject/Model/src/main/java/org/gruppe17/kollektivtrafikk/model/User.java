@@ -23,6 +23,13 @@ public class User {
         this.created_on = created_on;
     }
 
+    public User(String email, String password, LocalDate last_login, LocalDate created_on) {
+        this.email = email;
+        this.password = password;
+        this.last_login = last_login;
+        this.created_on = created_on;
+    }
+
     public int getId() {
         return id;
     }
