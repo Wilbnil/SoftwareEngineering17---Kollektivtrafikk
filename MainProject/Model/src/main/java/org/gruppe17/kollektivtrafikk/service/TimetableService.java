@@ -4,6 +4,9 @@ import java.time.*;
 
 import org.gruppe17.kollektivtrafikk.repository.TimetableRepository;
 import org.gruppe17.kollektivtrafikk.model.Timetable;
+import org.gruppe17.kollektivtrafikk.model.Stop;
+import org.gruppe17.kollektivtrafikk.model.Route;
+import org.gruppe17.kollektivtrafikk.utility.DistanceCalculator;
 
 import java.util.ArrayList;
 
@@ -87,5 +90,22 @@ public class TimetableService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    } 
+    }
+
+    // calculates the time between two stops
+    public int timeBetweenStops (Route route, Stop stopA, Stop stopB) {
+        try {
+            // minutes from and to
+            int minutesFrom = timetableRepository.getRouteStopTime(route, stopA);
+            int minutesTo = timetableRepository.getRouteStopTime(route, stopB);
+            
+            int timeBetweenStops = (minutesTo - minutesFrom);
+
+            return timeBetweenStops;
+        
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }
