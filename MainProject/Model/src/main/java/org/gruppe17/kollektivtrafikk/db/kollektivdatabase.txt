@@ -1,0 +1,50 @@
+Denne databasen beskriver et forenklet kollektivtransportsystem som består
+av busser og tog, deres stoppesteder, ruter, avgangstider og reisetider.
+Databasen består av fem hovedtabeller: stops, routes, timetables, route_stop og route_stop_time.
+
+Tabeller
+
+1. stops
+Inneholder alle fysiske transportstopp, som bussholdeplasser, bussterminaler og togstasjoner.
+
+stop_id - unik ID for stoppet
+name - navn på stoppet
+town - navn på by
+latitude, longitude - gps koordianter
+roof - boolean hvis det finnes et tak
+accessibility - boolean hvis det er tilgjengelig for rullestol
+
+2. routes
+Representerer en rute, som en busslinje eller toglinje.
+
+route_id - unik ID for ruten
+name - navn på ruten
+start_stop, end_stop - foreign key som refererer til stop_id
+type - transportmiddel: buss eller tog
+
+3. timetables
+Representerer avgangstider for hver rute basert på ukedag.
+Refererer til avganger fra rutens startstopp.
+
+timetable_id - unik ID for tid tabellen
+route_id - foreign key som refererer til route_id
+day_of_week - ukedag
+first_time - tid for første avgang
+last_time - tid for siste avgang
+time_interval - minutter mellom avganger
+
+4. route_stops
+koblingstabell mellom routes og stops som inneholder rekkefølge av stopp på en rute.
+
+route_id - ruten
+stop_id - stopp på ruten
+stop_order - rekkefølgen stoppet ligger i
+
+5. route_stop_time
+Inneholder reisetid i minutter fra rutens start till hvert stopp.
+Brukes for å beregne ankomsttidene ut fra avgangstidene i timetables.
+
+route_stop_time_id - unik ID for route_stop_time tabellen
+route_id - ruten
+stop_id - stoppet det gjelder
+time_from_start - minutter fra første stopp
