@@ -1,0 +1,33 @@
+@startuml
+
+actor user
+together {
+    package "Model" #LightYellow {
+      frame "model" #Pink {
+      }
+      frame "util" #Lavender {
+      }
+      frame "service" #LightGreen {
+      }
+      frame "repository" #SandyBrown{
+      }
+      database "SQLite" #LightCyan {
+      }
+    }
+}
+
+package "Controller" #LightSkyBlue {
+    [controllers]
+}
+
+package "View" #Tomato {
+    [views]
+
+}
+[user] <--> [View]
+[View] <--> [Controller]
+ [Controller] <--> [service]
+ [service] <--> [repository]
+ [repository] <--> [SQLite]
+
+@enduml
