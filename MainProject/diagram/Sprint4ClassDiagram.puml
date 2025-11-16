@@ -1,0 +1,206 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+' Applikasjon
+class Application {
+    + main()
+}
+
+' Controllers
+package "Controllers" #LightBlue {
+    class StopController
+    class RouteController
+    class TourController
+    class UserController
+}
+
+' Services
+package "Services" #LightGreen {
+    class StopService {
+        + getStopsWithRoof() : ArrayList<Stop>
+        + getAccessibleStops() : ArrayList<Stop>
+    }
+
+    class RouteService {
+        + calculateDistanceBetweenStops() : double
+        + getAllRoutes() : ArrayList<Route>
+        + updateRoute() : void
+        + deleteRoute() : void
+    }
+
+    class TimetableService {
+        + getSubscribedTour() : LocalTime
+        + notification() : void
+    }
+
+    class UserService {
+        + addUser() : void
+        + login() : boolean
+    }
+}
+
+' Repos
+package "Repositories" #LightYellow {
+    class StopRepository {
+        + getById() : Stop
+        + getByName() : Stop
+        + getAll() : ArrayList<Stop>
+        + insert() : void
+        + update() : void
+        + delete() : void
+    }
+
+    class RouteRepository {
+        + getById() : Route
+        + getByName() : Route
+        + getAll() : ArrayList<Route>
+        + getAllFromTo() : Arraylist<Route>
+        + getAllStopsInRoute() : ArrayList<Stop>
+        + insert() : void
+        + update() : void
+        + delete() : void
+        + insertRouteStops() : void
+        + deleteRouteStops() : void
+    }
+
+    class TimetableRepository {
+        + getRouteStopTime() : int
+        + insertRouteStopTime() : void
+        + updateRouteStopTime() : void
+        + deleteRouteStopTime() : void
+        + getById() : Timetable
+        + getTimetableRouteDay() : Timetable
+        + getAll() : ArrayList<Timetable>
+        + getTimetablesInRoute() : ArrayList<Timetable>
+        + insert() : void
+        + update() : void
+        + delete() : void
+        + deleteTimetablesInRoute() : void
+    }
+
+    class UserRepository {
+        + getById() : User
+        + getByName() : User
+        + getAll() : ArrayList<User>
+        + insert() : void
+        + update() : void
+        + delete() : void
+    }
+}
+
+' Models
+package "Models" #LightPink {
+    class Stop {
+        - id : int
+        - name : String
+        - town : String
+        - latitude : double
+        - longitude : double
+        - roof : boolean
+        - accessibility : boolean
+    }
+
+    class Route {
+        - id : int
+        - name : String
+        - stops : ArrayList<Stop>
+        - type : String
+    }
+
+    class Timetable {
+        - id : int
+        - route_id : int
+        - day_of_week : String
+        - first_time : LocalTime
+        - last_time : LocalTime
+        - time_interval : int
+    }
+
+    class Tour {
+        - routeId : int
+        - arrivals : ArrayList<LocalTime>
+        - transportType : String
+        - date : LocalDate
+    }
+
+    class User {
+        - id : int
+        - email : String
+        - password : String
+        - last_login : LocalDate
+        - created_on : LocalDate
+    }
+}
+
+' Database
+package "Database" #LightCyan {
+    class SQLiteDatabase {
+        + startDB() : Connection
+        + getConnection() : Connection
+        + stopDB() : void
+    }
+
+    class DB_URL {
+        + kollektiv_DB_URL
+        + user_DB_URL
+    }
+}
+
+' Utility
+package "Utility" #LightGrey {
+    class DatabaseUtility {
+        + getStopIdsFromStops() : ArrayList<Integer>
+        + returnIntFromBool() : int
+    }
+
+    class DistanceCalculator {
+        + getDistance() : double
+        + calculateTravelTime() : LocalTime
+    }
+}
+
+' Koblinger
+
+' Application koblinger
+Application ..> SQLiteDatabase
+Application ..> StopController
+Application ..> RouteController
+Application ..> TourController
+Application ..> UserController
+
+' Controllers -> Services
+StopController --> StopService
+RouteController --> RouteService
+TourController --> TimetableService
+UserController --> UserService
+
+' Service -> Repository
+StopService --> StopRepository
+RouteService --> RouteRepository
+TimetableService --> TimetableRepository
+UserService --> UserRepository
+
+StopRepository .up.> SQLiteDatabase
+RouteRepository .up.> SQLiteDatabase
+TimetableRepository .up.> SQLiteDatabase
+UserRepository .up.> SQLiteDatabase
+
+' Repositories -> Models
+StopRepository --> Stop
+RouteRepository --> Route
+TimetableRepository --> Timetable
+UserRepository --> User
+
+' Model koblinger
+Route o-- Stop
+Tour ..> Route
+
+' Utility koblinger
+RouteService ..> DistanceCalculator
+RouteService ..> DatabaseUtility
+StopRepository ..> DatabaseUtility
+DatabaseUtility ..> Stop
+
+SQLiteDatabase ..> DB_URL
+
+@enduml
