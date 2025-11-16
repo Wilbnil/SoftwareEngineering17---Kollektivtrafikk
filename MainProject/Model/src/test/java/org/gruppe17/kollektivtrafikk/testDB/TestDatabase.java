@@ -1,10 +1,14 @@
 package org.gruppe17.kollektivtrafikk.testDB;
 
+import org.gruppe17.kollektivtrafikk.model.Route;
+import org.gruppe17.kollektivtrafikk.model.Stop;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public abstract class TestDatabase {
@@ -116,7 +120,6 @@ public abstract class TestDatabase {
             insertIntoRoutes("630", 1, 7, "buss");
             insertIntoRoutes("RE20", 15, 8, "tog");
 
-
             // Inserts data into the "route_stops" table
             insertIntoRouteStops(1, 1, 1);
             insertIntoRouteStops(1, 2, 2);
@@ -146,7 +149,6 @@ public abstract class TestDatabase {
             insertIntoRouteStops(4, 9, 7);
             insertIntoRouteStops(4, 8, 8);
 
-
             // Inserts data into the "timetables" table
             insertIntoTimetables(1, "monday", "05:30", "00:25", 10);
             insertIntoTimetables(1, "tuesday", "05:30", "00:25", 10);
@@ -157,11 +159,11 @@ public abstract class TestDatabase {
             insertIntoTimetables(1, "sunday", "09:30", "23:55", 30);
             insertIntoTimetables(2, "monday", "05:30", "00:25", 10);
             insertIntoTimetables(2, "tuesday", "05:30", "00:25", 10);
-            insertIntoTimetables( 2, "wednesday", "05:30", "00:25", 10);
-            insertIntoTimetables( 2, "thursday", "05:30", "00:25", 10);
-            insertIntoTimetables( 2, "friday", "05:30", "00:25", 10);
-            insertIntoTimetables( 2, "saturday", "07:45", "00:25", 15);
-            insertIntoTimetables( 2, "sunday", "09:30", "23:55", 30);
+            insertIntoTimetables(2, "wednesday", "05:30", "00:25", 10);
+            insertIntoTimetables(2, "thursday", "05:30", "00:25", 10);
+            insertIntoTimetables(2, "friday", "05:30", "00:25", 10);
+            insertIntoTimetables(2, "saturday", "07:45", "00:25", 15);
+            insertIntoTimetables(2, "sunday", "09:30", "23:55", 30);
             insertIntoTimetables(4, "monday", "06:11", "00:22" , 60);
             insertIntoTimetables(4, "tuesday" , "06:11", "00:22", 60);
             insertIntoTimetables(4, "wednesday", "06:11", "00:22", 60);
@@ -267,8 +269,9 @@ public abstract class TestDatabase {
     public void insertIntoTimetables(int route_id, String day_of_week, String first_time, String last_time, int time_interval) throws Exception {
 
         // Creates an INSERT INTO statement for use
-        String sql = "INSERT INTO timetables (route_id, day_of_week, first_time, last_time, time_interval) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String sql =
+                "INSERT INTO timetables (route_id, day_of_week, first_time, last_time, time_interval) " +
+                "VALUES (?, ?, ?, ?, ?);";
 
         // Places the input parameter values of the method into the statement above
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -277,6 +280,7 @@ public abstract class TestDatabase {
             preparedStatement.setString(3, first_time);
             preparedStatement.setString(4, last_time);
             preparedStatement.setInt(5, time_interval);
+            preparedStatement.executeUpdate();
         }
     }
 
@@ -291,6 +295,7 @@ public abstract class TestDatabase {
             preparedStatement.setInt(1, route_id);
             preparedStatement.setInt(2, stop_id);
             preparedStatement.setInt(3, time_from_start);
+            preparedStatement.executeUpdate();
         }
     }
 
@@ -371,7 +376,6 @@ public abstract class TestDatabase {
         }
     }
 
-    // User database
     public int getIdFromEmail(String email) throws Exception {
 
         String sql = "SELECT id FROM administrators WHERE email = ?";
@@ -383,6 +387,41 @@ public abstract class TestDatabase {
             return resultSet.getInt("id");
     }
 
+    public String getDayOfWeekFromId(int id) throws Exception {
+
+        String sql = "SELECT day_of_week FROM timetables WHERE id = ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getString("day_of_week");
+    }
+
+    public LocalTime getFirstTimeFromId(int id) throws Exception {
+
+        String sql = "SELECT first_time FROM timetables WHERE id = ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return LocalTime.parse(resultSet.getString("first_time"));
+    }
+
+    public int getTimeFromStartFromRouteStop(Route route, Stop stop) throws Exception {
+
+        String sql = "SELECT time_from_start FROM route_stop_time WHERE route_id = ? AND stop_id = ?;";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, route.getId());
+        preparedStatement.setInt(2, stop.getId());
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getInt("time_from_start");
+    }
+
+    // User database
     public String getEmailFromId(int id) throws Exception {
 
         String sql = "SELECT email FROM administrators WHERE id = ?";
