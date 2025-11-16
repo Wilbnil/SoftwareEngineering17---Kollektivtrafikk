@@ -39,7 +39,8 @@ public abstract class TestDatabase {
                         "id INTEGER AUTO_INCREMENT, " +
                         "name TEXT, " +
                         "start_stop INTEGER, " +
-                        "end_stop TEXT, " +
+                        "end_stop TEXT," +
+                        "type TEXT, " +
                         "PRIMARY KEY(id), " +
                         "FOREIGN KEY(end_stop) REFERENCES stops(id), " +
                         "FOREIGN KEY(start_stop) REFERENCES stops(id));");
@@ -98,12 +99,23 @@ public abstract class TestDatabase {
             insertIntoStops("AMFI Borg", "Sarpsborg", 59.2741, 11.0822, 0, 0);
             insertIntoStops("Torsbekken", "Sarpsborg", 59.284, 11.0984, 0, 0);
             insertIntoStops("Sarpsborg bussterminal", "Sarpsborg", 59.283, 11.1071, 0, 0);
-            insertIntoStops("Test Stop 7", "Test Town", 50, 50, 1, 1);
-            insertIntoStops("Test Stop 8", "Test Town", 60, 60, 0, 1);
+            insertIntoStops("Halden bussterminal", "Halden", 59.133, 11.3875, 0, 0);
+            insertIntoStops("Halden stasjon", "Halden", 59.1202, 11.3842, 0, 0);
+            insertIntoStops("Sarpsborg stasjon", "Sarpsborg", 59.2861, 11.118, 0, 0);
+            insertIntoStops("Fredrikstad stasjon", "Fredrikstad", 59.2089, 10.9506, 0, 0);
+            insertIntoStops("Råde stasjon", "Råde", 59.3473, 10.8659, 0, 0);
+            insertIntoStops("Rygge stasjon", "Rygge", 59.3771, 10.7479, 0, 0);
+            insertIntoStops("Moss stasjon", "Moss", 59.432, 10.6575, 0, 0);
+            insertIntoStops("Ski stasjon", "Ski", 59.7191, 10.8355, 0, 0);
+            insertIntoStops("Oslo S", "Oslo", 59.9111, 10.7535, 0, 0);
+            insertIntoStops("Test stop", "Test", 10, 10, 1, 0);
 
             // Inserts data into the "routes" table
-            insertIntoRoutes("1", 1, 6);
-            insertIntoRoutes("2", 6, 1);
+            insertIntoRoutes("1", 1, 6, "buss");
+            insertIntoRoutes("2", 6, 1, "buss");
+            insertIntoRoutes("630", 1, 7, "buss");
+            insertIntoRoutes("RE20", 15, 8, "tog");
+
 
             // Inserts data into the "route_stops" table
             insertIntoRouteStops(1, 1, 1);
@@ -118,6 +130,22 @@ public abstract class TestDatabase {
             insertIntoRouteStops(2, 3, 4);
             insertIntoRouteStops(2, 2, 5);
             insertIntoRouteStops(2, 1, 6);
+            insertIntoRouteStops(3, 1, 1);
+            insertIntoRouteStops(3, 2, 2);
+            insertIntoRouteStops(3, 3, 3);
+            insertIntoRouteStops(3, 4, 4);
+            insertIntoRouteStops(3, 5, 5);
+            insertIntoRouteStops(3, 6, 6);
+            insertIntoRouteStops(3, 7, 7);
+            insertIntoRouteStops(4, 15, 1);
+            insertIntoRouteStops(4, 14, 2);
+            insertIntoRouteStops(4, 13, 3);
+            insertIntoRouteStops(4, 12, 4);
+            insertIntoRouteStops(4, 11, 5);
+            insertIntoRouteStops(4, 10, 6);
+            insertIntoRouteStops(4, 9, 7);
+            insertIntoRouteStops(4, 8, 8);
+
 
             // Inserts data into the "timetables" table
             insertIntoTimetables(1, "monday", "05:30", "00:25", 10);
@@ -134,6 +162,13 @@ public abstract class TestDatabase {
             insertIntoTimetables( 2, "friday", "05:30", "00:25", 10);
             insertIntoTimetables( 2, "saturday", "07:45", "00:25", 15);
             insertIntoTimetables( 2, "sunday", "09:30", "23:55", 30);
+            insertIntoTimetables(4, "monday", "06:11", "00:22" , 60);
+            insertIntoTimetables(4, "tuesday" , "06:11", "00:22", 60);
+            insertIntoTimetables(4, "wednesday", "06:11", "00:22", 60);
+            insertIntoTimetables(4, "thursday", "06:11", "00:22", 60);
+            insertIntoTimetables(4, "friday", "06:11", "00:22", 60);
+            insertIntoTimetables(4, "saturday", "07:14", "00:35", 60);
+            insertIntoTimetables(4, "sunday", "08:14", "01:03", 60);
 
             // Inserts data into the "route_stop_time" table
             insertIntoRouteStopTime(1, 1, 0);
@@ -148,6 +183,14 @@ public abstract class TestDatabase {
             insertIntoRouteStopTime(2, 3, 19);
             insertIntoRouteStopTime(2, 2, 24);
             insertIntoRouteStopTime(2, 1, 25);
+            insertIntoRouteStopTime(4, 15, 0);
+            insertIntoRouteStopTime(4, 14, 12);
+            insertIntoRouteStopTime(4, 13, 32);
+            insertIntoRouteStopTime(4, 12, 40);
+            insertIntoRouteStopTime(4, 11, 46);
+            insertIntoRouteStopTime(4, 10, 59);
+            insertIntoRouteStopTime(4, 9, 74);
+            insertIntoRouteStopTime(4, 8, 93);
 
             // Inserts data into the "administrators" table
             insertIntoAdministrators("anton@publictransport.com", null, "2025-10-30", "2025-10-30");
@@ -167,12 +210,12 @@ public abstract class TestDatabase {
     }
 
     // Serves as a blueprint for inserting data into the "routes" table
-    public void insertIntoRoutes(String name, int start_stop, int end_stop)
+    public void insertIntoRoutes(String name, int start_stop, int end_stop, String type)
             throws Exception{
 
         // Creates an INSERT INTO statement for use
-        String sql = "INSERT INTO routes (name, start_stop, end_stop) " +
-                "VALUES (?, ?, ?)";
+        String sql = "INSERT INTO routes (name, start_stop, end_stop, type) " +
+                "VALUES (?, ?, ?, ?)";
 
         // Places the input parameter values of the method into the statement above
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -180,6 +223,7 @@ public abstract class TestDatabase {
             preparedStatement.setString(1, name);
             preparedStatement.setInt(2, start_stop);
             preparedStatement.setInt(3, end_stop);
+            preparedStatement.setString(4, type);
             preparedStatement.executeUpdate();
         }
     }
@@ -314,7 +358,7 @@ public abstract class TestDatabase {
     }
 
     // Returns the name from a specified stop in the database
-    public String getStopName(int stopId) throws Exception {
+    public String getStopNameFromId(int stopId) throws Exception {
         // Creates a SELECT statement that returns the name from a stop with a specified id
         String sql = "SELECT name FROM stops WHERE id = ?";
 

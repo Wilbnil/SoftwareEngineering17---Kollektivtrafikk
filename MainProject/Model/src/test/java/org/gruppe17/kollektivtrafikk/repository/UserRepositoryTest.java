@@ -48,7 +48,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("User returned successfully")
+    @DisplayName("User returned successfully from id")
     public void userGetById_UserReturnedSuccessfully() throws Exception {
         // Arrange
         UserRepository userRepo = new UserRepository(connection);
@@ -65,7 +65,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("User returned successfully")
+    @DisplayName("User returned successfully from name (email)")
     public void userGetByName_UserReturnedSuccessfully() throws Exception {
         // Arrange
         UserRepository userRepo = new UserRepository(connection);
@@ -84,7 +84,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("Users returned successfully")
+    @DisplayName("All users returned successfully")
     public void userGetAll_UsersReturnedSuccessfully() throws Exception {
         // Arrange
         UserRepository userRepo = new UserRepository(connection);
