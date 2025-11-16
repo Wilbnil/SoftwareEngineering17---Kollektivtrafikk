@@ -2,8 +2,8 @@
 'https://plantuml.com/component-diagram
 
 actor user
-package "Model" {
-  frame "model" {
+package "Model" #LightYellow {
+  frame "model" #Pink {
     [Route]
     [Stop]
     [Tour]
@@ -11,23 +11,23 @@ package "Model" {
     [User]
 
   }
-  frame "util" {
+  frame "util" #Lavender {
     [DistanceCalculator]
     [DatabaseUtility]
   }
-  frame "service" {
+  frame "service" #LightGreen {
     [RouteService]
     [StopService]
     [TimetableService]
     [UserService]
   }
-  frame "repository"{
+  frame "repository" #SandyBrown{
     [RouteRepository]
     [StopRepository]
     [TimetableRepository]
     [UserRepository]
   }
-  frame "db" {
+  frame "db" #LightCyan {
     [SQLiteDatabaseConnection]
     database "SQLite" {
        frame "database" {
@@ -38,22 +38,22 @@ package "Model" {
   }
 }
 
-package "Controller" {
+package "Controller" #LightSkyBlue {
   [RouteController]
   [StopController]
   [TimetableController]
   [UserController]
 }
 
-package "View" {
+package "View" #Tomato {
     [UserInterface]
     [AdminInterface]
 }
 [user] <--> [View]
 [View] <--> [Controller]
-[Controller] <--> [service]
-[repository] <--> [service]
-[repository] <--> [db]
+[Controller] <-left-> [service]
+[repository] <-right-> [service]
+[repository] <-up-> [db]
 
 
 @enduml
