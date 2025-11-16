@@ -1,47 +1,50 @@
 @startuml
 'https://plantuml.com/component-diagram
+!pragma horizontalLineBetweenDifferentPackageAllowed
 
 actor user
-package "Model" #LightYellow {
-  frame "model" #Pink {
-    [Route]
-    [Stop]
-    [Tour]
-    [Timetable]
-    [User]
+together {
+    package "Model" #LightYellow {
+      frame "model" #Pink {
+        [Route]
+        [Stop]
+        [Tour]
+        [Timetable]
+        [User]
 
-  }
-  frame "util" #Lavender {
-    [DistanceCalculator]
-    [DatabaseUtility]
-  }
-  frame "service" #LightGreen {
-    [RouteService]
-    [StopService]
-    [TimetableService]
-    [UserService]
-  }
-  frame "repository" #SandyBrown{
-    [RouteRepository]
-    [StopRepository]
-    [TimetableRepository]
-    [UserRepository]
-  }
-  frame "db" #LightCyan {
-    [SQLiteDatabaseConnection]
-    database "SQLite" {
-       frame "database" {
-         [Kollektivdatabase]
-         [Brukerdatabase]
-       }
-     }
-  }
+      }
+      frame "util" #Lavender {
+        [DistanceCalculator]
+        [DatabaseUtility]
+      }
+      frame "service" #LightGreen {
+        [RouteService]
+        [StopService]
+        [TimetableService]
+        [UserService]
+      }
+      frame "repository" #SandyBrown{
+        [RouteRepository]
+        [StopRepository]
+        [TimetableRepository]
+        [UserRepository]
+      }
+      frame "db" #LightCyan {
+        [SQLiteDatabaseConnection]
+        database "SQLite" {
+           frame "database" {
+             [Kollektivdatabase]
+             [Brukerdatabase]
+           }
+         }
+      }
+    }
 }
 
 package "Controller" #LightSkyBlue {
   [RouteController]
   [StopController]
-  [TimetableController]
+  [TourController]
   [UserController]
 }
 
@@ -50,10 +53,12 @@ package "View" #Tomato {
     [AdminInterface]
 }
 [user] <--> [View]
-[View] <--> [Controller]
-[Controller] <-left-> [service]
-[repository] <-right-> [service]
-[repository] <-up-> [db]
+[View] <-left-> [Controller]
+[Controller] <-down-> [service]
+[repository] <-left[norank]-> [service]
+[repository] <-down-> [db]
+
+
 
 
 @enduml
