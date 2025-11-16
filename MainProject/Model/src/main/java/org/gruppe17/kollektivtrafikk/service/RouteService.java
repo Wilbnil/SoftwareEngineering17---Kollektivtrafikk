@@ -9,7 +9,7 @@ import org.gruppe17.kollektivtrafikk.utility.DistanceCalculator;
 
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class RouteService {
     private RouteRepository routeRepository;
@@ -20,7 +20,7 @@ public class RouteService {
     }
 
     //gets all the routes
-    public  List<Route> getAllRoutes() {
+    public  ArrayList<Route> getAllRoutes() {
         try {
             return routeRepository.getAll();
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class RouteService {
         }
     }
 
-    public List<Route> getRouteBetweenStops(int fromStopId, int toStopId) {
+    public ArrayList<Route> getRouteBetweenStops(int fromStopId, int toStopId) {
        try {
            return routeRepository.getAllFromTo(fromStopId, toStopId);
        } catch (Exception e) {

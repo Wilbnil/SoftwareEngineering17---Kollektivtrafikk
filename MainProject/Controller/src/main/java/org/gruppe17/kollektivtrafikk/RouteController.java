@@ -1,83 +1,107 @@
 package org.gruppe17.kollektivtrafikk;
 
-import io.javalin.Javalin;
+
+import io.javalin.http.Context;
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.gruppe17.kollektivtrafikk.service.RouteService;
 import org.gruppe17.kollektivtrafikk.service.StopService;
 
+
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class RouteController {
 
-    public static void register(Javalin app, RouteService routeService, StopService stopService) {
+    private RouteService routeService;
+    private StopService stopService;
+    private FrontEndControllerAdmin adminFront;
+
+    public RouteController(RouteService routeService, StopService stopService, FrontEndControllerAdmin adminFront) {
+        this.routeService = routeService;
+        this.stopService = stopService;
+        this.adminFront = adminFront;
+    }
 
 
-        // GET all routes
-        app.get("/api/routes", context -> {
-            List <Route> routes = routeService.getAllRoutes();
-            context.json(routes);
-        });
+    public void getAllRoutes(Context context) {
+        ArrayList<Route> routes = routeService.getAllRoutes();
+        context.json(routes);
+    }
 
-        // POST: add route
-        app.post("/api/routes", context -> {
-            try {
-                String name = context.formParam("name");
-                String[] stopIds = context.formParams("stopIds").toArray(new String[0]);
+    public void addRoute(Context context) {
+        try {
+            adminFront.requireAdmin(context);
+            String name = context.formParam("name");
+            String[] stopIds = context.formParams("stopIds").toArray(new String[0]);
 
-                if (name == null || name.isBlank() || stopIds.length < 2) {
-                    context.status(400).result("Missing required fields");
-                    return;
-                }
-
-                ArrayList<Stop> stops = new ArrayList<>();
-                for (String idStr : stopIds) {
-                    int id = Integer.parseInt(idStr);
-                    Stop stop = stopService.getStopById(id);
-                    if (stop != null) stops.add(stop);
-                }
-
-                if (stops.size() < 2) {
-                    context.status(400).result("At least two stops are required");
-                    return;
-                }
-
-                Route newRoute = new Route(0, name, stops, null);
-
-                boolean ok = routeService.addRoute(newRoute);
-                if (ok) {
-                    context.status(201).result("Route added successfully");
-                } else {
-                    context.status(400).result("Error adding route");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                context.status(400).result("Error adding route" + e.getMessage());
+            ArrayList<Stop> stops = new ArrayList<>();
+            for (String idStr : stopIds) {
+                Stop stop = stopService.getStopById(Integer.parseInt(idStr));
+                if (stop != null)
+                    stops.add(stop);
             }
-        });
 
-        // DELETE route by ID
-        app.delete("/api/routes/{id}", context -> {
-           try {
-               int id = Integer.parseInt(context.pathParam("id"));
-               Route route = routeService.getRouteById(id);
+            Route newRoute = new Route(0, name, stops, null);
+            routeService.addRoute(newRoute);
 
-               if (route == null) {
-                   context.status(404).result("Route not found");
-                   return;
-               }
+            context.status(201).result("Route added");
+        } catch (Exception e) {
+            e.printStackTrace();
+            context.status(400).result("Error adding route" + e.getMessage());
+        }
+    }
 
-               boolean ok = routeService.deleteRoute(route);
-               if (ok) {
-                   context.status(200).result("Route deleted successfully");
-               } else {
-                   context.status(500).result("Error deleting route");
-               }
-           } catch (Exception e) {
-               e.printStackTrace();
-               context.status(400).result("Error deleting route" + e.getMessage());
-           }
-        });
+    public void updateRoute(Context context) {
+        try {
+            adminFront.requireAdmin(context);
+            int id = Integer.parseInt(context.pathParam("id"));
+            String name = context.formParam("name");
+            String[] stopIds = context.formParams("stopIds").toArray(new String[0]);
+
+            Route oldRoute = routeService.getRouteById(id);
+            if (oldRoute == null) {
+                context.status(404).result("Route not found");
+                return;
+            }
+
+            ArrayList<Stop> stops = new ArrayList<>();
+            for (String idStr : stopIds) {
+                Stop stop = stopService.getStopById(Integer.parseInt(idStr));
+                if (stop != null) {
+                    stops.add(stop);
+                }
+            }
+
+            Route newRoute = new Route(id, name, stops, null);
+            routeService.updateRoute(oldRoute, newRoute);
+
+            context.result("Route updated successfully");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            context.status(400).result("Error updating route: " + e.getMessage());
+        }
+    }
+
+    public void deleteRoute(Context context) {
+        try {
+            adminFront.requireAdmin(context);
+            int id = Integer.parseInt(context.pathParam("id"));
+            Route route = routeService.getRouteById(id);
+
+            if (route == null) {
+                context.status(404).result("Route not found");
+                return;
+            }
+
+            routeService.deleteRoute(route);
+            context.status(204).result("Route deleted");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            context.status(400).result("Error deleting route" + e.getMessage());
+        }
     }
 }
+

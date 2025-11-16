@@ -1,65 +1,95 @@
 package org.gruppe17.kollektivtrafikk;
 
-import io.javalin.Javalin;
+import io.javalin.http.Context;
 import org.gruppe17.kollektivtrafikk.model.Timetable;
 import org.gruppe17.kollektivtrafikk.service.TimetableService;
 
+import java.time.LocalTime;
+import java.util.ArrayList;
 
 
 public class TourController {
 
-    public static void register(Javalin app, TimetableService timetableService) {
+    private TimetableService timetableService;
+    private FrontEndControllerAdmin adminFront;
 
-        //get all timetables
-        app.get("/timetables", context -> {
-            try {
-                List<Timetable> timetables = TimetableService.getAllTimetables();
-                context.json(timetables);
-            } catch (Exception e) {
-                e.printStackTrace();
-                context.status(500).result("Error loading timetables" + e.getMessage());
-            }
-        });
-
-        //add timetables
-        app.post("/timetables", context -> {
-            try {
-                int routeId = Integer.parseInt(context.formParam("route_id"));
-                String day = context.formParam("day");
-                String firstTime = context.formParam("first_time");
-                String lastTime = context.formParam("last_time");
-                int interval = Integer.parseInt(context.formParam("interval"));
-
-                Timetable newTimetable = new Timetable(0, routeId, day, firstTime, lastTime, interval);
-
-                boolean ok = timetableService.addTimetable(newTimetable);
-                if (ok) {
-                    context.status(201).result("Timetable added successfully");
-                } else {
-                    context.status(500).result("Error adding timetable");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                context.status(400).result("Error loading timetables" + e.getMessage());
-            }
-        });
-
-        //deletes timetable
-        app.delete("/timetables/{id}", context -> {
-            try {
-                int id = Integer.parseInt(context.pathParam("id"));
-                boolean ok = timetableService.deleteTimetable(id);
-
-                if (ok) {
-                    context.status(200).result("Timetable deleted successfully");
-                } else {
-                    context.status(500).result("Error deleting timetable");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                context.status(400).result("Error deleting timetables" + e.getMessage());
-            }
-        });
-
+    public TourController(TimetableService timetableService, FrontEndControllerAdmin adminFront) {
+        this.timetableService = timetableService;
+        this.adminFront = adminFront;
     }
+
+    public void getAll(Context context) {
+        try {
+            ArrayList<Timetable> timetable = timetableService.getAllTimetables();
+            context.json(timetable);
+        } catch (Exception e){
+            context.status(500).result("Error fetching timetables" + e.getMessage());
+        }
+    }
+
+    public void add(Context context) {
+        try {
+            adminFront.requireAdmin(context);
+            int routeId = Integer.parseInt(context.formParam("route_id"));
+            String day_of_week = context.formParam("day");
+            LocalTime firstTime = LocalTime.parse(context.formParam("first_time"));
+            LocalTime lastTime = LocalTime.parse(context.formParam("last_time"));
+            int interval = Integer.parseInt(context.formParam("interval"));
+
+            Timetable timetable = new Timetable(0, routeId, day_of_week, firstTime, lastTime, interval);
+            timetableService.addTimetable(timetable, true);
+
+            context.status(201).result("Timetable added.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            context.status(400).result("Error adding timetables" + e.getMessage());
+        }
+    }
+
+    public void update(Context context) {
+        try {
+            adminFront.requireAdmin(context);
+            int id = Integer.parseInt(context.pathParam("id"));
+            int routeId = Integer.parseInt(context.formParam("route_id"));
+            String day_of_week = context.formParam("day");
+            LocalTime firstTime = LocalTime.parse(context.formParam("first_time"));
+            LocalTime lastTime = LocalTime.parse(context.formParam("last_time"));
+            int interval = Integer.parseInt(context.formParam("interval"));
+
+            Timetable oldTimetable = timetableService.getTimetableById(id);
+            if (oldTimetable == null) {
+                context.status(404).result("Timetable not found.");
+                return;
+            }
+
+            Timetable newTimetable = new Timetable(id, routeId, day_of_week, firstTime, lastTime, interval);
+            timetableService.updateTimetable(oldTimetable, newTimetable, true);
+
+            context.result("Timetable updated.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            context.status(400).result("Error updating timetable: " + e.getMessage());
+        }
+    }
+
+    public void delete(Context context) {
+        try {
+            adminFront.requireAdmin(context);
+            int id = Integer.parseInt(context.pathParam("id"));
+            Timetable timetable = timetableService.getTimetableById(id);
+            if (timetable == null) {
+                context.status(404).result("No timetable found.");
+                return;
+            }
+            timetableService.deleteTimetable(timetable, true);
+
+            context.result("Timetable deleted.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            context.status(400).result("Error deleting timetables" + e.getMessage());
+        }
+    }
+
 }

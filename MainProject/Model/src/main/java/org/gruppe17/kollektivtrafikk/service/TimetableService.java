@@ -3,65 +3,125 @@ package org.gruppe17.kollektivtrafikk.service;
 import java.time.*;
 
 import org.gruppe17.kollektivtrafikk.model.Route;
-import org.gruppe17.kollektivtrafikk.model.Timetable;
+import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.gruppe17.kollektivtrafikk.repository.TimetableRepository;
+import org.gruppe17.kollektivtrafikk.model.Timetable;
 
 import java.util.ArrayList;
 
 
 public class TimetableService {
+    private TimetableRepository timetableRepository;
 
-    private static TimetableRepository repo;
-
-    public TimetableService(TimetableRepository repository) {
-        this.repo = repository;
+    public TimetableService(TimetableRepository timetableRepository) {
+        this.timetableRepository = timetableRepository;
     }
 
-    public static ArrayList<Timetable> getAllTimetables() throws Exception {
-        return repo.getAll();
+    public ArrayList<Timetable> getAllTimetables() throws Exception {
+        return timetableRepository.getAll();
     }
 
-    public void addTimetable(Timetable timetable) throws Exception {
-        repo.insert(timetable);
+    public Timetable getTimetableById(int routeId) throws Exception {
+        return timetableRepository.getById(routeId);
     }
 
-    public void deleteTimetable(Timetable timetable) throws Exception {
-        repo.delete(timetable);
+    public Timetable getTimetableForRoute(int routeId) throws Exception {
+        String today = LocalDate.now().getDayOfWeek().toString().toLowerCase();
+        Route fake = new Route(routeId, null, null, null);
+        try {
+            return timetableRepository.getTimetableRouteDay(fake, today);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    public static ArrayList<Timetable> getTimetableForRoute(Route route) throws Exception {
-        return repo.getTimetablesInRoute(route);
+    public void addTimetable(Timetable timetable, boolean isAdmin) throws Exception {
+        if (!isAdmin) {
+            throw new Exception("You are not an admin");
+        }
+        timetableRepository.insert(timetable);
     }
 
-    public LocalTime getBussArrival() {
-        LocalTime today;
+    public void updateTimetable(Timetable oldTimetable, Timetable newTimetable, boolean isAdmin) throws Exception {
+        if (!isAdmin) {
+            throw new Exception("You are not an admin");
+        }
+        timetableRepository.update(oldTimetable, newTimetable);
+    }
+
+    public void deleteTimetable(Timetable timetable, boolean isAdmin) throws Exception {
+        if (!isAdmin) {
+            throw new Exception("You are not an admin");
+        }
+        timetableRepository.delete(timetable);
+    }
+
+    // return what the time that the vehicle you want to track will arrive
+    public LocalTime getSubscribedTour(int timetable_id) throws Exception {
+        Timetable timetable = timetableRepository.getById(timetable_id);
+        if (timetable == null) { return null; }
+
+        String today = LocalDate.now().getDayOfWeek().toString().toLowerCase();
+        if (!timetable.getDay_of_week().equalsIgnoreCase(today)) return null;
+
         LocalTime now = LocalTime.now();
-        
-        /*
-         * TODO:
-         * get the bus the user wants a notification for
-         * make sure its the correct day
-         * return the time the bus will arrive to the users current stop
-         */
+        LocalTime first = timetable.getFirst_time();
+        LocalTime last = timetable.getLast_time();
+        int interval = timetable.getTimeInterval();
 
-        return null;
-    }
+        if (last.isBefore(first)) {
+            last = last.plusHours(24);
+        }
 
-    public void notification(int stop_id) {
-        LocalTime now = LocalTime.now();
-        LocalTime yourBussArrival = getBussArrival();
-
-        if (yourBussArrival != null) {
-            Duration duration = Duration.between(now, yourBussArrival); 
-            long minutesLeft = duration.toMinutes();
-
-            if (minutesLeft == 1) {
-                System.out.println("Your bus will arrive in 1 minute!");
+        LocalTime next = first;
+        while (!next.isAfter(last)) {
+            if (next.isAfter(now) || next.equals(now)) {
+                if (next.getHour() < 12 && next.isAfter(LocalTime.of(23, 59))) {
+                    return next.minusHours(24);
+                }
+                return next;
             }
+            next = next.plusMinutes(interval);
         }
-        else {
-            System.out.println("No bus available.");
+        return null; // no more routes today
+    }
+
+    // notifies the user when or if the vehicle arrives
+    public String notification(int timetable_id) {
+        try {
+            LocalTime arrival = getSubscribedTour(timetable_id);
+            if (arrival == null) {
+                return "No more buses today.";
+            }
+
+            LocalTime now = LocalTime.now();
+            long minutes = java.time.Duration.between(now, arrival).toMinutes();
+
+            if (minutes <= 0) {
+                return "The bus is arriving now!";
+            } else if (minutes == 1) {
+                return "The bus arrives in 1 minute!";
+            } else {
+                return "The bus arrives in " + minutes + " minutes.";
+            }
+
+        } catch (Exception e) {
+            return "Error: no timetable.";
         }
     }
 
+    public int timeBetweenStops (Route route, Stop stopA, Stop stopB) {
+        try {
+            // minutes from and to
+            int minutesFrom = timetableRepository.getRouteStopTime(route, stopA);
+            int minutesTo = timetableRepository.getRouteStopTime(route, stopB);
+
+            int timeBetweenStops = (minutesTo - minutesFrom);
+            return timeBetweenStops > 0 ? timeBetweenStops : 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }

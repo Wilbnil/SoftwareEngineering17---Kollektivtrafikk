@@ -22,9 +22,10 @@ public class DistanceCalculator {
      */
     public static double getDistance(double fromX, double fromY, double toX, double toY) {
         // Bruker Pytagoras for å finne lengden som en vektor av x og y lengder.
-        double dx = toX - fromX;
-        double dy = toY - fromY;
-        return Math.sqrt(dx * dx + dy * dy);
+        double dx = (toX - fromX) * 111.32; //// 1° longitude ≈ 111.32 km
+        double dy = (toY - fromY) * 110.57; //// 1° latitude ≈ 110.57 km
+        double distance = Math.sqrt(dx * dx + dy * dy);
+        return Math.round(distance * 100.0) / 100.0;
     }
 
     // Regner ut tiden basert på dato- og tidsforskjell.
