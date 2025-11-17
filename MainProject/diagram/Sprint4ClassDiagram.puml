@@ -8,10 +8,34 @@ class Application {
 
 ' Controllers
 package "Controllers" #LightBlue {
-    class StopController
-    class RouteController
-    class TourController
-    class UserController
+    class StopController {
+        + getAllStops() : void
+        + addStop() : void
+        + updateStop() : void
+        + deleteStop() : void
+    }
+
+    class RouteController {
+        + getAllRoutes() : void
+        + addRoute() : void
+        + updateRoute() : void
+        + deleteRoute() : void
+    }
+
+    class TourController {
+        + getAll() : void
+        + add() : void
+        + update() : void
+        + delete() : void
+    }
+    class UserController {
+        + getAllUsers() : void
+        + getUserById() : void
+        + addUser() : void
+        + updateUser() : void
+        + deleteUser() : void
+        + login() : void
+    }
 }
 
 ' Services
