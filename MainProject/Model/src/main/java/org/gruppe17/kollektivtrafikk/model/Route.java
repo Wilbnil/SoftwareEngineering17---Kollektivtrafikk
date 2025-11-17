@@ -4,6 +4,20 @@ import java.util.ArrayList;
 
 //Represents a transport route with a list of stops and a transport mode.
 
+/**
+ * The Route class represents a transportation route between a selection of stops.
+ * Transport type is defined...
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
+
 public class Route {
 
     private int id;

@@ -2,6 +2,19 @@ package org.gruppe17.kollektivtrafikk.model;
 
 import java.time.LocalTime;
 
+
+/**
+ * The Timetable class represents...
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
 public class Timetable {
     private int id;
     private int route_id;

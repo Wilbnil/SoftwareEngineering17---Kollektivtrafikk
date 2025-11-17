@@ -1,5 +1,19 @@
 package org.gruppe17.kollektivtrafikk.model;
 
+//Represents a transport stop with a name and an identifier
+
+/**
+ * The Route class represents...
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
 public class Stop {
     private int id;
     private String name;
@@ -9,7 +23,6 @@ public class Stop {
     private boolean roof;
     private boolean accessibility;
 
-//Represents a transport stop with a name and an identifier
 
 
     public Stop(int id, String name) {
