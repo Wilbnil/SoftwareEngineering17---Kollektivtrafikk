@@ -3,11 +3,15 @@ package org.gruppe17.kollektivtrafikk.model;
 //Represents a transport stop with a name and an identifier
 
 /**
- * The {@code Stop} class represents...
- *
- *
- *
- *
+ * The {@code Stop} class represents station or halt along a transport route that offers passengers the ability to
+ * get on or off the vehicle.
+ * <p>
+ * This class will be used by Routes to store which stops the route will stop at.
+ * <p>
+ * This class will save a unique identifier in the form of a number generated in the database.
+ * Additionally, a name and town is stored. A town is added so that stops with conflicting names can be separated.
+ * The coordinates of the {@code Stop} is added as doubles to store the location of stops in relation to each other.
+ * This is used to find related stops that complies with filters in the MVP. This is also used
  *
  *
  * Only regular get and set methods are provided.
@@ -15,6 +19,8 @@ package org.gruppe17.kollektivtrafikk.model;
  */
 
 public class Stop {
+
+    // Variables
     private int id;
     private String name;
     private String town;
@@ -24,7 +30,7 @@ public class Stop {
     private boolean accessibility;
 
 
-
+    // Constructors
     public Stop(int id, String name) {
         this.id = id;
         this.name = name;
@@ -42,6 +48,7 @@ public class Stop {
 
     }
 
+    // Standard get and set methods.
     public int getId() {
         return id;
     }

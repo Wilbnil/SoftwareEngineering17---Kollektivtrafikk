@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d36602c1-fb54-4a69-88e7-1fc403fee53d" name="Changes" comment="" />
+    <list default="true" id="d36602c1-fb54-4a69-88e7-1fc403fee53d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/Route.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/Route.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/Stop.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/Stop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/Tour.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/model/Tour.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,7 +51,7 @@
     "JUnit.DistanceCalculatorTest.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "78-Userdatabase",
+    "git-widget-placeholder": "148-modelklasse-dokumentasjon",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/wilbn/OneDrive - Østfold University College/Dokumenter/Dataingeniør/3. Semester/Software Engineering/IntelliJ/musicas",

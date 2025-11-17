@@ -49,7 +49,7 @@ public class Route {
     }
 
 
-    // Standard get and set methods
+    // Standard get and set methods.
     public int getId() {
         return id;
     }
