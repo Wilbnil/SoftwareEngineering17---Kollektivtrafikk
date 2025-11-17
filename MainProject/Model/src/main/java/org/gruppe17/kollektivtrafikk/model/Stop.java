@@ -3,15 +3,15 @@ package org.gruppe17.kollektivtrafikk.model;
 //Represents a transport stop with a name and an identifier
 
 /**
- * The Route class represents...
+ * The {@code Stop} class represents...
  *
  *
  *
  *
  *
  *
- *
- *
+ * Only regular get and set methods are provided.
+ * {@code StopService} will handle more logic for stops.
  */
 
 public class Stop {

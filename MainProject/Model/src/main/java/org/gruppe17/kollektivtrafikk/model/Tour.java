@@ -1,16 +1,30 @@
 package org.gruppe17.kollektivtrafikk.model;
 
 import org.gruppe17.kollektivtrafikk.utility.DistanceCalculator;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+
+/**
+ * The {@code Tour} class represents an individual instance of a route.
+ * Contrary to a general {@code Route}, a {@code Tour} takes place on a specific date and time.
+ * A {@code Tour} is what the passenger is interested in knowing about, so they can plan their journey easier.
+ * The {@code Timetable} class handles the data which need to be stored to create Tours.
+ * <p>
+ * For handling the time an {@code ArrayList} is used. All the arrival times of the tour should be placed here,
+ * and in the same order as the Stops.
+ *
+ *
+ *
+ *
+ *
+ */
+
 
 public class Tour {
 
     private int routeId;
     private ArrayList<LocalTime> arrivals;
-    private String transportType;
     private LocalDate date;
 
     public int getRouteId() {
@@ -25,13 +39,6 @@ public class Tour {
         return new ArrayList<>(arrivals);
     }
 
-    public String getTransportType() {
-        return transportType;
-    }
-
-    public void setTransportType(String transportType) {
-        this.transportType = transportType;
-    }
 
     public LocalTime getDuration() {
         if (arrivals == null || arrivals.size() == 2) return null;
