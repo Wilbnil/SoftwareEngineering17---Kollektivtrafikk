@@ -202,7 +202,8 @@ public class RouteRepository implements I_RouteRepo {
         return stops;
     }
 
-    // Use insertRouteStops as well after !!!
+    // When inserting a route, make sure insertRouteStops also is used with the same route
+    // AFTER the insert method is called
     @Override
     public void insert(Route route) throws Exception {
         // Creates a sql-query which inserts values into the "routes" table
@@ -222,15 +223,16 @@ public class RouteRepository implements I_RouteRepo {
             System.out.println(rowsAdded + " Rows added in routes");
     }
 
-    // Check if the stops changed after the update and if it did, use deleteRouteStops,
-    // deleteRouteStopTime, insertRouteStops and (insertRouteStopTime for the new stops) !!!
+    // When updating a route, make sure deleteRouteStops, deleteRouteStopTime and deleteTimetable
+    // also is used with the old route BEFORE the update method is called.
+    // Also make sure to use insertRouteStops with the new route AFTER the update method is called.
     @Override
     public void update(Route object, Route newObject) throws Exception {
         // Creates a sql-query which updates Routes in the "routes" table
         // Id can not be updated as it is an Auto Increment id
         String sql =
                 "UPDATE routes " +
-                "SET name = ?, start_stop = ?, end_stop = ?, SET type = ? " +
+                "SET name = ?, start_stop = ?, end_stop = ?, type = ? " +
                 "WHERE id = ?;";
 
         // Creates at statement based on the query and inserts the values based on the parameter Route objects
@@ -247,7 +249,8 @@ public class RouteRepository implements I_RouteRepo {
             System.out.println("Route " + object.getName() + " has been updated");
     }
 
-    // Use deleteRouteStops, deleteRouteStopTime, deleteTimetable as well first !!!
+    // When deleting a route, make sure deleteRouteStops, deleteRouteStopTime and deleteTimetable
+    // also is used with the same route BEFORE the delete method is called
     @Override
     public void delete(Route object) throws Exception {
         // Creates a sql-query which updates Routes in the "routes" table
@@ -264,6 +267,8 @@ public class RouteRepository implements I_RouteRepo {
             System.out.println("Route " + object.getName() + " has been deleted");
     }
 
+    // Don't need their own tests as they are automatically being tested in the insert, update and delete
+    // tests. They are also methods which will only be used alongside the aformentioned methods
     @Override
     public void insertRouteStops(Route route) throws Exception {
         // When we insert a new Route, we must add it into the route_stops table
