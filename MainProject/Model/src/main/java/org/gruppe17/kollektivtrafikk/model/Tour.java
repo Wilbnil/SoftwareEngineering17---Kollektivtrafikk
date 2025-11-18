@@ -24,6 +24,7 @@ public class Tour {
     public ArrayList<LocalTime> getArrivals() {
         return new ArrayList<>(arrivals);
     }
+    public void setArrivals(ArrayList<LocalTime> arrivals) {}
 
     public String getTransportType() {
         return transportType;

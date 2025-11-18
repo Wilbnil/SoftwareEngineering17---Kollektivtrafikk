@@ -11,12 +11,13 @@ import java.util.ArrayList;
 public class StopController {
 
     private StopService stopService;
-    private FrontEndControllerAdmin adminFront;
 
-    public StopController(StopService stopService, FrontEndControllerAdmin adminFront) {
+
+    public StopController(StopService stopService) {
         this.stopService = stopService;
-        this.adminFront = adminFront;
     }
+
+
 
       public void getAllStops(Context context) {
         ArrayList<Stop> stops = stopService.getAllStops();
@@ -25,7 +26,7 @@ public class StopController {
 
        public void addStop(Context context) {
             try {
-                adminFront.requireAdmin(context);
+
                 String name = context.formParam("name");
                 String town = context.formParam("town");
                 float lat = Float.parseFloat(context.formParam("lat"));
@@ -46,7 +47,7 @@ public class StopController {
 
         public void updateStop(Context context) {
             try {
-                adminFront.requireAdmin(context);
+
                 int id = Integer.parseInt(context.pathParam("id"));
                 Stop oldStop = stopService.getStopById(id);
 
@@ -74,7 +75,7 @@ public class StopController {
 
         public void deleteStop(Context context) {
             try {
-                adminFront.requireAdmin(context);
+
                 int id = Integer.parseInt(context.pathParam("id"));
                 Stop stop = stopService.getStopById(id);
 

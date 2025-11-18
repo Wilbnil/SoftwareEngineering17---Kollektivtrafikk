@@ -36,26 +36,23 @@ public class Application {
             UserRepository userRepo = new UserRepository(connection);
 
             StopService stopService = new StopService(stopRepo);
-            RouteService routeService = new RouteService(routeRepo);
-            TimetableService timetableService = new TimetableService(timetableRepo);
+            RouteService routeService = new RouteService(routeRepo, timetableRepo);
+            TimetableService timetableService = new TimetableService(timetableRepo, routeService);
             UserService userService = new UserService(userRepo);
 
-            FrontEndController frontEndController = new FrontEndController(stopService, routeService, timetableService);
-            FrontEndControllerAdmin adminFront = new FrontEndControllerAdmin(stopService, routeService, timetableService);
-
-            StopController stopController = new StopController(stopService, adminFront);
-            RouteController routeController = new RouteController(routeService, stopService, adminFront);
-            TourController tourController = new TourController(timetableService, adminFront);
-            UserController userController = new UserController(userService, adminFront);
+            StopController stopController = new StopController(stopService);
+            RouteController routeController = new RouteController(routeService, stopService, timetableService);
+            TourController tourController = new TourController(timetableService);
+            UserController userController = new UserController(userService);
 
 
-            app.get("/", frontEndController::serveHome); //index.html
-            app.get("/admin", adminFront::serveAdminPage); //admin.html
+            app.get("/", context -> context.redirect("index.html")); //index.html
+            app.get("/admin", routeController::serveAdminPage); //admin.html
 
 
-            app.get("/api/stops", frontEndController::getAllStops);
-            app.post("/search", frontEndController::searchRoute);
-            app.get("/api/notification", frontEndController::getNotification);
+            app.get("/api/stops", stopController::getAllStops);
+            app.post("/search", routeController::searchRoute);
+            app.get("/api/notification", tourController::getNotification);
 
             app.get("/api/stop2", stopController::getAllStops);
             app.post("/api/routes", routeController::addRoute);

@@ -8,15 +8,15 @@
             font-family: Arial, sans-serif;
             margin: 20px;
             background: #f9f9f9;
-            color: #333;
+            color: #302d2d;
         }
         h2 {
-            color: #d32f2f;
-            border-bottom: 2px solid #d32f2f;
+            color: #302d2d;
+            border-bottom: 2px solid #302d2d;
             padding-bottom: 5px;
         }
         h3 {
-            color: #555;
+            color: #302d2d;
             margin-top: 25px;
         }
         input, button {
@@ -30,7 +30,7 @@
             border-radius: 4px;
         }
         button {
-            background: #d32f2f;
+            background: #302d2d;
             color: white;
             border: none;
             border-radius: 4px;
@@ -38,7 +38,7 @@
             transition: 0.2s;
         }
         button:hover {
-            background: #b71c1c;
+            background: #302d2d;
         }
         table {
             border-collapse: collapse;
@@ -54,7 +54,7 @@
             text-align: left;
         }
         th {
-            background: #d32f2f;
+            background: #302d2d;
             color: white;
         }
         tr:nth-child(even) {
@@ -93,8 +93,8 @@
 <body>
 <h2>Enter Transport Route</h2>
 <!--Form for user input: two text fields ("from" and "to") and a submit button to send the search request. -->
-<div style="max-width: 580px; margin: 20px 0; padding: 15px; background: #ffebee; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-    <strong style="color: #d32f2f; font-size: 1.1em;">Stops filter</strong><br><br>
+<div style="max-width: 580px; margin: 20px 0; padding: 15px; background: #f0f0f0; border-radius: 8px;">
+    <strong style="color: #302d2d; font-size: 1.1em;">Stops filter</strong><br><br>
     <label style="margin: 0 15px; font-size: 0.95em;">
         <input type="checkbox" id="filterRoof"> Roof stops only
     </label>
@@ -113,10 +113,14 @@
     <div style="position: relative; display: inline-block;">
         <label for="to">To:</label><br>
         <input type="text" id="to" name="to" required autocomplete="off">
-        <div id="to-suggestions" class="suggestions" style="display: none;"></div>
+        <div id="to-suggestions" class="suggestions" style="display: none;"></div><br>
     </div>
     <br><br>
-    <button type="submit">Submit</button>
+        <label for="checkTime">Check at time (optional):</label><br>
+        <input type="time" id="checkTime" name="checkTime" style="padding:8px; margin-top:5px;">
+        <br><br>
+    <br><br>
+    <button type="submit">Search</button>
 </form>
 
 <!-- Area where route results will be displayed -->
@@ -126,13 +130,22 @@
 <button id="notifButton" style="display:none; margin-top:10px;">
     Check Vehicle Notification
 </button>
-
-<div style="margin-top: 25px; text-align: center;">
-    <button id="adminLoginBtn"
-            style="padding: 12px 24px; background: #d32f2f; color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer;">
+<div style="margin-top: 30px; text-align: center;">
+    <button onclick="this.style.display='none'; document.getElementById('adminLoginForm').style.display='block';">
         Log in as Admin
     </button>
+
+    <div id="adminLoginForm" style="display:none; margin-top:20px; padding:20px; background:#f0f0f0; border-radius:10px; max-width:280px; margin-left:auto; margin-right:auto;">
+        <h3 style="color:#302d2d; margin-top:0;">Admin Login</h3>
+        <input type="email" id="adminEmail" placeholder="Email" value="withPassword@publictransport.com" style="width:90%; padding:10px; margin:8px 0; font-size:15px;"><br>
+        <input type="password" id="adminPassword" placeholder="Password" value="password"  style="width:90%; padding:10px; margin:8px 0; font-size:15px;"><br>
+        <button onclick="loginAsAdmin()" style="background:#f0f0f0; color:black; padding:12px 24px; border:none; border-radius:6px; font-size:16px; cursor:pointer;">
+            Log in as admin
+        </button>
+        <p id="loginError" style="margin-top:12px; font-weight:bold;"></p>
+    </div>
 </div>
+
 <a href="/admin?dev=1" id="devLink" style="display:none;">DEV ADMIN</a>
 <script>
     // Array that will hold all stops fetched from the backend
@@ -224,7 +237,8 @@
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: new URLSearchParams({
-                    from: from, to: to
+                    from: from, to: to,
+                    time: document.getElementById("checkTime").value
                 })
             })
                 .then(response => {
@@ -240,10 +254,11 @@
                     };
                     //displays route details returned by backend
                     document.getElementById('output').innerHTML = `
-                    Route: From ${data.route},
+                    Route: ${data.route},
                     Distance: ${data.distance.toFixed(2)} km,
                     Departure: ${formatTime(data.departure)},
                     Arrival: ${formatTime(data.arrival)},
+                    Duration: ${data.duration},
                     Mode: ${data.type || 'N/A'}
                     `;
 
@@ -254,9 +269,7 @@
                         notifBtn.style.display = "inline-block";
                         notifBtn.onclick = () => checkNotification(data.timetableId);
                     } else {
-
-                        notifBtn.style.display = "inline-block";
-                        notifBtn.onclick = () => checkNotification(1);
+                        notifBtn.style.display = "none";
                     }
                 })
                 .catch(error => {
@@ -265,6 +278,38 @@
                 });
         } else {
             document.getElementById('output').innerHTML = 'Please select different start and destination stops.';
+        }
+    }
+    async function checkNotification(timetableId) {
+        try {
+            const res = await fetch(`/api/notification?timetableId=${timetableId}`);
+            const data = await res.json();
+
+            document.getElementById("notificationOutput").innerText =
+                data.notification || data.error;
+
+        } catch (err) {
+            console.error("Error fetching notification:", err);
+        }
+    }
+
+    async function loginAsAdmin() {
+        const email = document.getElementById("adminEmail").value;
+        const password = document.getElementById("adminPassword").value;
+
+        try {
+           const res = await fetch('/login', {
+               method: 'POST',
+               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+               body: new URLSearchParams({ email: email, password: password })
+           });
+           if (res.ok) {
+               window.location.href = "/admin?loggedIn=true";
+           } else {
+               document.getElementById('loginError').innerText = "Wrong email or password!";
+           }
+        } catch (err) {
+            document.getElementById("loginError").innerText = "Connection failed";
         }
     }
 
@@ -292,22 +337,6 @@
         showSuggestions('to', 'to-suggestions');
     });
 
-    async function checkNotification(timetableId) {
-        try {
-            const res = await fetch(`/api/notification?timetableId=${timetableId}`);
-            const data = await res.json();
-
-            document.getElementById("notificationOutput").innerText =
-                data.notification || data.error;
-
-        } catch (err) {
-            console.error("Error fetching notification:", err);
-        }
-    }
-
-    document.getElementById('adminLoginBtn').addEventListener('click', () => {
-        window.location.href = '/admin';
-    });
 
 </script>
 

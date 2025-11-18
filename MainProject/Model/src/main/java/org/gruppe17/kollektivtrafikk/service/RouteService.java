@@ -15,8 +15,9 @@ public class RouteService {
     private RouteRepository routeRepository;
     private TimetableRepository timetableRepository;
 
-    public RouteService(RouteRepository routeRepository) {
+    public RouteService(RouteRepository routeRepository, TimetableRepository timetableRepository) {
         this.routeRepository = routeRepository;
+        this.timetableRepository = timetableRepository;
     }
 
     //gets all the routes
@@ -40,7 +41,7 @@ public class RouteService {
 
     public ArrayList<Route> getRouteBetweenStops(int fromStopId, int toStopId) {
        try {
-           return routeRepository.getAllFromTo(fromStopId, toStopId);
+          return routeRepository.getAllFromTo(fromStopId, toStopId);
        } catch (Exception e) {
            System.err.println(e.getMessage());
            return new ArrayList<>();

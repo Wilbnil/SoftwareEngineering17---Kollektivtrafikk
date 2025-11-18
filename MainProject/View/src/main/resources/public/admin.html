@@ -8,15 +8,15 @@
       font-family: Arial, sans-serif;
       margin: 20px;
       background: #f9f9f9;
-      color: #333;
+      color: #302d2d;
     }
     h2 {
-      color: #d32f2f;
-      border-bottom: 2px solid #d32f2f;
+      color: #302d2d;
+      border-bottom: 2px solid #302d2d;
       padding-bottom: 5px;
     }
     h3 {
-      color: #555;
+      color: #302d2d;
       margin-top: 25px;
     }
     input, button {
@@ -30,7 +30,7 @@
       border-radius: 4px;
     }
     button {
-      background: #d32f2f;
+      background: #302d2d;
       color: white;
       border: none;
       border-radius: 4px;
@@ -38,7 +38,7 @@
       transition: 0.2s;
     }
     button:hover {
-      background: #b71c1c;
+      background: #302d2d;
     }
     table {
       border-collapse: collapse;
@@ -54,14 +54,14 @@
       text-align: left;
     }
     th {
-      background: #d32f2f;
+      background: #302d2d;
       color: white;
     }
     tr:nth-child(even) {
       background: #f2f2f2;
     }
     .back-btn {
-      background: #555;
+      background: #302d2d;
       margin-bottom: 20px;
       display: inline-block;
       padding: 8px 16px;
@@ -70,16 +70,16 @@
       color: white;
     }
     .back-btn:hover {
-      background: #333;
+      background: #302d2d;
     }
   </style>
 </head>
 <body>
-<div style="text-align: right; padding: 15px; background: #ffebee; border-bottom: 1px solid #d32f2f;">
-  <span style="color: #d32f2f; font-weight: bold;">Admin Mode</span>
+<div style="text-align: right; padding: 15px; background: #f0f0f0; border-bottom: 1px solid #302d2d;">
+  <span style="color: #302d2d; font-weight: bold;">Admin Mode</span>
   &nbsp;&nbsp;
   <button id="logoutBtn"
-          style="padding: 8px 16px; background: #d32f2f; color: white; border: none; border-radius: 6px; cursor: pointer;">
+          style="padding: 8px 16px; background: #302d2d; color: white; border: none; border-radius: 6px; cursor: pointer;">
     Log out
   </button>
 </div>
@@ -89,8 +89,11 @@
 
 <h3>Add Route</h3>
 <form id="addRouteForm">
-  <input type="text" id="routeName" name="name" placeholder="Route name" required>
+  <input type="text" id="routeName" name="name" placeholder="Route name" required><br>
+  <small>Select Stops</small>
+  <select id="routeStops" multiple size="5" style="width: 220px; margin-top: 10px"></select>
   <button type="submit">Add</button>
+
 </form>
 
 <h3>Existing Routes</h3>
@@ -108,6 +111,20 @@
 </table>
 
 <script>
+  async function loadStops() {
+    const response = await fetch('/api/stop2');
+    const stops = await response.json();
+    const select = document.getElementById('routeStops');
+    select.innerHTML = "";
+
+    stops.forEach(stop => {
+      const option = document.createElement('option');
+      option.value = stop.id;
+      option.textContent = stop.name;
+      select.appendChild(option);
+    })
+
+  }
   async function loadRoutes() {
     try {
       const response = await fetch('/api/routes');
@@ -135,15 +152,34 @@
     }
   }
 
-  function editRoute(id, currentName) {
+  window.addEventListener('load', () => {
+    if (!window.location.search.includes('loggedIn=true')) {
+      alert("No access. Log in as administrator");
+      window.location.href = '/';
+      return;
+    }
+    loadStops();
+    loadRoutes();
+    });
+
+  async function editRoute(id, currentName) {
     const newName = prompt("New route name:", currentName);
     if (!newName || newName === currentName) return;
 
-    fetch('/admin/routes/' + id, {
+    const routes = await (await fetch ('/api/routes')).json();
+    const route = routes.find(rt => rt.id === id);
+
+    const body = new URLSearchParams();
+    body.append("name", newName);
+
+    route.stops.forEach(stop => body.append("stopIds", stop.id));
+
+    await fetch('/admin/routes/' + id, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: 'name=' + encodeURIComponent(newName)
-    }).then(() => loadRoutes());
+      body: body
+    });
+    loadRoutes();
   }
 
   async function deleteRoute(id) {
@@ -157,13 +193,20 @@
     const name = document.getElementById('routeName').value.trim();
     if (!name) return;
 
+    const selected = Array.from(document.getElementById('routeStops').selectedOptions).map(option => option.value);
+    const body = new URLSearchParams();
+    body.append("name", name);
+    selected.forEach(id => body.append("stopIds", id));
+
     await fetch('/admin/routes', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: 'name=' + encodeURIComponent(name)
+      body: body
     });
 
     document.getElementById('routeName').value = '';
+    document.getElementById('routeStops').selectedIndex = -1;
+
     loadRoutes();
   });
 
@@ -172,8 +215,6 @@
     window.location.href = '/';
   });
 
-
-  window.addEventListener('load', loadRoutes);
 </script>
 
 </body>

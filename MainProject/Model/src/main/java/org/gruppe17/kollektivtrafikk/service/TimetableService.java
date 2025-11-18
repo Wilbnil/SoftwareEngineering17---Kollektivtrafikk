@@ -4,6 +4,7 @@ import java.time.*;
 
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
+import org.gruppe17.kollektivtrafikk.model.Tour;
 import org.gruppe17.kollektivtrafikk.repository.TimetableRepository;
 import org.gruppe17.kollektivtrafikk.model.Timetable;
 
@@ -12,9 +13,12 @@ import java.util.ArrayList;
 
 public class TimetableService {
     private TimetableRepository timetableRepository;
+    private RouteService routeService;
+    private LocalTime overrideTime = null;
 
-    public TimetableService(TimetableRepository timetableRepository) {
+    public TimetableService(TimetableRepository timetableRepository, RouteService routeService) {
         this.timetableRepository = timetableRepository;
+        this.routeService = routeService;
     }
 
     public ArrayList<Timetable> getAllTimetables() throws Exception {
@@ -32,6 +36,49 @@ public class TimetableService {
             return timetableRepository.getTimetableRouteDay(fake, today);
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    public ArrayList<Tour> getAllTours() {
+        try {
+            ArrayList<Timetable> timetables = timetableRepository.getAll();
+            ArrayList<Tour> tours = new ArrayList<>();
+
+            String today = LocalDate.now().getDayOfWeek().toString().toLowerCase();
+
+           for (Timetable timetable : timetables) {
+               if (!timetable.getDay_of_week().equalsIgnoreCase(today))
+                   continue;
+
+               Route route = routeService.getRouteById(timetable.getRoute_id());
+               String type = "unknown";
+
+                   if (route != null && route.getType() != null) {
+                       type = route.getType();
+                   }
+
+                   Tour tour = new Tour();
+                   tour.setRouteId(timetable.getRoute_id());
+                   tour.setTransportType(type);
+                   tour.setDate(LocalDate.now());
+
+                   ArrayList<LocalTime> arrivals = new ArrayList<>();
+                   LocalTime current = timetable.getFirst_time();
+                   LocalTime last = timetable.getLast_time();
+                   if (last.isBefore(current)) last = last.plusHours(24);
+
+                   while (!current.isAfter(last)) {
+                       arrivals.add(current);
+                       current = current.plusMinutes(timetable.getTimeInterval());
+                   }
+
+                   tour.setArrivals(arrivals);
+                   tours.add(tour);
+           }
+           return tours;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 
@@ -58,33 +105,50 @@ public class TimetableService {
 
     // return what the time that the vehicle you want to track will arrive
     public LocalTime getSubscribedTour(int timetable_id) throws Exception {
+
         Timetable timetable = timetableRepository.getById(timetable_id);
-        if (timetable == null) { return null; }
+        if (timetable == null) return null;
 
         String today = LocalDate.now().getDayOfWeek().toString().toLowerCase();
         if (!timetable.getDay_of_week().equalsIgnoreCase(today)) return null;
 
-        LocalTime now = LocalTime.now();
-        LocalTime first = timetable.getFirst_time();
-        LocalTime last = timetable.getLast_time();
+        LocalTime nowTime = (overrideTime != null) ? overrideTime : LocalTime.now();
+        LocalDate todayDate = LocalDate.now();
+
+        LocalDateTime now = LocalDateTime.of(todayDate, nowTime);
+        LocalDateTime first = LocalDateTime.of(todayDate, timetable.getFirst_time());
+        LocalDateTime last  = LocalDateTime.of(todayDate, timetable.getLast_time());
+
         int interval = timetable.getTimeInterval();
 
-        if (last.isBefore(first)) {
-            last = last.plusHours(24);
+        boolean afterMidnight = timetable.getLast_time().isBefore(timetable.getFirst_time());
+
+        if (afterMidnight) {
+            last = last.plusDays(1);
         }
 
-        LocalTime next = first;
+        LocalDateTime next = first;
+
         while (!next.isAfter(last)) {
-            if (next.isAfter(now) || next.equals(now)) {
-                if (next.getHour() < 12 && next.isAfter(LocalTime.of(23, 59))) {
-                    return next.minusHours(24);
-                }
-                return next;
+
+            if (!next.isBefore(now)) {
+                return next.toLocalTime();
             }
+
             next = next.plusMinutes(interval);
         }
-        return null; // no more routes today
+        return null;
     }
+
+    public LocalTime getSubscribedTour(int timetable_id, LocalTime userTime) throws Exception {
+        if (userTime != null) {
+            this.overrideTime = userTime;
+        } else {
+            this.overrideTime = null;
+        }
+        return getSubscribedTour(timetable_id);
+    }
+
 
     // notifies the user when or if the vehicle arrives
     public String notification(int timetable_id) {

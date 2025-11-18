@@ -2,34 +2,55 @@ package org.gruppe17.kollektivtrafikk;
 
 import io.javalin.http.Context;
 import org.gruppe17.kollektivtrafikk.model.Timetable;
+import org.gruppe17.kollektivtrafikk.model.Tour;
 import org.gruppe17.kollektivtrafikk.service.TimetableService;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class TourController {
 
     private TimetableService timetableService;
-    private FrontEndControllerAdmin adminFront;
 
-    public TourController(TimetableService timetableService, FrontEndControllerAdmin adminFront) {
+
+    public TourController(TimetableService timetableService) {
         this.timetableService = timetableService;
-        this.adminFront = adminFront;
     }
 
     public void getAll(Context context) {
         try {
-            ArrayList<Timetable> timetable = timetableService.getAllTimetables();
-            context.json(timetable);
+            ArrayList<Tour> tours = timetableService.getAllTours();
+            context.json(tours);
         } catch (Exception e){
             context.status(500).result("Error fetching timetables" + e.getMessage());
         }
     }
 
+    public void getNotification (Context context) {
+        try {
+            String raw = context.queryParam("timetableId");
+
+            if (raw == null) {
+                context.status(400).json(Map.of("error", "Missing timetableId"));
+                return;
+            }
+            int timetableId = Integer.parseInt(raw);
+
+            String message = timetableService.notification(timetableId);
+
+            context.json(Map.of("notification", message));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            context.status(500).json(Map.of("error", e.getMessage()));
+        }
+    }
+
     public void add(Context context) {
         try {
-            adminFront.requireAdmin(context);
+
             int routeId = Integer.parseInt(context.formParam("route_id"));
             String day_of_week = context.formParam("day");
             LocalTime firstTime = LocalTime.parse(context.formParam("first_time"));
@@ -49,7 +70,7 @@ public class TourController {
 
     public void update(Context context) {
         try {
-            adminFront.requireAdmin(context);
+
             int id = Integer.parseInt(context.pathParam("id"));
             int routeId = Integer.parseInt(context.formParam("route_id"));
             String day_of_week = context.formParam("day");
@@ -76,7 +97,7 @@ public class TourController {
 
     public void delete(Context context) {
         try {
-            adminFront.requireAdmin(context);
+
             int id = Integer.parseInt(context.pathParam("id"));
             Timetable timetable = timetableService.getTimetableById(id);
             if (timetable == null) {
