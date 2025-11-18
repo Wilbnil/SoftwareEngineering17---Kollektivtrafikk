@@ -1,9 +1,20 @@
 package org.gruppe17.kollektivtrafikk.utility;
 
 import org.gruppe17.kollektivtrafikk.model.Stop;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+
+/**
+ * <p>
+ * The {@code DatabaseUtility} class is a utility class meant to help with operating
+ * the Repository methods when getting information from the database
+ * </p>
+ * Example usage:
+ * <blockquote><pre>
+ *     DatabaseUtility dbUtil = new DatabaseUtility();
+ *     int boolean_int = dbUtil.returnIntFromBool(true);
+ * </pre></blockquote>
+ */
 
 public class DatabaseUtility {
 

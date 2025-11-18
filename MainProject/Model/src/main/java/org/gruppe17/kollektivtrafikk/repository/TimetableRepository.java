@@ -12,7 +12,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 /**
- * The {@code TimetableRepository} handles all SQL-Queries to the database regarding the
+ * The {@code TimetableRepository} class handles all SQL-Queries to the database regarding the
  * "timetables" and "route_stop_time" tables
  * <p>
  * The Connection entails a database connection and can for example be the connection

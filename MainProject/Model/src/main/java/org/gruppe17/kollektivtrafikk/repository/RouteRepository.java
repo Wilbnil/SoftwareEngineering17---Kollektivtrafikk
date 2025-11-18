@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 /**
- * The {@code RouteRepository} handles all SQL-Queries to the database regarding the "routes"
+ * The {@code RouteRepository} class handles all SQL-Queries to the database regarding the "routes"
  * table and the "route_stops" table
  * <p>
  * The only exception is the getAllStopsInRoute() method, as it is used by all get methods

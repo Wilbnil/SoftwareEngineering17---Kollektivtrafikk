@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 /**
- * The {@code StopRepository} handles all SQL-Queries to the database regarding the "stops"
+ * The {@code StopRepository} class handles all SQL-Queries to the database regarding the "stops"
  * table
  * <p>
  * The Connection entails a database connection and can for example be the connection

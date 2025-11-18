@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d36602c1-fb54-4a69-88e7-1fc403fee53d" name="Changes" comment="" />
+    <list default="true" id="d36602c1-fb54-4a69-88e7-1fc403fee53d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/repository/RouteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/repository/RouteRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/repository/StopRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/repository/StopRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/repository/TimetableRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/repository/TimetableRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/utility/DatabaseUtility.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/utility/DatabaseUtility.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,7 +52,7 @@
     "JUnit.DistanceCalculatorTest.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "78-Userdatabase",
+    "git-widget-placeholder": "Find-Nearest-Stop-Which",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/wilbn/OneDrive - Østfold University College/Dokumenter/Dataingeniør/3. Semester/Software Engineering/IntelliJ/musicas",
@@ -71,8 +77,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26199.169" />
-        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-IU-252.26199.169" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.25659.59" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.25659.59" />
       </set>
     </attachedChunks>
   </component>
@@ -93,6 +99,7 @@
       <workItem from="1759591511409" duration="66000" />
       <workItem from="1760977516794" duration="5782000" />
       <workItem from="1761402652954" duration="662000" />
+      <workItem from="1763494901544" duration="303000" />
     </task>
     <servers />
   </component>

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * The {@code UserRepository} handles all SQL-Queries to the database regarding the
+ * The {@code UserRepository} class handles all SQL-Queries to the database regarding the
  * "administrators" table in the userdatabase
  * <p>
  * The Connection entails a database connection and can for example be the connection
