@@ -2,6 +2,7 @@ package org.gruppe17.kollektivtrafikk.service;
 
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.gruppe17.kollektivtrafikk.repository.StopRepository;
+import org.gruppe17.kollektivtrafikk.utility.DistanceCalculator;
 
 import java.util.ArrayList;
 
@@ -120,5 +121,78 @@ public class StopService {
             throw new Exception("You do not have access to delete stops.");
         }
         stopRepository.delete(stop);
+    }
+
+    /**
+     * Finds the nearest replacement stop that has a roof
+     *
+     * @param {Stop} stop - Stop without roof
+     * @return {Stop} - Nearest Stop with roof
+     */
+    public Stop getNearestStopWithRoof(Stop stop) {
+        try {
+            ArrayList<Stop> allStopsWithRoof = stopRepository.getAll();
+
+            // Removes all stops from the ArrayList where the .getRoof() == false statement is true
+            allStopsWithRoof.removeIf(stopX -> stopX.getRoof() == false);
+
+            double shortest = 10000;
+            double distance;
+            int index = 0;
+
+            // Cycles through the Stops with roof = True and finds the one with the shortest distance
+            for(Stop stopX : allStopsWithRoof) {
+
+                distance = DistanceCalculator.getDistance(stop.getLatitude(), stop.getLongitude(), stopX.getLatitude(), stopX.getLongitude());
+
+                if(distance < shortest) {
+                    shortest = distance;
+                    index = allStopsWithRoof.indexOf(stopX);
+                }
+            }
+
+            return allStopsWithRoof.get(index);
+
+        } catch(Exception e) {
+            System.err.println(e);
+        }
+        return null;
+    }
+
+    /**
+     * Finds the nearest replacement stop that has accessibility
+     *
+     * @param {Stop} stop - Stop without accessibility
+     * @return {Stop} - Nearest Stop with accessibility
+     */
+    // Finds the nearest replacement stop that has accessibility help
+    public Stop getNearestStopWithAccessibility(Stop stop) {
+        try {
+            ArrayList<Stop> allStopsWithAccessibility = stopRepository.getAll();
+
+            // Removes all stops from the ArrayList where the .getAccessibility() == false statement is true
+            allStopsWithAccessibility.removeIf(stopX -> stopX.getAccessibility() == false);
+
+            double shortest = 10000;
+            double distance;
+            int index = 0;
+
+            // Cycles through the Stops with accessibility = True and finds the one with the shortest distance
+            for(Stop stopX : allStopsWithAccessibility) {
+
+                distance = DistanceCalculator.getDistance(stop.getLatitude(), stop.getLongitude(), stopX.getLatitude(), stopX.getLongitude());
+
+                if(distance < shortest) {
+                    shortest = distance;
+                    index = allStopsWithAccessibility.indexOf(stopX);
+                }
+            }
+
+            return allStopsWithAccessibility.get(index);
+
+        } catch(Exception e) {
+            System.err.println(e);
+        }
+        return null;
     }
 }

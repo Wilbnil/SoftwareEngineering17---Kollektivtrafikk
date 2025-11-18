@@ -15,7 +15,7 @@ public class RouteServiceTest {
         Route route = service.getRoute("Fredrikstad", "Ostfoldhallen");
 
         assertNotNull(route);
-        assertEquals("bus 24", route.getMode());
+        assertEquals("bus 24", route.getType());
     }
 
     @Test
