@@ -20,7 +20,7 @@ public class RouteRepository implements I_RouteRepo {
 
 
     /**
-     * Return Route object from desired id
+     * Get Route by id
      *
      * @param {int} id - Route id
      * @return {Route} - Route object
@@ -58,7 +58,7 @@ public class RouteRepository implements I_RouteRepo {
     }
 
     /**
-     * Return Route object from desired name
+     * Get Route by name
      *
      * @param {String} name - Route name
      * @return {Route} - Route object
@@ -96,7 +96,7 @@ public class RouteRepository implements I_RouteRepo {
     }
 
     /**
-     * Return an ArrayList of all Routes in database
+     * Get all Routes in database
      *
      * @return {ArrayList<Route>} - ArrayList of Route objects
      * @throws {Exception} If database connection fails
@@ -136,7 +136,7 @@ public class RouteRepository implements I_RouteRepo {
     }
 
     /**
-     * Return an ArrayList of all Routes that conains two stops in order
+     * Get all Routes that contains a Stop from and to
      *
      * @param {int} start_stop - Stop id from
      * @param {int} end_stop - Stop id to
@@ -195,7 +195,7 @@ public class RouteRepository implements I_RouteRepo {
     }
 
     /**
-     * Return an ArrayList of Stops in a Route
+     * Get all Stops in a Route
      *
      * @param {int} route_id - Route id
      * @return {ArrayList<Stop>} - ArrayList of Stop objects

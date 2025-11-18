@@ -1,6 +1,7 @@
 package org.gruppe17.kollektivtrafikk.utility;
 
 import org.gruppe17.kollektivtrafikk.model.Stop;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 

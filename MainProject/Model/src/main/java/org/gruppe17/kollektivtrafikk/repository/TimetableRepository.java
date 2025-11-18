@@ -19,6 +19,13 @@ public class TimetableRepository implements I_TimetableRepo {
         this.connection = connection;
     }
 
+    /**
+     * Get Timetable by id
+     *
+     * @param {int} id - Timetable id
+     * @return {Timetable} - Timetable object
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public Timetable getById(int id) throws Exception {
         String sql =
@@ -42,6 +49,14 @@ public class TimetableRepository implements I_TimetableRepo {
             return returnTimetable;
     }
 
+    /**
+     * Get Timetable by Route and Day
+     *
+     * @param {Route} route - Route object
+     * @param {String} day_of_week - Day
+     * @return {Timetable} - Timetable object
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public Timetable getTimetableRouteDay(Route route, String day_of_week) throws Exception {
         String sql =
@@ -66,12 +81,12 @@ public class TimetableRepository implements I_TimetableRepo {
         return returnTimetable;
     }
 
-    // Unused
-    @Override
-    public Timetable getByName(String name) throws Exception {
-        return null;
-    }
-
+    /**
+     * Get all Timetables
+     *
+     * @return {ArrayList<Timetable>} - ArrayList of Timetable objects
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public ArrayList<Timetable> getAll() throws Exception {
         String sql =
@@ -96,6 +111,13 @@ public class TimetableRepository implements I_TimetableRepo {
         return returnTimetables;
     }
 
+    /**
+     * Get all Timetables in a Route
+     *
+     * @param {Route} route - Route object
+     * @return {ArrayList<Timetable>} - ArrayList of Timetable objects
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public ArrayList<Timetable> getTimetablesInRoute(Route route) throws Exception {
         String sql =
@@ -122,26 +144,39 @@ public class TimetableRepository implements I_TimetableRepo {
         return returnTimetables;
     }
 
+    /**
+     * Insert a Timetable
+     *
+     * @param {Timetable} timetable - Timetable object
+     * @throws {Exception} If database connection fails
+     */
     @Override
-    public void insert(Timetable object) throws Exception {
+    public void insert(Timetable timetable) throws Exception {
         String sql =
                 "INSERT INTO timetables (route_id, day_of_week, first_time, last_time, time_interval) " +
                 "VALUES (?, ?, ?, ?, ?);";
 
         PreparedStatement statement = connection.prepareStatement(sql);
 
-        statement.setInt(1, object.getRoute_id());
-        statement.setString(2, object.getDay_of_week());
-        statement.setString(3, object.getFirst_time().toString());
-        statement.setString(4, object.getLast_time().toString());
-        statement.setInt(5, object.getTimeInterval());
+        statement.setInt(1, timetable.getRoute_id());
+        statement.setString(2, timetable.getDay_of_week());
+        statement.setString(3, timetable.getFirst_time().toString());
+        statement.setString(4, timetable.getLast_time().toString());
+        statement.setInt(5, timetable.getTimeInterval());
 
         int rowsAdded = statement.executeUpdate();
         System.out.println(rowsAdded + " Rows added in timetables");
     }
 
+    /**
+     * Update a Timetable
+     *
+     * @param {Timetable} timetable - Timetable for updating
+     * @param {Timetable} newTimetable - Updated timetable
+     * @throws {Exception} If database connection fails
+     */
     @Override
-    public void update(Timetable object, Timetable newObject) throws Exception {
+    public void update(Timetable timetable, Timetable newTimetable) throws Exception {
         String sql =
                 "UPDATE timetables " +
                 "SET route_id = ?, day_of_week = ?, first_time = ?, last_time = ?, time_interval = ? " +
@@ -149,32 +184,44 @@ public class TimetableRepository implements I_TimetableRepo {
 
         PreparedStatement statement = connection.prepareStatement(sql);
 
-            statement.setInt(1, newObject.getRoute_id());
-            statement.setString(2, newObject.getDay_of_week());
-            statement.setString(3, newObject.getFirst_time().toString());
-            statement.setString(4, newObject.getLast_time().toString());
-            statement.setInt(5, newObject.getTimeInterval());
+            statement.setInt(1, newTimetable.getRoute_id());
+            statement.setString(2, newTimetable.getDay_of_week());
+            statement.setString(3, newTimetable.getFirst_time().toString());
+            statement.setString(4, newTimetable.getLast_time().toString());
+            statement.setInt(5, newTimetable.getTimeInterval());
             // WHERE
-            statement.setInt(6, object.getId());
+            statement.setInt(6, timetable.getId());
 
             statement.executeUpdate();
-            System.out.println("Timetable " + object.getId() + " has been updated");
+            System.out.println("Timetable " + timetable.getId() + " has been updated");
     }
 
+    /**
+     * Delete a Timetable
+     *
+     * @param {Timetable} timetable - Timetable for deletion
+     * @throws {Exception} If database connection fails
+     */
     @Override
-    public void delete(Timetable object) throws Exception {
+    public void delete(Timetable timetable) throws Exception {
         String sql =
                 "DELETE FROM timetables " +
                 "WHERE id = ?;";
 
         PreparedStatement statement = connection.prepareStatement(sql);
 
-            statement.setInt(1, object.getId());
+            statement.setInt(1, timetable.getId());
 
             statement.executeUpdate();
-        System.out.println("Timetable " + object.getId() + " has been deleted");
+        System.out.println("Timetable " + timetable.getId() + " has been deleted");
     }
 
+    /**
+     * Deletes all Timetables in a Route
+     *
+     * @param {Route} route - Route object
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public void deleteTimetablesInRoute(Route route) throws Exception {
         String sql =
@@ -188,6 +235,14 @@ public class TimetableRepository implements I_TimetableRepo {
         System.out.println(rowsDeleted + " rows in timetables have been deleted");
     }
 
+    /**
+     * Get time_from_start from Route and Stop
+     *
+     * @param {Route} route - Route object
+     * @param {Stop} stop - Stop object
+     * @return {int} - time_from_start
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public int getRouteStopTime(Route route, Stop stop) throws Exception {
         String sql =
@@ -207,6 +262,14 @@ public class TimetableRepository implements I_TimetableRepo {
         return time_from_start;
     }
 
+    /**
+     * Insert time_from_start into database
+     *
+     * @param {Route} route - Route object
+     * @param {Stop} stop - Stop object
+     * @param {int} timeFromStart - Time from start to insert
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public void insertRouteStopTime(Route route, Stop stop, int timeFromStart) throws Exception {
         // When we insert a new Route, we must add it into the route_stops table
@@ -224,6 +287,14 @@ public class TimetableRepository implements I_TimetableRepo {
         System.out.println(rowsAdded + " Rows added in route_stop_time");
     }
 
+    /**
+     * Update time_from_start in database
+     *
+     * @param {Route} route - Route object
+     * @param {Stop} stop - Stop object
+     * @param {int} newtimeFromStart - Time from start to update with
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public void updateRouteStopTime(Route route, Stop stop, int newTimeFromStart) throws Exception {
         // Creates a sql-query which updates times in the route_stop_time table
@@ -242,6 +313,12 @@ public class TimetableRepository implements I_TimetableRepo {
         System.out.println("time_from_start for " + stop.getName() + " has been updated");
     }
 
+    /**
+     * Deletes time_from_start in a Route
+     *
+     * @param {Route} route - Route object
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public void deleteRouteStopTime(Route route) throws Exception {
         // When deleting a Route, we must also delete the Route from the route_stops_time table
@@ -256,5 +333,11 @@ public class TimetableRepository implements I_TimetableRepo {
         // Executes the query and prints out the Route that was deleted in route_stop_time
         statement.executeUpdate();
         System.out.println("Route id " + route.getId() + " has been deleted from route_stop_time");
+    }
+
+    // Unused but implements from Interface
+    @Override
+    public Timetable getByName(String name) throws Exception {
+        return null;
     }
 }

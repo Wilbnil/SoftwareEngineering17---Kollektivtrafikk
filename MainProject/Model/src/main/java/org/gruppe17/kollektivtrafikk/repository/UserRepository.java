@@ -17,6 +17,13 @@ public class UserRepository implements I_UserRepo {
         this.connection = connection;
     }
 
+    /**
+     * Get User by Id
+     *
+     * @param {int} id - User id
+     * @return {User} - User object
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public User getById(int id) throws Exception {
         String sql =
@@ -47,20 +54,27 @@ public class UserRepository implements I_UserRepo {
             return returnUser;
     }
 
+    /**
+     * Get User by name
+     *
+     * @param {String} email - User email
+     * @return {User} - User object
+     * @throws {Exception} If database connection fails
+     */
     @Override
-    public User getByName(String name) throws Exception {
+    public User getByName(String email) throws Exception {
         String sql =
                 "SELECT * FROM administrators " +
                 "WHERE email = ?;";
 
         PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, name);
+            statement.setString(1, email);
 
             ResultSet result = statement.executeQuery();
 
             result.next();
             int returnId = result.getInt("id");
-            String email = result.getString("email");
+            String returnEmail = result.getString("email");
             String password = result.getString("password");
 
             // Since last_login can be null, the .parse method will cause a NullPointerException when
@@ -77,6 +91,12 @@ public class UserRepository implements I_UserRepo {
             return returnUser;
     }
 
+    /**
+     * Get all Users in database
+     *
+     * @return {ArrayList<User>} - Arraylist of all Users
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public ArrayList<User> getAll() throws Exception {
         String sql = "SELECT * FROM administrators;";
@@ -107,24 +127,37 @@ public class UserRepository implements I_UserRepo {
         return returnUsers;
     }
 
+    /**
+     * Insert User into database
+     *
+     * @param {User} user - User to insert
+     * @throws {Exception} If database connection fails
+     */
     @Override
-    public void insert(User object) throws Exception {
+    public void insert(User user) throws Exception {
         String sql =
                 "INSERT INTO administrators (email, password, created_on) " +
                 "VALUES (?, ?, ?);";
 
         PreparedStatement statement = connection.prepareStatement(sql);
 
-            statement.setString(1, object.getEmail());
-            statement.setString(2, object.getPassword());
-            statement.setString(3, object.getCreated_on().toString());
+            statement.setString(1, user.getEmail());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getCreated_on().toString());
 
         int rowsAdded = statement.executeUpdate();
         System.out.println(rowsAdded + " Rows added in administrators");
     }
 
+    /**
+     * Update User in database
+     *
+     * @param {User} user - User to update
+     * @param {User} newUser - Updated User
+     * @throws {Exception} If database connection fails
+     */
     @Override
-    public void update(User object, User newObject) throws Exception {
+    public void update(User user, User newUser) throws Exception {
         String sql =
                 "UPDATE administrators " +
                 "SET email = ?, password = ?, last_login = ? " +
@@ -132,32 +165,40 @@ public class UserRepository implements I_UserRepo {
 
         PreparedStatement statement = connection.prepareStatement(sql);
 
-            statement.setString(1, newObject.getEmail());
-            statement.setString(2, newObject.getPassword());
+            statement.setString(1, newUser.getEmail());
+            statement.setString(2, newUser.getPassword());
 
-            if(newObject.getLast_login() == null) {
+        // Since last_login can be null, the .toString method will cause a NullPointerException when
+        // last_login is null. Therefore we check if last_login is null before assigning it to the .toString method
+        if(newUser.getLast_login() == null) {
                 statement.setString(3, null);
             } else {
-                statement.setString(3, newObject.getLast_login().toString());
+                statement.setString(3, newUser.getLast_login().toString());
             }
             // WHERE
-            statement.setInt(4, object.getId());
+            statement.setInt(4, user.getId());
 
             statement.executeUpdate();
-            System.out.println("User " + object.getId() + " has been updated");
+            System.out.println("User " + user.getId() + " has been updated");
     }
 
+    /**
+     * Delete User in database
+     *
+     * @param {User} user - User for deletion
+     * @throws {Exception} If database connection fails
+     */
     @Override
-    public void delete(User object) throws Exception {
+    public void delete(User user) throws Exception {
         String sql =
                 "DELETE FROM administrators " +
                 "WHERE id = ?;";
 
         PreparedStatement statement = connection.prepareStatement(sql);
 
-            statement.setInt(1, object.getId());
+            statement.setInt(1, user.getId());
 
             statement.executeUpdate();
-            System.out.println("User " + object.getId() + " has been deleted");
+            System.out.println("User " + user.getId() + " has been deleted");
     }
 }
