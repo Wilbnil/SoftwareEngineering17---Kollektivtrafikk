@@ -123,7 +123,12 @@ public class StopService {
         stopRepository.delete(stop);
     }
 
-    // Finds the nearest replacement stop that has a roof
+    /**
+     * Finds the nearest replacement stop that has a roof
+     *
+     * @param {Stop} stop - Stop without roof
+     * @return {Stop} - Nearest Stop with roof
+     */
     public Stop getNearestStopWithRoof(Stop stop) {
         try {
             ArrayList<Stop> allStopsWithRoof = stopRepository.getAll();
@@ -135,6 +140,7 @@ public class StopService {
             double distance;
             int index = 0;
 
+            // Cycles through the Stops with roof = True and finds the one with the shortest distance
             for(Stop stopX : allStopsWithRoof) {
 
                 distance = DistanceCalculator.getDistance(stop.getLatitude(), stop.getLongitude(), stopX.getLatitude(), stopX.getLongitude());
@@ -153,18 +159,25 @@ public class StopService {
         return null;
     }
 
+    /**
+     * Finds the nearest replacement stop that has accessibility
+     *
+     * @param {Stop} stop - Stop without accessibility
+     * @return {Stop} - Nearest Stop with accessibility
+     */
     // Finds the nearest replacement stop that has accessibility help
     public Stop getNearestStopWithAccessibility(Stop stop) {
         try {
             ArrayList<Stop> allStopsWithAccessibility = stopRepository.getAll();
 
-            // Removes all stops from the ArrayList where the .getRoof() == false statement is true
+            // Removes all stops from the ArrayList where the .getAccessibility() == false statement is true
             allStopsWithAccessibility.removeIf(stopX -> stopX.getAccessibility() == false);
 
             double shortest = 10000;
             double distance;
             int index = 0;
 
+            // Cycles through the Stops with accessibility = True and finds the one with the shortest distance
             for(Stop stopX : allStopsWithAccessibility) {
 
                 distance = DistanceCalculator.getDistance(stop.getLatitude(), stop.getLongitude(), stopX.getLatitude(), stopX.getLongitude());
