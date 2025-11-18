@@ -3,12 +3,37 @@ package org.gruppe17.kollektivtrafikk.repository;
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.gruppe17.kollektivtrafikk.repository.interfaces.I_RouteRepo;
-import org.gruppe17.kollektivtrafikk.utility.DatabaseUtility;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+
+/**
+ * The {@code RouteRepository} handles all SQL-Queries to the database regarding the "routes"
+ * table and the "route_stops" table
+ * <p>
+ * The only exception is the getAllStopsInRoute() method, as it is used by all get methods
+ * to be able to return the stops ArrayList for the Route object
+ * </p>
+ * <p>
+ * The Connection entails a database connection and can for example be the connection
+ * from the SQLiteDatabase class' startDB() method
+ * </p>
+ * Example usages:
+ * <blockquote><pre>
+ *     RouteRepository routeRepo = new RouteRepository(connection);
+ *     Route returnedRoute = routeRepo.getById(2);
+ * </pre></blockquote>
+ * <p>
+ *     Using an Interface to instantiate RouteRepository can be beneficial to allow multiple
+ *     different classes that implements the Repository Interface to be instantiated depending on which Repository you want to use
+ * </p>
+ * <blockquote><pre>
+ *     I_RouteRepo routeRepo = new RouteRepository(connection);
+ *     Route returnedRoute = routeRepo.getById(2);
+ * </pre></blockquote>
+ */
 
 public class RouteRepository implements I_RouteRepo {
 
@@ -246,10 +271,15 @@ public class RouteRepository implements I_RouteRepo {
      *
      * @param {Route} route - Route to insert
      * @throws {Exception} If database connection fails
+     *
+     * Must use insertRouteStops with the same route after the insert method is called to
+     * prevent a faulty database. This keeps the code loosely connected
+     * Example usage:
+     * <pre>
+     *     routeRepo.insert(route);
+     *     routeRepo.insertRouteStops(route);
+     * </pre>
      */
-    // Must use insertRouteStops with the same route after the insert method is called to
-    // prevent a faulty database
-    // This keeps the code loosely connected
     @Override
     public void insert(Route route) throws Exception {
         // Creates a sql-query which inserts values into the "routes" table
@@ -275,10 +305,19 @@ public class RouteRepository implements I_RouteRepo {
      * @param {Route} route - Route to update
      * @param {Route} newRoute - Updated route
      * @throws {Exception} If database connection fails
+     *
+     * Must use deleteRouteStops, deleteRouteStopTime and deleteTimetable before the update
+     * method is called and use insertRouteStops after the update method is called to prevent a faulty database.
+     * This keeps the code loosely connected
+     * Example usage:
+     * <pre>
+     *     timetableRepo.deleteTimetable(route);
+     *     timetableRepo.deleteRouteStopTime(route);
+     *     routeRepo.deleteRouteStops(route);
+     *     routeRepo.update(route, newRoute);
+     *     routeRepo.insertRouteStops(newRoute);
+     * </pre>
      */
-    // Must use deleteRouteStops, deleteRouteStopTime and deleteTimetable before the update
-    // method is called and use insertRouteStops after the update method is called to prevent a faulty database
-    // This keeps the code loosely connected
     @Override
     public void update(Route route, Route newRoute) throws Exception {
         // Creates a sql-query which updates Routes in the "routes" table
@@ -307,10 +346,17 @@ public class RouteRepository implements I_RouteRepo {
      *
      * @param {Route} route - Route to delete
      * @throws {Exception} If database connection fails
+     *
+     * Use deleteRouteStops, deleteRouteStopTime and deleteTimetable before the delete method
+     * is called to prevent a faulty database. This keeps the code loosely connected
+     * Example usage:
+     * <pre>
+     *     timetableRepo.deleteTimetable(route);
+     *     timetableRepo.deleteRouteStopTime(route);
+     *     routeRepo.deleteRouteStops(route);
+     *     routeRepo.delete(route);
+     * </pre>
      */
-    // Use deleteRouteStops, deleteRouteStopTime and deleteTimetable before the
-    // delete method is called to prevent a faulty database
-    // This keeps the code loosely connected
     @Override
     public void delete(Route route) throws Exception {
         // Creates a sql-query which updates Routes in the "routes" table

@@ -9,6 +9,27 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * The {@code UserRepository} handles all SQL-Queries to the database regarding the
+ * "administrators" table in the userdatabase
+ * <p>
+ * The Connection entails a database connection and can for example be the connection
+ * from the SQLiteDatabase class' startDB() method
+ * </p>
+ * Example usage:
+ * <blockquote><pre>
+ *     UserRepository userRepo = new UserRepository(connection);
+ *     User returnedUser = userRepo.getById(1);
+ * </pre></blockquote>
+ *     Using an Interface to instantiate UserRepository can be beneficial to allow multiple
+ *     different classes that implements the Repository Interface to be instantiated depending on which Repository you want to use
+ * </p>
+ * <blockquote><pre>
+ *     I_UserRepo userRepo = new UserRepository(connection);
+ *     User returnedUser = userRepo.getById(1);
+ * </pre></blockquote>
+ */
+
 public class UserRepository implements I_UserRepo {
 
     private static Connection connection;

@@ -9,6 +9,27 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+/**
+ * The {@code StopRepository} handles all SQL-Queries to the database regarding the "stops"
+ * table
+ * <p>
+ * The Connection entails a database connection and can for example be the connection
+ * from the SQLiteDatabase class' startDB() method
+ * </p>
+ * Example usage:
+ * <blockquote><pre>
+ *     StopRepository stopRepo = new StopRepository(connection);
+ *     Stop returnedStop = stopRepo.getById(6);
+ * </pre></blockquote>
+ *     Using an Interface to instantiate StopRepository can be beneficial to allow multiple
+ *     different classes that implements the Repository Interface to be instantiated depending on which Repository you want to use
+ * </p>
+ * <blockquote><pre>
+ *     I_StopRepo stopRepo = new StopRepository(connection);
+ *     Stop returnedStop = stopRepo.getById(2);
+ * </pre></blockquote>
+ */
+
 public class StopRepository implements I_StopRepo {
 
     private static Connection connection;

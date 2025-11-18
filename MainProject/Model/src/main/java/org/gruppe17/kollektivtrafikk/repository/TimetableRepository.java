@@ -11,6 +11,27 @@ import java.sql.ResultSet;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+/**
+ * The {@code TimetableRepository} handles all SQL-Queries to the database regarding the
+ * "timetables" and "route_stop_time" tables
+ * <p>
+ * The Connection entails a database connection and can for example be the connection
+ * from the SQLiteDatabase class' startDB() method
+ * </p>
+ * Example usage:
+ * <blockquote><pre>
+ *     TimetableRepository timetableRepo = new TimetableRepository(connection);
+ *     Timetable returnedTimetable = timetableRepo.getById(14);
+ * </pre></blockquote>
+ *     Using an Interface to instantiate TimetableRepository can be beneficial to allow multiple
+ *     different classes that implements the Repository Interface to be instantiated depending on which Repository you want to use
+ * </p>
+ * <blockquote><pre>
+ *     I_TimetableRepo timetableRepo = new TimetableRepository(connection);
+ *     Timetable returnedTimetable = timetableRepo.getById(14);
+ * </pre></blockquote>
+ */
+
 public class TimetableRepository implements I_TimetableRepo {
 
     private static Connection connection;
