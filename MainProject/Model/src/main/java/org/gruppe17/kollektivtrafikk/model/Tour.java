@@ -31,10 +31,9 @@ public class Tour {
     private LocalDate date;
 
     // Constructor
-    public Tour(int routeId, ArrayList<LocalTime> arrivals, String transportType, LocalDate date) {
+    public Tour(int routeId, ArrayList<LocalTime> arrivals, LocalDate date) {
         this.routeId = routeId;
         this.arrivals = arrivals;
-        this.transportType = transportType;
         this.date = date;
     }
 

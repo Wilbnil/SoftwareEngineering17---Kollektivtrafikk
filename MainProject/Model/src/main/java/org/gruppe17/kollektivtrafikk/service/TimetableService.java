@@ -49,12 +49,15 @@ public class TimetableService {
            for (Timetable timetable : timetables) {
                if (!timetable.getDay_of_week().equalsIgnoreCase(today))
                    continue;
+                /*
 
+               Not needed when type is moved to Route class.
                Route route = routeService.getRouteById(timetable.getRoute_id());
                String type = "unknown";
                    if (route != null && route.getType() != null) {
                        type = route.getType();
                    }
+                */
 
                ArrayList<LocalTime> arrivals = new ArrayList<>();
                LocalTime current = timetable.getFirst_time();
@@ -65,7 +68,7 @@ public class TimetableService {
                    arrivals.add(current);
                    current = current.plusMinutes(timetable.getTimeInterval());
                }
-               Tour tour = new Tour(timetable.getRoute_id(), arrivals, type, LocalDate.now());
+               Tour tour = new Tour(timetable.getRoute_id(), arrivals, LocalDate.now());
                tours.add(tour);
            }
            return tours;
