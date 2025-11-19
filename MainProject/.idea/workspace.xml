@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d36602c1-fb54-4a69-88e7-1fc403fee53d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/repository/RouteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/repository/RouteRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/repository/StopRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/repository/StopRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/repository/TimetableRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/repository/TimetableRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/utility/DatabaseUtility.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/utility/DatabaseUtility.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/src/test/java/org/gruppe17/kollektivtrafikk/FrontEndControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/src/test/java/org/gruppe17/kollektivtrafikk/FrontEndControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,10 +46,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Application.executor": "Run",
     "JUnit.DistanceCalculatorTest.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Find-Nearest-Stop-Which",
+    "git-widget-placeholder": "develop",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/wilbn/OneDrive - Østfold University College/Dokumenter/Dataingeniør/3. Semester/Software Engineering/IntelliJ/musicas",
@@ -60,7 +58,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "editor.preferences.inline.completion",
