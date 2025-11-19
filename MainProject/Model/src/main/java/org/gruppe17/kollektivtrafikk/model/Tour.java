@@ -6,7 +6,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 /**
- * The {@code Tour} class represents an individual instance of a route.
+ * The {@code Tour} class represents an individual instance of a route. It is not an instance of the class, but of an
+ * object of the type {@code Route}.
  * Contrary to a general {@code Route}, a {@code Tour} takes place on a specific date and time.
  * A {@code Tour} is what the passenger is interested in knowing about, so they can plan their journey easier.
  * The {@code Timetable} class handles the data which need to be stored to create Tours.
@@ -20,10 +21,7 @@ import java.util.ArrayList;
  *{@code DistanceCalculator} is also used, but in the method that calculates the duration of the entire Tour.
  * This method might not be relevant for the MVP though,
  * as the user will more generally be interested in the time between their boarded and disembarked stops.
- *<p> ...
- *
- *
- */
+*/
 
 
 public class Tour {
@@ -46,8 +44,10 @@ public class Tour {
     }
 
     /**
-     * wip
-     * @return
+     * Uses DistanceCalculator to calculate traveltime between the first and last stop to get the Tour's specific
+     * travel time. This method will therefore not take any parameters as it uses the Tour's list to get the times.
+     *
+     * @return A {@code LocalTime} object that represents the whole Tour's duration.
      */
     public LocalTime getDuration() {
         if (arrivals == null || arrivals.size() == 2) return null;
@@ -55,8 +55,8 @@ public class Tour {
     }
 
     /**
-     * wip
-     * @return
+     * Gets the time the tour starts by getting the first time in the list of times.
+     * @return A {@code LocalTime} object of the first time of the Tour.
      */
     public LocalTime getStartTime() {
         return arrivals != null && !arrivals.isEmpty() ? arrivals.get(0) : null;
