@@ -65,6 +65,38 @@ package "Services" #LightGreen {
 
 ' Repos
 package "Repositories" #LightYellow {
+    interface "I_Repo<Object>" as I_Repo {
+        + getById() : Object
+        + getByName() : Object
+        + getAll() : ArrayList<Object>
+        + insert() : void
+        + update() : void
+        + delete() : void
+    }
+    
+    interface I_StopRepo {
+    }
+    
+    interface I_RouteRepo {
+        + getAllFromTo() : ArrayList<Route>
+        + getAllStopsInRoute() : ArrayList<Route>
+        + insertRouteStops() : void
+        + deleteRouteStops() : void
+    }
+    
+    interface I_TimetableRepo {
+        + getRouteStopTime() : int
+        + insertRouteStopTime() : void
+        + updateRouteStopTime() : void
+        + deleteRouteStopTime() : void
+        + getTimetableRouteDay() : Timetable
+        + getTimetablesInRoute() : ArrayList<Timetable>
+        + deleteTimetablesInRoute() : void
+    }
+    
+    interface I_UserRepo {
+    }
+    
     class StopRepository {
         + getById() : Stop
         + getByName() : Stop
@@ -209,6 +241,17 @@ RouteRepository .up.> SQLiteDatabase
 TimetableRepository .up.> SQLiteDatabase
 UserRepository .up.> SQLiteDatabase
 
+' Interface arv
+I_StopRepo --|> I_Repo
+I_RouteRepo --|> I_Repo
+I_TimetableRepo --|> I_Repo
+I_UserRepo --|> I_Repo
+
+StopRepository ..|> I_StopRepo
+RouteRepository ..|> I_RouteRepo
+TimetableRepository ..|> I_TimetableRepo
+UserRepository ..|> I_UserRepo
+
 ' Repositories -> Models
 StopRepository --> Stop
 RouteRepository --> Route
@@ -218,6 +261,7 @@ UserRepository --> User
 ' Model koblinger
 Route o-- Stop
 Tour ..> Route
+Timetable ..> Route
 
 ' Utility koblinger
 RouteService ..> DistanceCalculator
