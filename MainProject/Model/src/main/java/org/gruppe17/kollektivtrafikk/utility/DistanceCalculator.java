@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Duration;
 
+import static java.lang.Math.round;
+
 
 /**
  * The {@code DistanceCalculator} class is a utility class that bring methods for calculating travel time and distance
@@ -49,7 +51,7 @@ public final class DistanceCalculator {
 
         double dx = toX - fromX;
         double dy = toY - fromY;
-        return Math.sqrt(dx * dx + dy * dy);
+        return (double) round(Math.sqrt(dx * dx + dy * dy)*100)/100;
 
     }
 
