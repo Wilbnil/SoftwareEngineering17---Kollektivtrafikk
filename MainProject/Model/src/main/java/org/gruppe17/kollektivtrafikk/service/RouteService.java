@@ -51,10 +51,9 @@ public class RouteService {
     public double calculateDistanceBetweenStops(Stop fromStop, Stop toStop) {
         if (fromStop == null || toStop == null) return 0.0;
 
-        return DistanceCalculator.getDistance(
-                fromStop.getLongitude(), fromStop.getLatitude(),
-                toStop.getLongitude(), toStop.getLatitude()
-        );
+        double degrees = DistanceCalculator.getDistance(fromStop.getLongitude(), fromStop.getLatitude(), toStop.getLongitude(), toStop.getLatitude());
+        double km = degrees * 111;
+        return Math.round(km * 100.0) / 100.0;
     }
 
     // Adds a route to the database

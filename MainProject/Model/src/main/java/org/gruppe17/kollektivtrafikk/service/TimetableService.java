@@ -52,28 +52,21 @@ public class TimetableService {
 
                Route route = routeService.getRouteById(timetable.getRoute_id());
                String type = "unknown";
-
                    if (route != null && route.getType() != null) {
                        type = route.getType();
                    }
 
-                   Tour tour = new Tour();
-                   tour.setRouteId(timetable.getRoute_id());
-                   tour.setTransportType(type);
-                   tour.setDate(LocalDate.now());
+               ArrayList<LocalTime> arrivals = new ArrayList<>();
+               LocalTime current = timetable.getFirst_time();
+               LocalTime last = timetable.getLast_time();
+               if (last.isBefore(current)) last = last.plusHours(24);
 
-                   ArrayList<LocalTime> arrivals = new ArrayList<>();
-                   LocalTime current = timetable.getFirst_time();
-                   LocalTime last = timetable.getLast_time();
-                   if (last.isBefore(current)) last = last.plusHours(24);
-
-                   while (!current.isAfter(last)) {
-                       arrivals.add(current);
-                       current = current.plusMinutes(timetable.getTimeInterval());
-                   }
-
-                   tour.setArrivals(arrivals);
-                   tours.add(tour);
+               while (!current.isAfter(last)) {
+                   arrivals.add(current);
+                   current = current.plusMinutes(timetable.getTimeInterval());
+               }
+               Tour tour = new Tour(timetable.getRoute_id(), arrivals, type, LocalDate.now());
+               tours.add(tour);
            }
            return tours;
         } catch (Exception e) {
@@ -134,7 +127,6 @@ public class TimetableService {
             if (!next.isBefore(now)) {
                 return next.toLocalTime();
             }
-
             next = next.plusMinutes(interval);
         }
         return null;

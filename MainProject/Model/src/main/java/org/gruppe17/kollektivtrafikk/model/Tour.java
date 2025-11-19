@@ -13,6 +13,13 @@ public class Tour {
     private String transportType;
     private LocalDate date;
 
+    public Tour(int routeId, ArrayList<LocalTime> arrivals, String transportType, LocalDate date) {
+        this.routeId = routeId;
+        this.arrivals = arrivals;
+        this.transportType = transportType;
+        this.date = date;
+    }
+
     public int getRouteId() {
         return routeId;
     }
@@ -24,7 +31,6 @@ public class Tour {
     public ArrayList<LocalTime> getArrivals() {
         return new ArrayList<>(arrivals);
     }
-    public void setArrivals(ArrayList<LocalTime> arrivals) {}
 
     public String getTransportType() {
         return transportType;
