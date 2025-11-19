@@ -12,13 +12,11 @@
     <artifactId>Controller</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>org.gruppe17.kollektivtrafikk</groupId>
-            <artifactId>View</artifactId>
+            <artifactId>Model</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>io.javalin</groupId>
             <artifactId>javalin</artifactId>
