@@ -8,11 +8,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 
+import static java.lang.Math.round;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DistanceCalculatorTest {
 
-    // Realistiske verdier.
+    // Realistic values
     @Test
     public void testDistanceCalculatorTravelTime_ReasonableValues() {
         // Arrange
@@ -36,7 +37,8 @@ public class DistanceCalculatorTest {
         assertEquals(LocalTime.of(6, 22), time2);
         assertEquals(LocalTime.of(0, 40), time3);
 
-        // Test av overloadet metode som kun tar inn tid:
+
+        // Test of the overloaded method which only takes LocalTime and no date:
         // Assert
         LocalTime timeOnlyFrom1 = LocalTime.of(17, 30);
         LocalTime timeOnlyTo1 = LocalTime.of(17, 31);
@@ -58,11 +60,11 @@ public class DistanceCalculatorTest {
         assertEquals(LocalTime.of(23, 59), timeOnly3);
     }
 
-    // Uforventede verdier
+    // Unexpected values
     @Test
     public void testDistanceCalculatorTravelTime_UnexpectedValues() {
 
-        // Reverserte tider:
+        // Reversed times:
         // Arrange
         LocalDateTime timeFrom1 = LocalDateTime.of(LocalDate.now(), LocalTime.of(12, 30));
         LocalDateTime timeTo1 = LocalDateTime.of(LocalDate.now(), LocalTime.of(13, 0));
@@ -84,7 +86,7 @@ public class DistanceCalculatorTest {
         assertEquals(LocalTime.of(17, 38), time2);
         assertEquals(LocalTime.of(23, 20), time3);
 
-        // Lange og korte tider:
+        // Long and short times:
         // Arrange
         LocalDateTime timeFrom4 = LocalDateTime.of
                 (LocalDate.of(2000, 1, 1), LocalTime.of(12, 0));
@@ -119,17 +121,27 @@ public class DistanceCalculatorTest {
 
     }
 
-    // Opplagte testverdier:
+    // Obvious test values:
     @Test
     public void testDistanceCalculatorDistance_ReasonableValues() {
         //Act
-        double distance = DistanceCalculator.getDistance(0.0, 0.0, 3.0, 0.0);
+        double distance1 = DistanceCalculator.getDistance(0.0, 0.0, 3.0, 0.0);
+        double distance2 = DistanceCalculator.getDistance(1.0, 1.0, 2.0, 1.0);
+        double distance2Reversed = DistanceCalculator.getDistance(2.0, 1.0, 1.0, 1.0);
+        double distance3 = DistanceCalculator.getDistance(2.5, -1.5, -1.0, -1.0);
+        double distance3Reversed = DistanceCalculator.getDistance(-1.0, -1.0 , 2.5, -1.5);
+        double distance5 = DistanceCalculator.getDistance(10.0, 12.0, -10.0, -12.0);
 
         // Assert
-        assertEquals(3, distance);
+        assertEquals(3, distance1);
+        assertEquals(1, distance2);
+        assertEquals(1, distance2Reversed);
+        assertEquals(3.54, distance3);
+        assertEquals(3.54, distance3Reversed);
+        assertEquals(31.24, distance5);
     }
 
-    // Mindre forventede verdier:
+    // Less expected values:
     @Test
     public void testDistanceCalculatorDistance_UnexpectedValues() {
         //Act
@@ -141,12 +153,12 @@ public class DistanceCalculatorTest {
         double distance5 = DistanceCalculator.getDistance(1.0, 10.0, 1.0, 0.0);
 
         // Assert
-        // Tomme lengder:
+        // Empty lengths:
         assertEquals(0, distance1);
         assertEquals(0, distance2);
         assertEquals(0, distance3);
 
-        // Negative lengder:
+        // Negative lengths:
         assertEquals(5, distance4);
         assertEquals(10, distance5);
 
