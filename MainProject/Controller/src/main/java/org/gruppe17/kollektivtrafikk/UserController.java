@@ -6,20 +6,63 @@ import org.gruppe17.kollektivtrafikk.service.UserService;
 
 import java.util.ArrayList;
 
+
+/**
+ * The {@code UserController} class handles all HTTP endpoints related user management.
+ * It acts as the middle layer between the HTTP request and the {@link UserService},
+ * providing methods for creating, retrieving, updating and deleting user accounts.
+ *
+ * <p>Thos controller supports:</p>
+ * <li>Fetching all users</li>
+ * <li>Fetching a user by ID</li>
+ * <li>Adding a new user</li>
+ * <li>Updating an existing user</li>
+ * <li>Deleting a user</li>
+ * <li>Logging in (simple validation only)</li>
+ *
+ * Correct Usage Example:
+ * <blockquote><pre>
+ *     app.get("/api/users", userController::getAllUsers);
+ *     app.post("'api/users", userController::addUser);
+ * </pre></blockquote>
+ *
+ * Incorrect Usage Example:
+ * <blockquote><pre>
+ *     userController.addUser(null);
+ * </pre></blockquote>
+ *
+ * This controller does not implement authentication or cookie/session
+ * management. Admin permissions are simulated using an HTTP header {@code admin=true}.
+ */
 public class UserController {
 
     private UserService userService;
 
-
+    /**
+     * Creates a new {@code UserController} instance with the required service dependency
+     *
+     * @param userService service used to perform user-related operations
+     */
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Return all users as JSON.
+     *
+     * @param context Javalin HTTP context
+     */
     public void getAllUsers(Context context) {
         ArrayList<User> users = userService.getAllUsers();
         context.json(users);
     }
 
+    /**
+     * Return a user by ID.
+     * If the user does not exist, return HTTP 404.
+     *
+     * @param context Javalin request context containing a path parameter {@code id}
+     */
     public void getUserById(Context context) {
         try {
             int id = Integer.parseInt(context.pathParam("id"));
@@ -36,6 +79,15 @@ public class UserController {
         }
     }
 
+    /**
+     * Adds a new user using form parameters {@code email} and {@code password}
+     *
+     * Admin right are checked using the HTTP header:
+     * admin: true
+     *
+     *
+     * @param context Javalin HTTP context
+     */
     public void addUser(Context context) {
         try {
 
@@ -58,6 +110,15 @@ public class UserController {
             context.status(400).result("Invalid request");
         }
     }
+
+    /**
+     * Updates an existing user.
+     * If the user does not exist, HTTP 404 is returned.
+     *
+     * <p>Admin rights are required and are passed via {@code admin} header</p>
+     *
+     * @param context Javalin request context
+     */
 
     public void updateUser(Context context) {
         try {
@@ -84,6 +145,14 @@ public class UserController {
         }
     }
 
+    /**
+     * Deletes a user by ID.
+     * If the user does not exist, it returns HTTP 404.
+     * <p>Admin rights are required via {@code admin} header</p>
+     *
+     * @param context Javalin HTTP context
+     */
+
     public void deleteUser(Context context) {
         try {
 
@@ -104,6 +173,15 @@ public class UserController {
             context.status(400).result("Invalid request");
         }
     }
+
+    /**
+     * A simplified login method used onlu for demonstration.
+     *
+     * <p>This method does not use hashing, sessions.
+     * It simply checks for one hardcoded email/password combination.</p>
+     *
+     * @param context Javalin HTTP context
+     */
 
     public void login(Context context) {
         String email = context.formParam("email");

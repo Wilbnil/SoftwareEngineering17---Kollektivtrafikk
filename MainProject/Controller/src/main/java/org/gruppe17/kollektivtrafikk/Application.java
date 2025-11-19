@@ -12,9 +12,36 @@ import org.gruppe17.kollektivtrafikk.service.RouteService;
 import org.gruppe17.kollektivtrafikk.service.StopService;
 import org.gruppe17.kollektivtrafikk.service.TimetableService;
 import org.gruppe17.kollektivtrafikk.service.UserService;
-
 import java.sql.Connection;
 
+/**
+ * The {@code Application} class serves as the entry point of the entire Kollektivtrafikk project.
+ * It is responsible for:
+ *
+ * <li>Starting Javalin web server</li>
+ * <li>Serving static frontend files (HTML)</li>
+ * <li>Initializing database connection</li>
+ * <li>Contructing repositories, services, adn controllers</li>
+ * <li>Registering all REST API endpoints</li>
+ *
+ * <p>This class follows a simplified MVC architecture, where:</p>
+ * <li>Repositories: handles database access</li>
+ * <li>Services: contain all business logic</li>
+ * <li>Controllers: respond to HTTP requests</li>
+ *
+ * Correct Usage Example:
+ * <blockquote><pre>
+ *     java Application
+ * </pre></blockquote>
+ *
+ * Incorrect Usage Example:
+ * <blockquote><pre>
+ *     new StopController(null);
+ * </pre></blockquote>
+ *
+ * <p>Port: the web server runs on port {@code 8082}.</p>
+ *
+ */
 
 public class Application {
     public static void main(String[] args) {
