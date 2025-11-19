@@ -29,13 +29,13 @@ public final class DistanceCalculator {
     private DistanceCalculator() {}
 
     /**
-     * Returns the distance between two locations on a two-dimensional plane in kilometers. The method uses coordinates to
+     * Returns the distance between two locations on a two-dimensional plane. The method uses coordinates to
      * calculate the distance, which is represented by the four parameters. It doesn't matter which direction
      * is considered x and y, as long as it is used consistently between the two locations. Which location is considered
      * to and from also doesn't matter as long as the fromX and Y and toX and Y respectively, belong to the same location.
      *
      * <p>
-     *
+     * Note that this method does not return the value in a readable measurement such as kilometers.
      * </p>
      *
      * parameters:
@@ -43,7 +43,7 @@ public final class DistanceCalculator {
      * @param fromY A coordinate belonging to the first location in an undetermined direction, but it must be consistent with toY.
      * @param toX A coordinate belonging to the second location in an undetermined direction, but it must be consistent with fromX.
      * @param toY A coordinate belonging to the second location in an undetermined direction, but it must be consistent with fromY.
-     * @return The distance between the two locations in kilometers as rounded with to decimals.
+     * @return The distance between the two locations rounded with to decimals.
      */
     public static double getDistance(double fromX, double fromY, double toX, double toY) {
         double dx = toX - fromX;

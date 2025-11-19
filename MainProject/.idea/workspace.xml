@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d36602c1-fb54-4a69-88e7-1fc403fee53d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/utility/DistanceCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/utility/DistanceCalculator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -96,7 +97,7 @@
       <workItem from="1760977516794" duration="5782000" />
       <workItem from="1761402652954" duration="662000" />
       <workItem from="1763541989373" duration="3938000" />
-      <workItem from="1763553665321" duration="546000" />
+      <workItem from="1763553665321" duration="8245000" />
     </task>
     <servers />
   </component>

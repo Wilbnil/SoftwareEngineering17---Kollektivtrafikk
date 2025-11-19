@@ -136,9 +136,9 @@ public class DistanceCalculatorTest {
         assertEquals(3, distance1);
         assertEquals(1, distance2);
         assertEquals(1, distance2Reversed);
-        assertEquals(3.54, (double) round(distance3 * 100) /100);
-        assertEquals(3.54, (double) round(distance3Reversed * 100)/100);
-        assertEquals(31.24, (double) round(distance5 * 100) /100);
+        assertEquals(3.54, distance3);
+        assertEquals(3.54, distance3Reversed);
+        assertEquals(31.24, distance5);
     }
 
     // Less expected values:
