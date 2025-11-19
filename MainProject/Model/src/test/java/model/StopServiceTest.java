@@ -7,7 +7,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,13 +14,11 @@ public class StopServiceTest {
 
     @Test
     public void testGetStopsWithRoof_ReasonableValues() {
-    public void testGetStopsWithRoof_ReasonableValues() {
         // Arrange
         FakeStopRepository fakeRepo = new FakeStopRepository();
         StopService service = new StopService(fakeRepo);
 
         // Act
-        ArrayList<Stop> result = service.getStopsWithRoof();
         ArrayList<Stop> result = service.getStopsWithRoof();
 
         // Assert
@@ -32,15 +29,12 @@ public class StopServiceTest {
 
     @Test
     public void testGetStopsWithRoof_UnexpectedValues_EmptyDatabase() {
-    public void testGetStopsWithRoof_UnexpectedValues_EmptyDatabase() {
         // Arrange
         FakeStopRepository fakeRepo = new FakeStopRepository();
-        fakeRepo.empty = true;
         fakeRepo.empty = true;
         StopService service = new StopService(fakeRepo);
 
         // Act
-        ArrayList<Stop> result = service.getStopsWithRoof();
         ArrayList<Stop> result = service.getStopsWithRoof();
 
         // Assert
@@ -53,11 +47,9 @@ public class StopServiceTest {
         // Arrange
         FakeStopRepository fakeRepo = new FakeStopRepository();
         fakeRepo.throwError = true;
-        fakeRepo.throwError = true;
         StopService service = new StopService(fakeRepo);
 
         // Act
-        ArrayList<Stop> result = service.getStopsWithRoof();
         ArrayList<Stop> result = service.getStopsWithRoof();
 
         // Assert
@@ -73,7 +65,6 @@ public class StopServiceTest {
 
         // Act
         ArrayList<Stop> result = service.getAccessibleStops();
-        ArrayList<Stop> result = service.getAccessibleStops();
 
         // Assert
         assertEquals(2, result.size());
@@ -83,15 +74,12 @@ public class StopServiceTest {
 
     @Test
     public void testGetAccessibleStops_UnexpectedValues_EmptyDatabase() {
-    public void testGetAccessibleStops_UnexpectedValues_EmptyDatabase() {
         // Arrange
         FakeStopRepository fakeRepo = new FakeStopRepository();
-        fakeRepo.empty = true;
         fakeRepo.empty = true;
         StopService service = new StopService(fakeRepo);
 
         // Act
-        ArrayList<Stop> result = service.getAccessibleStops();
         ArrayList<Stop> result = service.getAccessibleStops();
 
         // Assert
@@ -104,11 +92,9 @@ public class StopServiceTest {
         // Arrange
         FakeStopRepository fakeRepo = new FakeStopRepository();
         fakeRepo.throwError = true;
-        fakeRepo.throwError = true;
         StopService service = new StopService(fakeRepo);
 
         // Act
-        ArrayList<Stop> result = service.getAccessibleStops();
         ArrayList<Stop> result = service.getAccessibleStops();
 
         // Assert
@@ -124,7 +110,6 @@ public class StopServiceTest {
 
         // Act
         ArrayList<Stop> result = service.getAllStops();
-        ArrayList<Stop> result = service.getAllStops();
 
         // Assert
         assertEquals(4, result.size());
@@ -135,16 +120,12 @@ public class StopServiceTest {
         // Arrange
         FakeStopRepository fakeRepo = new FakeStopRepository();
         fakeRepo.empty = true;
-        fakeRepo.empty = true;
         StopService service = new StopService(fakeRepo);
 
         // Act
         ArrayList<Stop> result = service.getAllStops();
-        ArrayList<Stop> result = service.getAllStops();
 
         // Assert
-        assertEquals(0, result.size());
-        assertTrue(result.isEmpty());
         assertEquals(0, result.size());
         assertTrue(result.isEmpty());
     }
@@ -258,19 +239,11 @@ public class StopServiceTest {
     class FakeStopRepository extends StopRepository {
         public boolean empty = false;
         public boolean throwError = false;
-    class FakeStopRepository extends StopRepository {
-        public boolean empty = false;
-        public boolean throwError = false;
 
-        FakeStopRepository() {
         FakeStopRepository() {
             super(null);
         }
 
-        public ArrayList<Stop> getAll() throws Exception {
-            if (throwError) {
-                throw new Exception("Error");
-            }
         public ArrayList<Stop> getAll() throws Exception {
             if (throwError) {
                 throw new Exception("Error");
@@ -280,47 +253,11 @@ public class StopServiceTest {
             }
 
             ArrayList<Stop> stops = new ArrayList<>();
-            ArrayList<Stop> stops = new ArrayList<>();
             stops.add(new Stop(1, "Fredrikstad Bussterminal", "Fredrikstad", 24.2, 4.6, true, true));
-            stops.add(new Stop(2, "Sarpsborg Bussterminal", "Sarpsborg", 30.1, 7.3, true, false));
             stops.add(new Stop(2, "Sarpsborg Bussterminal", "Sarpsborg", 30.1, 7.3, true, false));
             stops.add(new Stop(3, "AMFI Borg", "Sarpsborg", 36.1, 10.3, false, true));
             stops.add(new Stop(4, "Torsbekken", "Sarpsborg", 45.1, 11.3, false, false));
             return stops;
-        }
-
-        public Stop getById(int id) throws Exception {
-            if (throwError) {
-                throw new Exception("Error");
-            }
-            if (empty) {
-                return null;
-            }
-
-            ArrayList<Stop> stops = getAll();
-            for (Stop stop : stops) {
-                if (stop.getId() == id) {
-                    return stop;
-                }
-            }
-            return null;
-        }
-
-        public Stop getByName(String name) throws Exception {
-            if (throwError) {
-                throw new Exception("Error");
-            }
-            if (empty) {
-                return null;
-            }
-
-            ArrayList<Stop> stops = getAll();
-            for (Stop stop : stops) {
-                if (stop.getName().equals(name)) {
-                    return stop;
-                }
-            }
-            return null;
         }
 
         public Stop getById(int id) throws Exception {
