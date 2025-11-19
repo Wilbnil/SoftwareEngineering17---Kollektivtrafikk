@@ -232,5 +232,9 @@ public class UserServiceTest {
             }
             return null;
         }
+
+        public void update(User oldUser, User newUser) throws Exception {
+            // Fake update
+        }
     }
 }

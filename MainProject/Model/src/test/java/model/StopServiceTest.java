@@ -3,6 +3,7 @@ package model;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.gruppe17.kollektivtrafikk.repository.StopRepository;
 import org.gruppe17.kollektivtrafikk.service.StopService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -198,6 +199,40 @@ public class StopServiceTest {
 
         // Assert
         assertNull(resultNonExistent);
+    }
+
+    @Test
+    @DisplayName("Nearest stop returned successfully")
+    public void getAccegetNearestStopWithRoof_NearestStopReturnedSuccessfully() {
+        // Arramge
+        FakeStopRepository fakeRepo = new FakeStopRepository();
+        StopService stopService = new StopService(fakeRepo);
+
+        Stop stopWithoutRoof = new Stop(3, "AMFI Borg", "Sarpsborg", 36.1, 10.3, false, true);
+
+        // Act
+        Stop stopWithRoof = stopService.getNearestStopWithRoof(stopWithoutRoof);
+
+        // Assert
+        assertTrue(stopWithRoof.getRoof());
+        assertEquals("Sarpsborg Bussterminal" ,stopWithRoof.getName());
+    }
+
+    @Test
+    @DisplayName("Nearest stop returned successfully")
+    public void getAccegetNearestStopWithAccessibility_NearestStopReturnedSuccessfully() {
+        // Arramge
+        FakeStopRepository fakeRepo = new FakeStopRepository();
+        StopService stopService = new StopService(fakeRepo);
+
+        Stop stopWithoutAccessibility = new Stop(2, "Sarpsborg Bussterminal", "Sarpsborg", 30.1, 7.3, true, false);
+
+        // Act
+        Stop stopWithAccessibility = stopService.getNearestStopWithAccessibility(stopWithoutAccessibility);
+
+        // Assert
+        assertTrue(stopWithAccessibility.getAccessibility());
+        assertEquals("Fredrikstad Bussterminal" ,stopWithAccessibility.getName());
     }
 
     // Fake repository

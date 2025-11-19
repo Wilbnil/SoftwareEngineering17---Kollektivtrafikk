@@ -9,18 +9,19 @@ import org.gruppe17.kollektivtrafikk.utility.DistanceCalculator;
 
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class RouteService {
     private RouteRepository routeRepository;
     private TimetableRepository timetableRepository;
 
-    public RouteService(RouteRepository routeRepository) {
+    public RouteService(RouteRepository routeRepository, TimetableRepository timetableRepository) {
         this.routeRepository = routeRepository;
+        this.timetableRepository = timetableRepository;
     }
 
     //gets all the routes
-    public  List<Route> getAllRoutes() {
+    public  ArrayList<Route> getAllRoutes() {
         try {
             return routeRepository.getAll();
         } catch (Exception e) {
@@ -38,9 +39,9 @@ public class RouteService {
         }
     }
 
-    public List<Route> getRouteBetweenStops(int fromStopId, int toStopId) {
+    public ArrayList<Route> getRouteBetweenStops(int fromStopId, int toStopId) {
        try {
-           return routeRepository.getAllFromTo(fromStopId, toStopId);
+          return routeRepository.getAllFromTo(fromStopId, toStopId);
        } catch (Exception e) {
            System.err.println(e.getMessage());
            return new ArrayList<>();
@@ -50,10 +51,9 @@ public class RouteService {
     public double calculateDistanceBetweenStops(Stop fromStop, Stop toStop) {
         if (fromStop == null || toStop == null) return 0.0;
 
-        return DistanceCalculator.getDistance(
-                fromStop.getLongitude(), fromStop.getLatitude(),
-                toStop.getLongitude(), toStop.getLatitude()
-        );
+        double degrees = DistanceCalculator.getDistance(fromStop.getLongitude(), fromStop.getLatitude(), toStop.getLongitude(), toStop.getLatitude());
+        double km = degrees * 111;
+        return Math.round(km * 100.0) / 100.0;
     }
 
     // Adds a route to the database

@@ -3,12 +3,37 @@ package org.gruppe17.kollektivtrafikk.repository;
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.gruppe17.kollektivtrafikk.model.Stop;
 import org.gruppe17.kollektivtrafikk.repository.interfaces.I_RouteRepo;
-import org.gruppe17.kollektivtrafikk.utility.DatabaseUtility;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+
+/**
+ * The {@code RouteRepository} class handles all SQL-Queries to the database regarding the "routes"
+ * table and the "route_stops" table
+ * <p>
+ * The only exception is the getAllStopsInRoute() method, as it is used by all get methods
+ * to be able to return the stops ArrayList for the Route object
+ * </p>
+ * <p>
+ * The Connection entails a database connection and can for example be the connection
+ * from the SQLiteDatabase class' startDB() method
+ * </p>
+ * Example usages:
+ * <blockquote><pre>
+ *     RouteRepository routeRepo = new RouteRepository(connection);
+ *     Route returnedRoute = routeRepo.getById(2);
+ * </pre></blockquote>
+ * <p>
+ *     Using an Interface to instantiate RouteRepository can be beneficial to allow multiple
+ *     different classes that implements the Repository Interface to be instantiated depending on which Repository you want to use
+ * </p>
+ * <blockquote><pre>
+ *     I_RouteRepo routeRepo = new RouteRepository(connection);
+ *     Route returnedRoute = routeRepo.getById(2);
+ * </pre></blockquote>
+ */
 
 public class RouteRepository implements I_RouteRepo {
 
@@ -18,6 +43,14 @@ public class RouteRepository implements I_RouteRepo {
         this.connection = connection;
     }
 
+
+    /**
+     * Get Route by id
+     *
+     * @param {int} id - Route id
+     * @return {Route} - Route object
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public Route getById(int id) throws Exception {
         // SQL-query for returning a Route from a specified id
@@ -26,9 +59,10 @@ public class RouteRepository implements I_RouteRepo {
                 "WHERE id = ? " +
                 "ORDER BY id; ";
 
+        // Turns the query into a prepared statement for execution
         PreparedStatement statement = connection.prepareStatement(sql);
 
-        // Sets the ? in the sql-query to the route_id parameter
+        // Sets the ? in the sql-query to the id parameter
         statement.setInt(1, id);
 
         // Executes the query
@@ -48,23 +82,31 @@ public class RouteRepository implements I_RouteRepo {
         return returnRoute;
     }
 
+    /**
+     * Get Route by name
+     *
+     * @param {String} name - Route name
+     * @return {Route} - Route object
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public Route getByName(String name) throws Exception {
-        // SQL-query for returning a Route from a specified id
+        // SQL-query for returning a Route from a specified name
         String routeQuery =
                 "SELECT id, name, type FROM routes " +
                 "WHERE name = ? " +
                 "ORDER BY id; ";
 
+        // Turns the query into a prepared statement for execution
         PreparedStatement routeStatement = connection.prepareStatement(routeQuery);
 
-            // Sets the ? in the sql-query to the route_id parameter
+            // Sets the ? in the sql-query to the name parameter
             routeStatement.setString(1, name);
 
             // Executes the query
             ResultSet result = routeStatement.executeQuery();
 
-            // Since route ids are distinct, we will always only get one row back from the database
+            // Since route names are distinct, we will always only get one row back from the database
             // Puts the id, name and stops into a new Route object and returns it
             result.next();
             int id = result.getInt("id");
@@ -78,6 +120,12 @@ public class RouteRepository implements I_RouteRepo {
             return returnRoute;
     }
 
+    /**
+     * Get all Routes in database
+     *
+     * @return {ArrayList<Route>} - ArrayList of Route objects
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public ArrayList<Route> getAll() throws Exception {
         // SQL-query for returning all Routes
@@ -85,6 +133,7 @@ public class RouteRepository implements I_RouteRepo {
                 "SELECT id, name, type FROM routes " +
                 "ORDER BY id; ";
 
+        // Turns the query into a prepared statement for execution
         PreparedStatement statement = connection.prepareStatement(sql);
 
             // Executes the query
@@ -111,16 +160,24 @@ public class RouteRepository implements I_RouteRepo {
             return routeReturn;
     }
 
+    /**
+     * Get all Routes that contains a Stop from and to
+     *
+     * @param {int} start_stop - Stop id from
+     * @param {int} end_stop - Stop id to
+     * @return @return {ArrayList<Route>} - ArrayList of Route objects
+     * @throws {Exception} If start_stop and end_stop is equal
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public ArrayList<Route> getAllFromTo(int start_stop, int end_stop) throws Exception {
         // Checks if startStop is the same as the endStop
-        // The only reason for this is to prevent users breaking the system
+        // This prevents the method from returning null
         if (start_stop == end_stop) {
-            return null;
+            throw new Exception("Start_stop and end_stop cannot be equal");
         } else {
 
             // SQL-query for finding info about the Route(s) from the two stops
-            // The "" + "" is only there to make the code more readable
             String sql =
                     "SELECT id, name, type FROM routes AS r " +
                     "INNER JOIN route_stops AS rs1 ON rs1.route_id = r.id " +
@@ -162,6 +219,13 @@ public class RouteRepository implements I_RouteRepo {
         }
     }
 
+    /**
+     * Get all Stops in a Route
+     *
+     * @param {int} route_id - Route id
+     * @return {ArrayList<Stop>} - ArrayList of Stop objects
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public ArrayList<Stop> getAllStopsInRoute(int route_id) throws Exception {
         // SQL-query to insert Stops into the Route(s)
@@ -202,7 +266,20 @@ public class RouteRepository implements I_RouteRepo {
         return stops;
     }
 
-    // Use insertRouteStops as well after !!!
+    /**
+     * Insert a Route into the database
+     *
+     * @param {Route} route - Route to insert
+     * @throws {Exception} If database connection fails
+     *
+     * Must use insertRouteStops with the same route after the insert method is called to
+     * prevent a faulty database. This keeps the code loosely connected
+     * Example usage:
+     * <pre>
+     *     routeRepo.insert(route);
+     *     routeRepo.insertRouteStops(route);
+     * </pre>
+     */
     @Override
     public void insert(Route route) throws Exception {
         // Creates a sql-query which inserts values into the "routes" table
@@ -222,34 +299,66 @@ public class RouteRepository implements I_RouteRepo {
             System.out.println(rowsAdded + " Rows added in routes");
     }
 
-    // Check if the stops changed after the update and if it did, use deleteRouteStops,
-    // deleteRouteStopTime, insertRouteStops and (insertRouteStopTime for the new stops) !!!
+    /**
+     * Update a Route in the database
+     *
+     * @param {Route} route - Route to update
+     * @param {Route} newRoute - Updated route
+     * @throws {Exception} If database connection fails
+     *
+     * Must use deleteRouteStops, deleteRouteStopTime and deleteTimetable before the update
+     * method is called and use insertRouteStops after the update method is called to prevent a faulty database.
+     * This keeps the code loosely connected
+     * Example usage:
+     * <pre>
+     *     timetableRepo.deleteTimetable(route);
+     *     timetableRepo.deleteRouteStopTime(route);
+     *     routeRepo.deleteRouteStops(route);
+     *     routeRepo.update(route, newRoute);
+     *     routeRepo.insertRouteStops(newRoute);
+     * </pre>
+     */
     @Override
-    public void update(Route object, Route newObject) throws Exception {
+    public void update(Route route, Route newRoute) throws Exception {
         // Creates a sql-query which updates Routes in the "routes" table
         // Id can not be updated as it is an Auto Increment id
         String sql =
                 "UPDATE routes " +
-                "SET name = ?, start_stop = ?, end_stop = ?, SET type = ? " +
+                "SET name = ?, start_stop = ?, end_stop = ?, type = ? " +
                 "WHERE id = ?;";
 
         // Creates at statement based on the query and inserts the values based on the parameter Route objects
         PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, newObject.getName());
-            statement.setInt(2, newObject.getStartStop().getId());
-            statement.setInt(3, newObject.getEndStop().getId());
-            statement.setString(4, newObject.getType());
+            statement.setString(1, newRoute.getName());
+            statement.setInt(2, newRoute.getStartStop().getId());
+            statement.setInt(3, newRoute.getEndStop().getId());
+            statement.setString(4, newRoute.getType());
             // WHERE
-            statement.setInt(5, object.getId());
+            statement.setInt(5, route.getId());
 
             // Executes the query and prints out the Route that was updated
             statement.executeUpdate();
-            System.out.println("Route " + object.getName() + " has been updated");
+            System.out.println("Route " + route.getName() + " has been updated");
     }
 
-    // Use deleteRouteStops, deleteRouteStopTime, deleteTimetable as well first !!!
+    /**
+     * Delete a Route in the database
+     *
+     * @param {Route} route - Route to delete
+     * @throws {Exception} If database connection fails
+     *
+     * Use deleteRouteStops, deleteRouteStopTime and deleteTimetable before the delete method
+     * is called to prevent a faulty database. This keeps the code loosely connected
+     * Example usage:
+     * <pre>
+     *     timetableRepo.deleteTimetable(route);
+     *     timetableRepo.deleteRouteStopTime(route);
+     *     routeRepo.deleteRouteStops(route);
+     *     routeRepo.delete(route);
+     * </pre>
+     */
     @Override
-    public void delete(Route object) throws Exception {
+    public void delete(Route route) throws Exception {
         // Creates a sql-query which updates Routes in the "routes" table
         String sql =
                 "DELETE FROM routes " +
@@ -257,16 +366,24 @@ public class RouteRepository implements I_RouteRepo {
 
         // Creates at statement based on the query and inserts the values based on the parameter Route object
         PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, object.getId());
+            statement.setInt(1, route.getId());
 
             // Executes the query and prints out the Route that was deleted
             statement.executeUpdate();
-            System.out.println("Route " + object.getName() + " has been deleted");
+            System.out.println("Route " + route.getName() + " has been deleted");
     }
 
+    /**
+     * Insert Stops into a Route via the route_stops table
+     *
+     * @param {Route} route - Route for inserting
+     * @throws {Exception} If database connection fails
+     */
+    // Don't need their own tests as they are automatically being tested in the insert, update and delete
+    // tests. They are also methods which will only be used alongside the aformentioned methods
     @Override
     public void insertRouteStops(Route route) throws Exception {
-        // When we insert a new Route, we must add it into the route_stops table
+        // When we insert or updating a new Route, we must add it into the route_stops table
         String sql =
                 "INSERT INTO route_stops (route_id, stop_id, stop_order) " +
                 "VALUES (?, ?, ?);";
@@ -286,9 +403,15 @@ public class RouteRepository implements I_RouteRepo {
             }
     }
 
+    /**
+     * Delete Stops in a Route via the route_stops table
+     *
+     * @param {Route} route - Route for deleting
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public void deleteRouteStops(Route route) throws Exception {
-        // When deleting a Route, we must also delete the Route from the route_stops table
+        // When deleting or updating a Route, we must also delete the Route from the route_stops table
         String sql =
                 "DELETE FROM route_stops " +
                 "WHERE route_id = ?;";

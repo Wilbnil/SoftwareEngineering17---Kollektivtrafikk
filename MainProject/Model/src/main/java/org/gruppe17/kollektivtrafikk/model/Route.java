@@ -52,11 +52,17 @@ public class Route {
 
     //Return the index of the first stop, or -1 if stops is null or empty
     public Stop getStartStop() {
+        if (stops == null || stops.isEmpty()) {
+            return null;
+        }
         return stops.get(0);
     }
 
     //Return the index of the last stop, or -1 if stops is null or empty
     public Stop getEndStop() {
+        if (stops == null || stops.isEmpty()) {
+            return null;
+        }
         return stops.get(stops.size() - 1);
     }
 

@@ -1,89 +1,221 @@
 <!DOCTYPE html>
-<!--
-admin.html
-Admin interface for managing public transport routes.nAllows the administrator to view all existing routes, add new ones, and delete selected routes.
-Uses JavaScript to communicate with the backend (FrontEndControllerAdmin) through REST API endpoints:
- - GET /routes        → fetch and display all routes
- - POST /addRoute     → add a new route to the database
- - DELETE /deleteRoute/:id → remove a route fromt he db now
--->
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Panel</title>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    input, button { margin: 5px; padding: 5px; }
-    table { border-collapse: collapse; width: 50%; margin-top: 10px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f9f9f9;
+      color: #302d2d;
+    }
+    h2 {
+      color: #302d2d;
+      border-bottom: 2px solid #302d2d;
+      padding-bottom: 5px;
+    }
+    h3 {
+      color: #302d2d;
+      margin-top: 25px;
+    }
+    input, button {
+      margin: 5px;
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+    input[type="text"] {
+      width: 200px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background: #302d2d;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #302d2d;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 700px;
+      margin-top: 15px;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background: #302d2d;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background: #f2f2f2;
+    }
+    .back-btn {
+      background: #302d2d;
+      margin-bottom: 20px;
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 4px;
+      text-decoration: none;
+      color: white;
+    }
+    .back-btn:hover {
+      background: #302d2d;
+    }
   </style>
 </head>
 <body>
-  <h2>Admin Panel - Manage Routes</h2>
+<div style="text-align: right; padding: 15px; background: #f0f0f0; border-bottom: 1px solid #302d2d;">
+  <span style="color: #302d2d; font-weight: bold;">Admin Mode</span>
+  &nbsp;&nbsp;
+  <button id="logoutBtn"
+          style="padding: 8px 16px; background: #302d2d; color: white; border: none; border-radius: 6px; cursor: pointer;">
+    Log out
+  </button>
+</div>
+<a href="/" class="back-btn">← Go back to user</a>
 
-  <h3>Add Route</h3>
-  <form id="addRouteForm">
-    <input type="text" id="routeName" name="name" placeholder="Route name" required>
-    <button type="submit">Add</button>
-  </form>
-  <h3>Existing Routes</h3>
-  <table id="routesTable">
-    <thead>
-    <tr><th>ID</th><th>Name</th><th>Action</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+<h2>Admin Panel - Manage Routes</h2>
 
-  <script>
-    //Loads all routes from the server
-    async function loadRoutes() {
-      const response = await fetch('/routes'); //sen GET request to the backend
-      const routes = await response.json(); //convert respone to Json
-      const tbody = document.querySelector('#routesTable tbody'); //Find <tbody> in the table where routes will be displayed
-      tbody.innerHTML = ''; //Clear previos table rows
+<h3>Add Route</h3>
+<form id="addRouteForm">
+  <input type="text" id="routeName" name="name" placeholder="Route name" required><br>
+  <small>Select Stops</small>
+  <select id="routeStops" multiple size="5" style="width: 220px; margin-top: 10px"></select>
+  <button type="submit">Add</button>
 
-      //For each route, create a new table row with its data
+</form>
+
+<h3>Existing Routes</h3>
+<table id="routesTable">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+
+  </tbody>
+</table>
+
+<script>
+  async function loadStops() {
+    const response = await fetch('/api/stop2');
+    const stops = await response.json();
+    const select = document.getElementById('routeStops');
+    select.innerHTML = "";
+
+    stops.forEach(stop => {
+      const option = document.createElement('option');
+      option.value = stop.id;
+      option.textContent = stop.name;
+      select.appendChild(option);
+    })
+
+  }
+  async function loadRoutes() {
+    try {
+      const response = await fetch('/api/routes');
+      if (!response.ok) throw new Error("HTTP " + response.status);
+
+      const routes = await response.json();
+      const tbody = document.querySelector('#routesTable tbody');
+      tbody.innerHTML = '';
+
       routes.forEach(r => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-                    <td>${r.id}</td>
-                    <td>${r.name}</td>
-                    <td><button onclick="deleteRoute(${r.id})">Delete</button></td>
-                `;
-        tbody.appendChild(tr); //add the new row to the table
+          <td>${r.id}</td>
+          <td>${r.name}</td>
+          <td>
+            <button onclick="editRoute(${r.id}, '${r.name}')">Edit</button>
+            <button onclick="deleteRoute(${r.id})" style="background:#d32f2f;margin-left:5px;">Delete</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
       });
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Cannot load routes.");
     }
+  }
 
-    // deletes a route whhen the "Delete" button is clicked
-    async function deleteRoute(id) {
-      if (!confirm('Are you sure?')) return; //asking for confirmation
-      await fetch('/deleteRoute/' + id, { method: 'DELETE' });//send delete request
-      loadRoutes();//reload the table after delete command
+  window.addEventListener('load', () => {
+    if (!window.location.search.includes('loggedIn=true')) {
+      alert("No access. Log in as administrator");
+      window.location.href = '/';
+      return;
     }
-
-    //handle the "Add route" form submission
-    document.getElementById('addRouteForm').addEventListener('submit', async e => {
-      e.preventDefault();//prevent the page from reloading when the form is submitted
-
-      //Get the value entered in the input field with id="routeName"
-      const name = document.getElementById('routeName').value;
-
-      //Send the new route name to the backend to( /addRoute endpoint)
-      await fetch('/addRoute', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: 'name=' + encodeURIComponent(name) //encode and the form data
-      });
-
-      //clear the input field agfter adding a route
-      document.getElementById('routeName').value = '';
-
-      //reload the updated list of routes
-      loadRoutes();
+    loadStops();
+    loadRoutes();
     });
 
-    //load all routes when page opens
+  async function editRoute(id, currentName) {
+    const newName = prompt("New route name:", currentName);
+    if (!newName || newName === currentName) return;
+
+    const routes = await (await fetch ('/api/routes')).json();
+    const route = routes.find(rt => rt.id === id);
+
+    const body = new URLSearchParams();
+    body.append("name", newName);
+
+    route.stops.forEach(stop => body.append("stopIds", stop.id));
+
+    await fetch('/admin/routes/' + id, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: body
+    });
     loadRoutes();
-  </script>
+  }
+
+  async function deleteRoute(id) {
+    if (!confirm('Delete route?')) return;
+    await fetch('/admin/routes/' + id, { method: 'DELETE' });
+    loadRoutes();
+  }
+
+  document.getElementById('addRouteForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const name = document.getElementById('routeName').value.trim();
+    if (!name) return;
+
+    const selected = Array.from(document.getElementById('routeStops').selectedOptions).map(option => option.value);
+    const body = new URLSearchParams();
+    body.append("name", name);
+    selected.forEach(id => body.append("stopIds", id));
+
+    await fetch('/admin/routes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: body
+    });
+
+    document.getElementById('routeName').value = '';
+    document.getElementById('routeStops').selectedIndex = -1;
+
+    loadRoutes();
+  });
+
+
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    window.location.href = '/';
+  });
+
+</script>
+
 </body>
 </html>

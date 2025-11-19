@@ -9,6 +9,27 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+/**
+ * The {@code StopRepository} class handles all SQL-Queries to the database regarding the "stops"
+ * table
+ * <p>
+ * The Connection entails a database connection and can for example be the connection
+ * from the SQLiteDatabase class' startDB() method
+ * </p>
+ * Example usage:
+ * <blockquote><pre>
+ *     StopRepository stopRepo = new StopRepository(connection);
+ *     Stop returnedStop = stopRepo.getById(6);
+ * </pre></blockquote>
+ *     Using an Interface to instantiate StopRepository can be beneficial to allow multiple
+ *     different classes that implements the Repository Interface to be instantiated depending on which Repository you want to use
+ * </p>
+ * <blockquote><pre>
+ *     I_StopRepo stopRepo = new StopRepository(connection);
+ *     Stop returnedStop = stopRepo.getById(2);
+ * </pre></blockquote>
+ */
+
 public class StopRepository implements I_StopRepo {
 
     private static Connection connection;
@@ -17,6 +38,13 @@ public class StopRepository implements I_StopRepo {
         this.connection = connection;
     }
 
+    /**
+     * Get Stop by id
+     *
+     * @param {int} id - Stop id
+     * @return {Stop} - Stop object
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public Stop getById(int id) throws Exception {
         // SQL-query for returning a Stop
@@ -50,6 +78,13 @@ public class StopRepository implements I_StopRepo {
             return returnStop;
     }
 
+    /**
+     * Get Stop by name
+     *
+     * @param {String} name
+     * @return {Stop} - Stop object
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public Stop getByName(String name) throws Exception {
         // SQL-query for returning a Stop
@@ -59,13 +94,13 @@ public class StopRepository implements I_StopRepo {
 
         PreparedStatement statement = connection.prepareStatement(sql);
 
-        // Sets the ? in the sql-query to the stop_id parameter
+        // Sets the ? in the sql-query to the name parameter
         statement.setString(1, name);
 
         // Executes the query
         ResultSet result = statement.executeQuery();
 
-        // Since stop ids are distinct, we will always only get one row back from the database
+        // Since stop names are distinct, we will always only get one row back from the database
         // Puts all the values into a Stop object and returns it
         result.next();
         int id = result.getInt("id");
@@ -83,6 +118,12 @@ public class StopRepository implements I_StopRepo {
         return returnStop;
     }
 
+    /**
+     * Get all Stops in database
+     *
+     * @return {ArrayList<Stop>} - ArrayList of Stops
+     * @throws {Exception} If database connection fails
+     */
     @Override
     public ArrayList<Stop> getAll() throws Exception {
         // SQL-query for returning all Stops
@@ -116,8 +157,14 @@ public class StopRepository implements I_StopRepo {
             return returnStops;
     }
 
+    /**
+     * Insert Stop into database
+     *
+     * @param {Stop} stop - Stop for insertion
+     * @throws {Exception} If database connection fails
+     */
     @Override
-    public void insert(Stop object) throws Exception {
+    public void insert(Stop stop) throws Exception {
         // Creates a sql-query which inserts values into the "stops" table
         String sql =
                 "INSERT INTO stops (name, town, latitude, longitude, roof, accessibility) " +
@@ -125,14 +172,14 @@ public class StopRepository implements I_StopRepo {
 
         // Creates at statement based on the query and inserts the values based on the parameter Stop object
         PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, object.getName());
-            statement.setString(2, object.getTown());
-            statement.setFloat(3, (float) object.getLatitude());
-            statement.setFloat(4, (float) object.getLongitude());
+            statement.setString(1, stop.getName());
+            statement.setString(2, stop.getTown());
+            statement.setFloat(3, (float) stop.getLatitude());
+            statement.setFloat(4, (float) stop.getLongitude());
             // Converts the boolean into an int
             DatabaseUtility dbUtil = new DatabaseUtility();
-            int roofInt = dbUtil.returnIntFromBool(object.getRoof());
-            int accessibilityInt = dbUtil.returnIntFromBool(object.getAccessibility());
+            int roofInt = dbUtil.returnIntFromBool(stop.getRoof());
+            int accessibilityInt = dbUtil.returnIntFromBool(stop.getAccessibility());
             statement.setInt(5, roofInt);
             statement.setInt(6, accessibilityInt);
 
@@ -141,8 +188,15 @@ public class StopRepository implements I_StopRepo {
             System.out.println(rowsAdded + " Rows added in stops");
     }
 
+    /**
+     * Update Stop in database
+     *
+     * @param {Stop} stop - Stop for updating
+     * @param {Stop} newStop - Updated Stop
+     * @throws {Exception} If database connection fails
+     */
     @Override
-    public void update(Stop object, Stop newObject) throws Exception {
+    public void update(Stop stop, Stop newStop) throws Exception {
         // Creates a sql-query which updates Stops in the "stops" table
         // Id can not be updated as it is an Auto Increment id
         String sql =
@@ -152,26 +206,32 @@ public class StopRepository implements I_StopRepo {
 
         // Creates at statement based on the query and inserts the values based on the parameter Stop objects
         PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, newObject.getName());
-            statement.setString(2, newObject.getTown());
-            statement.setFloat(3, (float) newObject.getLatitude());
-            statement.setFloat(4, (float) newObject.getLongitude());
+            statement.setString(1, newStop.getName());
+            statement.setString(2, newStop.getTown());
+            statement.setFloat(3, (float) newStop.getLatitude());
+            statement.setFloat(4, (float) newStop.getLongitude());
             // Converts the boolean into an int
             DatabaseUtility dbUtil = new DatabaseUtility();
-            int roofInt = dbUtil.returnIntFromBool(newObject.getRoof());
-            int accessibilityInt = dbUtil.returnIntFromBool(newObject.getAccessibility());
+            int roofInt = dbUtil.returnIntFromBool(newStop.getRoof());
+            int accessibilityInt = dbUtil.returnIntFromBool(newStop.getAccessibility());
             statement.setInt(5, roofInt);
             statement.setInt(6, accessibilityInt);
             // WHERE
-            statement.setInt(7, object.getId());
+            statement.setInt(7, stop.getId());
 
             // Executes the query and prints out the Stop that was updated
             statement.executeUpdate();
-            System.out.println("Stop " + object.getName() + " has been updated");
+            System.out.println("Stop " + stop.getName() + " has been updated");
     }
 
+    /**
+     * Delete Stop in database
+     *
+     * @param {Stop} stop - Stop for deletion
+     * @throws {Exception} If database connection fails
+     */
     @Override
-    public void delete(Stop object) throws Exception {
+    public void delete(Stop stop) throws Exception {
         // Creates a sql-query which updates Stops in the "stops" table
         // Note that no special measure has to be taken if the Admin tries to delete a stop that is in use by a Route
         // This will not work since it will cause a foreign key constraint
@@ -181,10 +241,10 @@ public class StopRepository implements I_StopRepo {
 
         // Creates at statement based on the query and inserts the values based on the parameter Stop object
         PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, object.getId());
+            statement.setInt(1, stop.getId());
 
             // Executes the query and prints out the Stop that was deleted
             statement.executeUpdate();
-            System.out.println("Stop " + object.getName() + " has been deleted");
+            System.out.println("Stop " + stop.getName() + " has been deleted");
     }
 }
