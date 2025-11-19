@@ -9,16 +9,52 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Map;
 
-
+/**
+ * The {@code TourController} class handles all HTTP endpoints related to tours
+ * and timetables. It acts as the interface between the frontend and the {@link TimetableService},
+ * allowing clients to request upcoming tours,
+ * notifications, and perform CRUD operations on timetables.
+ *
+ * <p>This controller supports:</p>
+ * <li>Fetching all tours for the current day</li>
+ * <li>Getting arrival notifications for specific timetable</li>
+ * <li>Adding timetables</li>
+ * <li>Updating timetables</li>
+ * <li>Deleting timetables</li>
+ *
+ * Correct Usage Example:
+ * <blockquote><pre>
+ *     app,get("/api/tours", tourController::getAll);
+ *     app.get("/api/tours/notify", tourController::getNotification);
+ * </pre></blockquote>
+ *
+ * Incorrect Usage Example:
+ * <blockquote><pre>
+ *     new TourController(null).add(null);
+ * </pre></blockquote>
+ */
 public class TourController {
 
     private TimetableService timetableService;
 
 
+    /**
+     * Constructs a new {@code TourController} with the required service dependency.
+     *
+     * @param timetableService the service layer responsible for timetable and tour log
+     */
+
     public TourController(TimetableService timetableService) {
         this.timetableService = timetableService;
     }
 
+    /**
+     * Return all tours for today's date as JSON.
+     * A tour represents a route with a list of arrival times generated
+     * from its timetable definition.
+     *
+     * @param context Javalin HTTP request context
+     */
     public void getAll(Context context) {
         try {
             ArrayList<Tour> tours = timetableService.getAllTours();
@@ -27,6 +63,20 @@ public class TourController {
             context.status(500).result("Error fetching timetables" + e.getMessage());
         }
     }
+
+    /**
+     * Returns a notification message for the next upcoming vehicle arrival
+     * for the given timetable.
+     *
+     * <p>Required query parameter:</p>
+     * <li>{@code timetableId} - the ID of the timetable</li>
+     * Example response:
+     * <pre>
+     *     { "notification": "The bus arrives in 7 minutes"}
+     * </pre>
+     *
+     * @param context Javalin request context
+     */
 
     public void getNotification (Context context) {
         try {
@@ -48,6 +98,19 @@ public class TourController {
         }
     }
 
+    /**
+     * Adds a new timetable using form parameters provided in the request.
+     *
+     * <p>Expected parameters:</p>
+     * <li>{@code route_id} - ID of the associated route</li>
+     * <li>{@code day} - day of the week (e.g. monday)</li>
+     * <li>{@code first_time} - first departure time</li>
+     * <li>{@code last_time} - last departure time</li>
+     * <li>{@code interval} - the interval between departures</li>
+     *
+     * @param context Javalin request context
+     */
+
     public void add(Context context) {
         try {
 
@@ -67,6 +130,15 @@ public class TourController {
             context.status(400).result("Error adding timetables" + e.getMessage());
         }
     }
+
+    /**
+     * Uodates an existing timetable. The timetable ID is provided via path parameter,
+     * and the updated data is provided as form parameters.
+     *
+     * <p>If the timetable does not exist, returns HTTP 404.</p>
+     *
+     * @param context Javalin HTTP request context
+     */
 
     public void update(Context context) {
         try {
@@ -94,6 +166,14 @@ public class TourController {
             context.status(400).result("Error updating timetable: " + e.getMessage());
         }
     }
+
+    /**
+     * Deletes a timetable based on the ID provided in the URL path.
+     *
+     * <p>If the timetable does not exist, return HTTP 404.</p>
+     *
+     * @param context Javalin HTTP request context.
+     */
 
     public void delete(Context context) {
         try {
