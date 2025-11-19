@@ -1,33 +1,32 @@
 package org.gruppe17.kollektivtrafikk;
 
 
-import io.javalin.Javalin;
+import io.javalin.http.Context;
 import org.gruppe17.kollektivtrafikk.model.Stop;
-import org.gruppe17.kollektivtrafikk.repository.RepositoryStop;
 import org.gruppe17.kollektivtrafikk.service.StopService;
 
-import java.sql.Connection;
-import java.util.List;
 
-/**
- *
- * Provides CRUD endpoints for managing stops in admin panel.
- * Uses StopService to communicate with the database.
- */
+import java.util.ArrayList;
 
 public class StopController {
 
-    public static void register(Javalin app, StopService stopService) {
+    private StopService stopService;
 
-        // Get all stops
-        app.get("/admin/stops", context -> {
-            List<Stop> stops = stopService.getAllStops();
-            context.json(stops);
-        });
 
-        // Post - Add a stop
-        app.post("/admin/stops", context -> {
+    public StopController(StopService stopService) {
+        this.stopService = stopService;
+    }
+
+
+
+      public void getAllStops(Context context) {
+        ArrayList<Stop> stops = stopService.getAllStops();
+        context.json(stops);
+      }
+
+       public void addStop(Context context) {
             try {
+
                 String name = context.formParam("name");
                 String town = context.formParam("town");
                 float lat = Float.parseFloat(context.formParam("lat"));
@@ -35,33 +34,24 @@ public class StopController {
                 boolean roof = Boolean.parseBoolean(context.formParam("roof"));
                 boolean accessibility = Boolean.parseBoolean(context.formParam("accessibility"));
 
-                if (name == null || name.isBlank() || town == null || town.isBlank()) {
-                    context.status(400).result("Missing required fields");
-                    return;
-                }
+                Stop stop = new Stop(0, name, town, lat, lon, roof, accessibility);
+                stopService.addStop(stop, true);
 
-                Stop newStop = new Stop(0, name, town, lat, lon, roof, accessibility);
-
-                boolean ok = stopService.addStop(newStop);
-                if (ok) {
-                    context.status(201).result("Stop added successfully");
-                } else {
-                    context.status(500).result("Error adding stop");
-                }
+                context.status(201).result("Stop added");
 
             } catch (Exception e) {
                 e.printStackTrace();
-                context.status(400).result("Invalid stop data" + e.getMessage());
+                context.status(400).result("Error adding stop" + e.getMessage());
             }
-        });
+        }
 
-        // Put - Update stop
-        app.put("/admin/stops/{id}", context -> {
+        public void updateStop(Context context) {
             try {
-                int id = Integer.parseInt(context.pathParam("id"));
-                Stop existing = stopService.getStopById(id);
 
-                if (existing == null) {
+                int id = Integer.parseInt(context.pathParam("id"));
+                Stop oldStop = stopService.getStopById(id);
+
+                if (oldStop == null) {
                     context.status(404).result("Stop not found");
                     return;
                 }
@@ -74,23 +64,18 @@ public class StopController {
                 boolean accessibility = Boolean.parseBoolean(context.formParam("accessibility"));
 
                 Stop updated = new Stop(id, name, town, lat, lon, roof, accessibility);
+                stopService.updateStop(oldStop, updated, true);
 
-                boolean ok = stopService.updateStop(existing, updated);
-
-                if (ok) {
-                    context.result("Stop updated successfully");
-                } else {
-                    context.status(500).result("Error updating stop");
-                }
+                context.status(200).result("Stop updated");
             } catch (Exception e) {
                 e.printStackTrace();
                 context.status(400).result("Could not update stop" + e.getMessage());
             }
-        });
+        }
 
-        // Delete a stop
-        app.delete("/admin/stops/{id}", context -> {
+        public void deleteStop(Context context) {
             try {
+
                 int id = Integer.parseInt(context.pathParam("id"));
                 Stop stop = stopService.getStopById(id);
 
@@ -98,18 +83,14 @@ public class StopController {
                     context.status(404).result("Stop not found");
                     return;
                 }
+                stopService.deleteStop(stop, true);
+                context.status(204).result("Stop deleted");
 
-                boolean ok = stopService.deleteStop(stop);
-                if (ok) {
-                    context.result("Stop deleted successfully");
-                } else {
-                    context.status(500).result("Error deleting stop");
-                }
             } catch (Exception e) {
                 e.printStackTrace();
                 context.status(400).result("Could not delete stop" + e.getMessage());
             }
-        });
+        }
 
-    }
 }
+
