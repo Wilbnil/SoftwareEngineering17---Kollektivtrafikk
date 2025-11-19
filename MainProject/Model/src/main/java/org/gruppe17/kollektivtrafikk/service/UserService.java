@@ -5,15 +5,48 @@ import org.gruppe17.kollektivtrafikk.repository.UserRepository;
 
 import java.util.ArrayList;
 
+/**
+ * The {@code UserService} class handles all the logic related stuff for the bus stops in the public transport system.
+ *
+ * <p>
+ * This service class provides methods like retrieving, adding, updating and deleting users.
+ * It includes as well a method that handles user login.
+ * This class interacts with {@code UserRepository} in order to do its database operations.
+ * </p>
+ *
+ * <p>
+ * Only admins are able to do certain stuff like adding, updating and deleting users.
+ * </p>
+ *
+ * <p>
+ * Example usage:
+ * <blockquote><pre>
+ * User user = userService.getUserById(1);
+ * boolean loginSuccess = userService.login("admin@example.com", "password123");
+ * </pre></blockquote>
+ * </p>
+ *
+ * <p>
+ * {@code UserService} should be instantiated with {@code UserRepository}.
+ * </p>
+ */
 public class UserService {
     private UserRepository userRepository;
 
-    // Accepts a UserRepository when a UserService object is created
+    /**
+     * Creates a new userService with UserRepository.
+     *
+     * @param userRepository The repository used.
+     */
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    // Returns all users from the database
+    /**
+     * Gets all users from the database.
+     *
+     * @return An ArrayList with all the users or an empty ArrayList if it fails
+     */
     public ArrayList<User> getAllUsers() {
         try {
             // Gets all users from the repository
@@ -26,7 +59,12 @@ public class UserService {
         }
     }
 
-    // Returns a user by their ID
+    /**
+     * Gets a user by its id
+     *
+     * @param id The identifier of the user
+     * @return The user if found, or null otherwise
+     */
     public User getUserById(int id) {
         try {
             return userRepository.getById(id);
@@ -36,7 +74,12 @@ public class UserService {
         }
     }
 
-    // Returns a user by their email
+    /**
+     * Retrieves a user by its email.
+     *
+     * @param email The name of the email
+     * @return The user if found, or null otherwise
+     */
     public User getUserByEmail(String email) {
         try {
             return userRepository.getByName(email);
@@ -46,7 +89,13 @@ public class UserService {
         }
     }
 
-    // Adds a user to the database (checks if the email already exists first)
+    /**
+     * Adds a new user to the database.
+     *
+     * @param user The User that is going to be added
+     * @param isAdmin Checks if the user is an admin
+     * @throws Exception if the user is not an admin
+     */
     public void addUser(User user, boolean isAdmin) throws Exception {
         if (!isAdmin) {
             throw new Exception("You do not have access to add users.");
@@ -59,7 +108,14 @@ public class UserService {
         userRepository.insert(user);
     }
 
-    // Updates a user in the database
+    /**
+     * Updates a user in the database.
+     *
+     * @param oldUser The old user that is going to be updated
+     * @param newUser The new user that gets its new updated information
+     * @param isAdmin Checks if the user is an admin
+     * @throws Exception if the user is not an admin
+     */
     public void updateUser(User oldUser, User newUser, boolean isAdmin) throws Exception {
         if (!isAdmin) {
             throw new Exception("You do not have access to update users.");
@@ -67,7 +123,13 @@ public class UserService {
         userRepository.update(oldUser, newUser);
     }
 
-    // Deletes a user from the database
+    /**
+     * Deletes a user from the database.
+     *
+     * @param user The User that is going to be deleted
+     * @param isAdmin Checks if the user is an admin
+     * @throws Exception if the user is not an admin
+     */
     public void deleteUser(User user, boolean isAdmin) throws Exception {
         if (!isAdmin) {
             throw new Exception("You do not have access to delete users.");
@@ -75,7 +137,16 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    // Login method that checks if email and password is correct, then updates last_login
+    /**
+     * Verify a user by their email and password, then updates their last login.
+     * <p>
+     * If the info is correct, then it will update your last login.
+     * </p>
+     *
+     * @param email The email of the user
+     * @param password The password of the user
+     * @return true if the verification is successful, false otherwise
+     */
     public boolean login(String email, String password) {
         try {
             User user = userRepository.getByName(email);
@@ -99,7 +170,13 @@ public class UserService {
         }
     }
 
-    // Fake login method that always returns true (Used for testing)
+    /**
+     * Fake login that always returns true, used for testing.
+     *
+     * @param email Any email
+     * @param password Any password
+     * @return Returns true always
+     */
     public boolean fakeLogin(String email, String password) {
         return true;
     }

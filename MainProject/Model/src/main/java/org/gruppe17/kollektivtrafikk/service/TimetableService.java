@@ -11,24 +11,77 @@ import org.gruppe17.kollektivtrafikk.model.Timetable;
 import java.util.ArrayList;
 
 
+/**
+ * The {@code TimetableService} class handles all the logic related stuff for the bus stops in the public transport system.
+ *
+ * <p>
+ * This service class provides methods like retrieving, adding, updating and deleting timetables.
+ * It includes as well, methods that generate tours based on timetables, tracking arrivals and
+ * calculating time between stops.
+ * This class interacts with {@code TimetableRepository} and {@code RouteService} in order to do its database operations.
+ * </p>
+ *
+ * <p>
+ * Only admins are able to do certain stuff like adding, updating and deleting timetables.
+ * </p>
+ *
+ * <p>
+ * Example usage:
+ * <blockquote><pre>
+ * ArrayList<Tour> tours = timetableService.getAllTours();
+ * LocalTime nextArrival = timetableService.getSubscribedTour(6);
+ * String notification = timetableService.notification(7);
+ * </pre></blockquote>
+ * </p>
+ *
+ * <p>
+ * {@code TimetableService} should be instantiated with {@code TimetableRepository} and {@code RouteService}.
+ * </p>
+ */
 public class TimetableService {
     private TimetableRepository timetableRepository;
     private RouteService routeService;
     private LocalTime overrideTime = null;
 
+    /**
+     * Creates a new TimetableService with the repositories and services.
+     *
+     * @param timetableRepository The repository used
+     * @param routeService The service used
+     */
     public TimetableService(TimetableRepository timetableRepository, RouteService routeService) {
         this.timetableRepository = timetableRepository;
         this.routeService = routeService;
     }
 
+    /**
+     * Gets all the timetables from the database.
+     *
+     * @return An ArrayList with all the timetables
+     * @throws Exception if an error happens
+     */
     public ArrayList<Timetable> getAllTimetables() throws Exception {
         return timetableRepository.getAll();
     }
 
+    /**
+     * Gets a timetable by its id.
+     *
+     * @param routeId The identifier of the timetable
+     * @return The timetable if found
+     * @throws Exception if an error happens
+     */
     public Timetable getTimetableById(int routeId) throws Exception {
         return timetableRepository.getById(routeId);
     }
 
+    /**
+     * Gets the timetable for a route on the current day.
+     *
+     * @param routeId The identifier of the route
+     * @return The timetable for today, null if not found
+     * @throws Exception if an error happens
+     */
     public Timetable getTimetableForRoute(int routeId) throws Exception {
         String today = LocalDate.now().getDayOfWeek().toString().toLowerCase();
         Route fake = new Route(routeId, null, null, null);
@@ -39,6 +92,16 @@ public class TimetableService {
         }
     }
 
+    /**
+     * Gets all tours for today.
+     * <p>
+     * This method makes Tour objects out from calculating all the departure times in each timetable.
+     * It uses the first departure, last departure and the time interval between them.
+     * Only the timetables that matches the current day of the week is allowed.
+     * </p>
+     *
+     * @return An arrayList with all the tours for today, otherwise an empty Arraylist
+     */
     public ArrayList<Tour> getAllTours() {
         try {
             ArrayList<Timetable> timetables = timetableRepository.getAll();
@@ -78,6 +141,13 @@ public class TimetableService {
         }
     }
 
+    /**
+     * Adds a new timetable to the database.
+     *
+     * @param timetable The Stop that is going to be added
+     * @param isAdmin Checks if the user is an admin
+     * @throws Exception if the user is not an admin
+     */
     public void addTimetable(Timetable timetable, boolean isAdmin) throws Exception {
         if (!isAdmin) {
             throw new Exception("You are not an admin");
@@ -85,6 +155,14 @@ public class TimetableService {
         timetableRepository.insert(timetable);
     }
 
+    /**
+     * Updates a timetable in the database.
+     *
+     * @param oldTimetable The old timetable that is going to be updated
+     * @param newTimetable The new timetable that gets its new updated information
+     * @param isAdmin Checks if the user is an admin
+     * @throws Exception if the user is not an admin
+     */
     public void updateTimetable(Timetable oldTimetable, Timetable newTimetable, boolean isAdmin) throws Exception {
         if (!isAdmin) {
             throw new Exception("You are not an admin");
@@ -92,6 +170,13 @@ public class TimetableService {
         timetableRepository.update(oldTimetable, newTimetable);
     }
 
+    /**
+     * Deletes a timetable from the database.
+     *
+     * @param timetable The timetable that is going to be deleted
+     * @param isAdmin Checks if the user is an admin
+     * @throws Exception if the user is not an admin
+     */
     public void deleteTimetable(Timetable timetable, boolean isAdmin) throws Exception {
         if (!isAdmin) {
             throw new Exception("You are not an admin");
@@ -99,7 +184,19 @@ public class TimetableService {
         timetableRepository.delete(timetable);
     }
 
-    // return what the time that the vehicle you want to track will arrive
+    /**
+     * Returns the next arrival time for a route you've subscribed to, based on the current time.
+     *
+     * <p>
+     * This method finds the next vehicle arrival time for a given timetable you've subscribed to,
+     * based on your current time. It checks if the timetable is valid for today's weekday and then
+     * finds the next departure after the current time.
+     * </p>
+     *
+     * @param timetable_id The identifier of the timetable
+     * @return The next arrival time as LocalTime, otherwise null if there are no more departures today
+     * @throws Exception if an error happens
+     */
     public LocalTime getSubscribedTour(int timetable_id) throws Exception {
 
         Timetable timetable = timetableRepository.getById(timetable_id);
@@ -135,6 +232,17 @@ public class TimetableService {
         return null;
     }
 
+    /**
+     * Returns the coming arrival time for a subscribed tour based on a set time.
+     * <p>
+     * This method allows testing with a custom time compared to current time.
+     * </p>
+     *
+     * @param timetable_id The identifier of the timetable
+     * @param userTime The custom time, otherwise null is current time
+     * @return The next arrival time, otherwise null if there doesn't exist any more departures
+     * @throws Exception if an error happens
+     */
     public LocalTime getSubscribedTour(int timetable_id, LocalTime userTime) throws Exception {
         if (userTime != null) {
             this.overrideTime = userTime;
@@ -144,8 +252,16 @@ public class TimetableService {
         return getSubscribedTour(timetable_id);
     }
 
-
-    // notifies the user when or if the vehicle arrives
+    /**
+     * Makes a notification message on your next vehicle arrival.
+     * <p>
+     * This method calculates the time needed for your next arrival and returns
+     * messages out from how far/long until it arrives.
+     * </p>
+     *
+     * @param timetable_id The identifier of the timetable
+     * @return Notification message about the vehicles arrival time
+     */
     public String notification(int timetable_id) {
         try {
             LocalTime arrival = getSubscribedTour(timetable_id);
@@ -169,6 +285,18 @@ public class TimetableService {
         }
     }
 
+    /**
+     * Calculates the time in minutes between two stops in a route.
+     * <p>
+     * This method gets the planned time from the route's starting point to a stop and
+     * calculates the time.
+     * </p>
+     *
+     * @param route The route that has the two stops
+     * @param stopA The departure stop
+     * @param stopB The arrival stop
+     * @return The travel in minutes between the stops, otherwise 0 if an error happens.
+     */
     public int timeBetweenStops (Route route, Stop stopA, Stop stopB) {
         try {
             // minutes from and to
