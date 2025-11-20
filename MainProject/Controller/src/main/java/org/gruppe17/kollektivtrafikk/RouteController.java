@@ -73,15 +73,6 @@ public class RouteController {
         context.json(stopsInRoute);
     }
 
-    public void getAllStops(Context context) {
-        String stringId = context.queryParam("Id");
-
-        int route_id = Integer.parseInt(stringId);
-
-        ArrayList<Stop> stopsInRoute = routeService.getAllStopsInRoute(route_id);
-        context.json(stopsInRoute);
-    }
-
     /**
      * Searches for a route between two stops, calculates distance, next departure, expected arrival and travel duration.
      * <p>This method expects form parameters:</p>
