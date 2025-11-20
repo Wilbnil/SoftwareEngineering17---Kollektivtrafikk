@@ -211,6 +211,7 @@ public class RouteController {
             context.status(500).result("Server error: " + e.getMessage());
         }
     }
+    
 
     /**
      * Creates a new route with selected stops.
