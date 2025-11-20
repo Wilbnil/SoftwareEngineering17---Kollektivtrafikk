@@ -51,7 +51,11 @@ public class Application {
                 config.staticFiles.add("MainProject\\View\\src\\main\\resources\\public", Location.EXTERNAL);
             }).start(7000);
 
-            //Javalin app = Javalin.create().start(7000);
+            /*
+            Javalin app = Javalin.create(config -> {
+                config.staticFiles.add("Insert absolute path here", Location.EXTERNAL);
+            }).start(7000);
+             */
 
             SQLiteDatabase database = new SQLiteDatabase(DB_URL.kollektiv_DB_URL);
             SQLiteDatabase userDatabase = new SQLiteDatabase(DB_URL.user_DB_URL);
