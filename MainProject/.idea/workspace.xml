@@ -7,7 +7,9 @@
     <list default="true" id="d36602c1-fb54-4a69-88e7-1fc403fee53d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/src/main/java/org/gruppe17/kollektivtrafikk/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/src/main/java/org/gruppe17/kollektivtrafikk/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/src/main/java/org/gruppe17/kollektivtrafikk/RouteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/src/main/java/org/gruppe17/kollektivtrafikk/RouteController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/db/DB_URL.java" beforeDir="false" afterPath="$PROJECT_DIR$/Model/src/main/java/org/gruppe17/kollektivtrafikk/db/DB_URL.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/src/main/resources/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/View/src/main/resources/public/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +55,7 @@
     "JUnit.FrontEndControllerAdminTest.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Fixing-frontend-route-from-to",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/snorr/Documents/GitHub/Software Engineer/SoftwareEngineering17---Kollektivtrafikk/MainProject",
