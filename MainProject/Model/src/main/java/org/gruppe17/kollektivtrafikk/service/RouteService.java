@@ -20,8 +20,26 @@ public class RouteService {
         this.timetableRepository = timetableRepository;
     }
 
+    public Route getRouteById(int id) {
+        try {
+            return routeRepository.getById(id);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public Route getRouteByName(String name) {
+        try {
+            return routeRepository.getByName(name);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+    }
+
     //gets all the routes
-    public  ArrayList<Route> getAllRoutes() {
+    public ArrayList<Route> getAllRoutes() {
         try {
             return routeRepository.getAll();
         } catch (Exception e) {
@@ -30,12 +48,13 @@ public class RouteService {
         }
     }
 
-    public Route getRouteById(int id) {
+    //gets all the routes
+    public ArrayList<Stop> getAllStopsInRoute(int id) {
         try {
-            return routeRepository.getById(id);
+            return routeRepository.getAllStopsInRoute(id);
         } catch (Exception e) {
             System.err.println(e.getMessage());
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -60,6 +79,8 @@ public class RouteService {
     public void addRoute(Route route) {
         try {
             routeRepository.insert(route);
+            ArrayList<Route> routes = routeRepository.getAll();
+            route.setId(routes.getLast().getId());
             routeRepository.insertRouteStops(route);
             System.out.println("Route added successfully with stops.");
         } catch (Exception e) {
@@ -71,7 +92,7 @@ public class RouteService {
     public void updateRoute(Route oldRoute, Route newRoute) {
         DatabaseUtility dbUtil = new DatabaseUtility();
         try {
-            if (dbUtil.getStopIdsFromStops(oldRoute.getStops()) == dbUtil.getStopIdsFromStops(newRoute.getStops())) {
+            if (dbUtil.getStopIdsFromStops(oldRoute.getStops()) != dbUtil.getStopIdsFromStops(newRoute.getStops())) {
                 routeRepository.deleteRouteStops(oldRoute);
                 timetableRepository.deleteRouteStopTime(oldRoute);
                 routeRepository.update(oldRoute, newRoute);

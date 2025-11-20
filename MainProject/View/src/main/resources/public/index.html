@@ -304,7 +304,8 @@
                body: new URLSearchParams({ email: email, password: password })
            });
            if (res.ok) {
-               window.location.href = "/admin?loggedIn=true";
+               localStorage.setItem("loggedIn", "true");
+               window.location.href = "/admin";
            } else {
                document.getElementById('loginError').innerText = "Wrong email or password!";
            }

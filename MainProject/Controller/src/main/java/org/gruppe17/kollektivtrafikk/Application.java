@@ -21,11 +21,10 @@ public class Application {
         try {
             //create Javalin
             Javalin app = Javalin.create(config -> {
-                config.staticFiles.add(staticFiles -> {
-                    staticFiles.directory = "/public";
-                    staticFiles.location = Location.CLASSPATH;
-                });
-            });
+                config.staticFiles.add("C:\\Users\\snorr\\Documents\\GitHub\\Software Engineer\\SoftwareEngineering17---Kollektivtrafikk\\MainProject\\View\\src\\main\\resources\\public", Location.EXTERNAL);
+            }).start(7000);
+
+            //Javalin app = Javalin.create().start(7000);
 
             SQLiteDatabase database = new SQLiteDatabase(DB_URL.kollektiv_DB_URL);
             Connection connection = database.startDB();
@@ -47,25 +46,26 @@ public class Application {
 
 
             app.get("/", context -> context.redirect("index.html")); //index.html
-            app.get("/admin", routeController::serveAdminPage); //admin.html
+            app.get("/admin", context -> context.redirect("admin.html"));
+            //app.get("/admin", routeController::serveAdminPage); //admin.html
 
-
+            //Stop
             app.get("/api/stops", stopController::getAllStops);
-            app.post("/search", routeController::searchRoute);
-            app.get("/api/notification", tourController::getNotification);
-
-            app.get("/api/stop2", stopController::getAllStops);
-            app.post("/api/routes", routeController::addRoute);
-            app.get("/api/routes", routeController::getAllRoutes);
-
-
             app.post("/admin/stops", stopController::addStop);
             app.put("/admin/stops/{id}", stopController::updateStop);
             app.delete("/admin/stops/{id}", stopController::deleteStop);
 
-            app.post("/admin/routes", routeController::addRoute);
-            app.put("/admin/routes/{id}", routeController::updateRoute);
+            // Route
+            app.get("/api/routes", routeController::getAllRoutes);
+            app.post("/search", routeController::searchRoute);
+            app.get("/api/routes/stops", routeController::getAllStops);
+            app.post("/admin/routes/{name}/{stopIds}", routeController::addRoute);
+            app.put("/admin/routes", routeController::updateRoute);
             app.delete("/admin/routes/{id}", routeController::deleteRoute);
+
+
+            app.get("/api/notification", tourController::getNotification);
+
 
             app.get("/admin/timetables", tourController::getAll);
             app.post("/admin/timetables", tourController::add);
@@ -80,7 +80,8 @@ public class Application {
 
             app.post("/login", userController::login);
 
-            app.start(8082);
+
+            //app.start(8082);
 
         } catch (Exception e) {
             throw new RuntimeException(e);

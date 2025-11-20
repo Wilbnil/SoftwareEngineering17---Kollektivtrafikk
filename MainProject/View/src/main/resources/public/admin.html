@@ -88,12 +88,12 @@
 <h2>Admin Panel - Manage Routes</h2>
 
 <h3>Add Route</h3>
-<form id="addRouteForm">
-  <input type="text" id="routeName" name="name" placeholder="Route name" required><br>
-  <small>Select Stops</small>
-  <select id="routeStops" multiple size="5" style="width: 220px; margin-top: 10px"></select>
-  <button type="submit">Add</button>
 
+<form id="addRouteForm">
+  <input type="text" id="routeName" placeholder="Route name" required><br>
+  <input type="text" id="routeStops" placeholder="Route Stops '1,2,3'" required><br>
+
+  <button type="button" onclick="addRoute()">Add</button>
 </form>
 
 <h3>Existing Routes</h3>
@@ -152,15 +152,44 @@
     }
   }
 
+
   window.addEventListener('load', () => {
-    if (!window.location.search.includes('loggedIn=true')) {
+
+    if (localStorage.getItem("loggedIn") !== "true") {
       alert("No access. Log in as administrator");
-      window.location.href = '/';
+      window.location.href = "/";
       return;
     }
     loadStops();
     loadRoutes();
     });
+
+  async function addRoute() {
+
+    const name = document.getElementById("routeName").value;
+    const stops = document.getElementById("routeStops").value;
+
+    const body = {
+      name: name,
+      stopIds: stops
+    };
+
+    const response = await fetch("/admin/routes/" + name + "/" + stops , {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    const text = await response.text(); // API returns text, not JSON
+    console.log("Response:", text);
+    alert("Route added!");
+
+    loadRoutes();
+  }
+
+
+
 
   async function editRoute(id, currentName) {
     const newName = prompt("New route name:", currentName);
@@ -212,6 +241,7 @@
 
 
   document.getElementById('logoutBtn').addEventListener('click', () => {
+    localStorage.setItem("loggedIn", "false");
     window.location.href = '/';
   });
 
