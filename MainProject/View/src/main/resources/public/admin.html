@@ -83,7 +83,7 @@
     Log out
   </button>
 </div>
-<a href="/public" class="back-btn">← Go back to user</a>
+<a href="/" class="back-btn">← Go back to user</a>
 
 <h2>Admin Panel - Manage Routes</h2>
 
@@ -155,7 +155,7 @@
 
   window.addEventListener('load', () => {
 
-    if (localStorage.getItem("loggedIn") !== "true") {
+    if (localStorage.getItem("loggedIn") != "true") {
       alert("No access. Log in as administrator");
       window.location.href = "/";
       return;
@@ -169,16 +169,13 @@
     const name = document.getElementById("routeName").value;
     const stops = document.getElementById("routeStops").value;
 
-    const body = {
-      name: name,
-      stopIds: stops
-    };
+    const body = new FormData();
+    body.append("stopIds", stops);
+    body.append("name", name);
 
-    const response = await fetch("/admin/routes/" + name + "/" + stops , {
+    const response = await fetch("/admin/routes" , {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      body: body
     });
 
     const text = await response.text(); // API returns text, not JSON

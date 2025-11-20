@@ -29,18 +29,6 @@ public class RouteController {
 
     }
 
-    public void serveAdminPage(Context context) {
-        try {
-            String html = new String(
-                    getClass().getResourceAsStream("public/admin.html").readAllBytes()
-            );
-            context.contentType("text/html").result(html);
-
-        } catch (Exception e) {
-            context.status(500).result("Error loading admin page: " + e.getMessage());
-        }
-    }
-
     public void getAllRoutes(Context context) {
         ArrayList<Route> routes = routeService.getAllRoutes();
         context.json(routes);
@@ -60,6 +48,9 @@ public class RouteController {
             String fromName = context.formParam("from");
             String toName = context.formParam("to");
 
+            boolean roofFilter = Boolean.parseBoolean(context.formParam("roofFilter"));
+            boolean accessibilityFilter = Boolean.parseBoolean(context.formParam("accFilter"));
+
             if (fromName == null || toName == null || fromName.isBlank() || toName.isBlank()) {
                 context.status(400).result("Missing input.");
                 return;
@@ -74,6 +65,35 @@ public class RouteController {
             if (fromStop == null || toStop == null) {
                 context.status(404).result("Stop not found.");
                 return;
+            }
+
+            if(roofFilter && accessibilityFilter) {
+                if (!toStop.getRoof()) {
+                    toStop = stopService.getNearestStopWithRoof(toStop);
+                }
+                if (!fromStop.getRoof()) {
+                    fromStop = stopService.getNearestStopWithRoof(fromStop);
+                }
+                if (!toStop.getAccessibility()) {
+                    toStop = stopService.getNearestStopWithAccessibility(toStop);
+                }
+                if (!fromStop.getAccessibility()) {
+                    fromStop = stopService.getNearestStopWithAccessibility(fromStop);
+                }
+            } else if(roofFilter && !accessibilityFilter) {
+                if (!toStop.getRoof()) {
+                    toStop = stopService.getNearestStopWithRoof(toStop);
+                }
+                if (!fromStop.getRoof()) {
+                    fromStop = stopService.getNearestStopWithRoof(fromStop);
+                }
+            } else if(accessibilityFilter && !roofFilter) {
+                if (!toStop.getAccessibility()) {
+                    toStop = stopService.getNearestStopWithAccessibility(toStop);
+                }
+                if (!fromStop.getAccessibility()) {
+                    fromStop = stopService.getNearestStopWithAccessibility(fromStop);
+                }
             }
 
             ArrayList<Route> routes = routeService.getRouteBetweenStops(
@@ -104,7 +124,7 @@ public class RouteController {
             Timetable timetable = timetableService.getTimetableForRoute(route.getId());
             if (timetable == null) {
                 context.status(404).result("No timetable found.");
-                return;
+                timetable = null;
             }
 
             LocalTime departureTime = timetableService.getSubscribedTour(timetable.getId(), userTime);
@@ -128,13 +148,14 @@ public class RouteController {
             }
 
             context.json(Map.of(
-                    "route", fromName + " → " + toName,
+                    "route", fromStop.getName() + " → " + toStop.getName(),
                     "distance", distance,
                     "departure", departure,
                     "arrival", arrival,
                     "duration", durationMinutes + " min",
                     "type", route.getType(),
-                    "timetableId", timetable.getId()));
+                    "timetableId", timetable.getId(),
+                    "access", toStop.getAccessibility()));
 
 
         } catch (Exception e) {
@@ -147,9 +168,9 @@ public class RouteController {
     public void addRoute(Context context) {
         try {
 
-            String name = context.pathParam("name");
+            String name = context.formParam("name");
 
-            String stopIds = context.pathParam("stopIds");
+            String stopIds = context.formParam("stopIds");
 
             String[] values = stopIds.split(",");
             //String[] stopIds2 = context.queryParams("stopIds").toArray(new String[0]);

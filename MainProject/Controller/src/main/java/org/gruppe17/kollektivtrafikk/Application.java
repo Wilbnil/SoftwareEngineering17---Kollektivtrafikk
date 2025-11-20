@@ -47,7 +47,6 @@ public class Application {
 
             app.get("/", context -> context.redirect("index.html")); //index.html
             app.get("/admin", context -> context.redirect("admin.html"));
-            //app.get("/admin", routeController::serveAdminPage); //admin.html
 
             //Stop
             app.get("/api/stops", stopController::getAllStops);
@@ -57,27 +56,27 @@ public class Application {
 
             // Route
             app.get("/api/routes", routeController::getAllRoutes);
-            app.post("/search", routeController::searchRoute);
+            app.get("/search", routeController::searchRoute);
             app.get("/api/routes/stops", routeController::getAllStops);
-            app.post("/admin/routes/{name}/{stopIds}", routeController::addRoute);
+            app.post("/admin/routes", routeController::addRoute);
             app.put("/admin/routes", routeController::updateRoute);
             app.delete("/admin/routes/{id}", routeController::deleteRoute);
 
-
+            // Notification
             app.get("/api/notification", tourController::getNotification);
 
-
+            // Timetables
             app.get("/admin/timetables", tourController::getAll);
             app.post("/admin/timetables", tourController::add);
             app.put("/admin/timetables/{id}", tourController::update);
             app.delete("/admin/timetables/{id}", tourController::delete);
 
+            // Users
             app.get("/api/users", userController::getAllUsers);
             app.get("/api/users/{id}", userController::getUserById);
             app.post("/api/users", userController::addUser);
             app.put("/api/users/{id}", userController::updateUser);
             app.delete("/api/users/{id}", userController::deleteUser);
-
             app.post("/login", userController::login);
 
 
