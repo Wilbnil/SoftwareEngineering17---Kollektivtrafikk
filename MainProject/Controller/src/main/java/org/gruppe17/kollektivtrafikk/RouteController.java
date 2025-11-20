@@ -298,7 +298,7 @@ public class RouteController {
     public void deleteRoute(Context context) {
         try {
 
-            int id = Integer.parseInt(context.queryParam("id"));
+            int id = Integer.parseInt(context.pathParam("id"));
             Route route = routeService.getRouteById(id);
 
             if (route == null) {

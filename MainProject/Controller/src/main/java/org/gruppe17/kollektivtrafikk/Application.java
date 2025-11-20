@@ -48,7 +48,7 @@ public class Application {
         try {
             //create Javalin
             Javalin app = Javalin.create(config -> {
-                config.staticFiles.add("C:\\Users\\snorr\\Documents\\GitHub\\Software Engineer\\SoftwareEngineering17---Kollektivtrafikk\\MainProject\\View\\src\\main\\resources\\public", Location.EXTERNAL);
+                config.staticFiles.add("MainProject\\View\\src\\main\\resources\\public", Location.EXTERNAL);
             }).start(7000);
 
             //Javalin app = Javalin.create().start(7000);
@@ -89,7 +89,7 @@ public class Application {
             app.get("/api/routes/stops", routeController::getStopsInRoute);
             app.post("/admin/routes", routeController::addRoute);
             app.put("/admin/routes", routeController::updateRoute);
-            app.delete("/admin/routes", routeController::deleteRoute);
+            app.delete("/admin/routes/{id}", routeController::deleteRoute);
 
             // Notification
             app.get("/api/notification", tourController::getNotification);
