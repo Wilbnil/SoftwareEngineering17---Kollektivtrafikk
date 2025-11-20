@@ -3,6 +3,7 @@ package org.gruppe17.kollektivtrafikk.service;
 import org.gruppe17.kollektivtrafikk.model.User;
 import org.gruppe17.kollektivtrafikk.repository.UserRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -100,6 +101,9 @@ public class UserService {
         if (!isAdmin) {
             throw new Exception("You do not have access to add users.");
         }
+
+        user.setCreated_on(LocalDate.now());
+
         // Checks if the email already exists
         User existingUser = userRepository.getByName(user.getEmail());
         if (existingUser != null) {

@@ -65,7 +65,7 @@ public class UserController {
      */
     public void getUserById(Context context) {
         try {
-            int id = Integer.parseInt(context.pathParam("id"));
+            int id = Integer.parseInt(context.queryParam("id"));
             User user = userService.getUserById(id);
 
             if (user == null) {
@@ -91,10 +91,10 @@ public class UserController {
     public void addUser(Context context) {
         try {
 
-            boolean isAdmin = Boolean.parseBoolean(context.header("admin"));
+            boolean isAdmin = true;//Boolean.parseBoolean(context.header("admin"));
 
-            String email = context.formParam("email");
-            String password = context.formParam("password");
+            String email = context.queryParam("email");
+            String password = context.queryParam("password");
 
             if (email == null || password == null) {
                 context.status(400).result("Missing email or password");

@@ -54,12 +54,14 @@ public class Application {
             //Javalin app = Javalin.create().start(7000);
 
             SQLiteDatabase database = new SQLiteDatabase(DB_URL.kollektiv_DB_URL);
+            SQLiteDatabase userDatabase = new SQLiteDatabase(DB_URL.user_DB_URL);
             Connection connection = database.startDB();
+            Connection userConnection = userDatabase.startDB();
 
             StopRepository stopRepo = new StopRepository(connection);
             RouteRepository routeRepo = new RouteRepository(connection);
             TimetableRepository timetableRepo = new TimetableRepository(connection);
-            UserRepository userRepo = new UserRepository(connection);
+            UserRepository userRepo = new UserRepository(userConnection);
 
             StopService stopService = new StopService(stopRepo);
             RouteService routeService = new RouteService(routeRepo, timetableRepo);
@@ -87,7 +89,7 @@ public class Application {
             app.get("/api/routes/stops", routeController::getStopsInRoute);
             app.post("/admin/routes", routeController::addRoute);
             app.put("/admin/routes", routeController::updateRoute);
-            app.delete("/admin/routes/{id}", routeController::deleteRoute);
+            app.delete("/admin/routes", routeController::deleteRoute);
 
             // Notification
             app.get("/api/notification", tourController::getNotification);
@@ -100,14 +102,11 @@ public class Application {
 
             // Users
             app.get("/api/users", userController::getAllUsers);
-            app.get("/api/users/{id}", userController::getUserById);
+            app.get("/api/users/id", userController::getUserById);
             app.post("/api/users", userController::addUser);
             app.put("/api/users/{id}", userController::updateUser);
             app.delete("/api/users/{id}", userController::deleteUser);
             app.post("/login", userController::login);
-
-
-            //app.start(8082);
 
         } catch (Exception e) {
             throw new RuntimeException(e);

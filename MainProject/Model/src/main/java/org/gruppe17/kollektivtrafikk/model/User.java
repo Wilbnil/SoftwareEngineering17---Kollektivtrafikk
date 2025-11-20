@@ -63,4 +63,8 @@ public class User {
     public LocalDate getCreated_on() {
         return created_on;
     }
+
+    public void setCreated_on(LocalDate created_on) {
+        this.created_on = created_on;
+    }
 }

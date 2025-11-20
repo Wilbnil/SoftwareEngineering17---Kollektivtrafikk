@@ -89,27 +89,29 @@ public class UserRepository implements I_UserRepo {
                 "WHERE email = ?;";
 
         PreparedStatement statement = connection.prepareStatement(sql);
+
             statement.setString(1, email);
 
             ResultSet result = statement.executeQuery();
 
-            result.next();
-            int returnId = result.getInt("id");
-            String returnEmail = result.getString("email");
-            String password = result.getString("password");
+                result.next();
+                int returnId = result.getInt("id");
+                String returnEmail = result.getString("email");
+                String password = result.getString("password");
 
-            // Since last_login can be null, the .parse method will cause a NullPointerException when
-            // last_login is null. Therefore we check if last_login is null before assigning it to the .parse method
-            LocalDate last_login;
-            if(result.getString("last_login") == null) {
-                last_login = null;
-            } else {
-                last_login = LocalDate.parse(result.getString("last_login"));
-            }
-            LocalDate created_on = LocalDate.parse(result.getString("created_on"));
-            User returnUser = new User(returnId, email, password, last_login, created_on);
+                // Since last_login can be null, the .parse method will cause a NullPointerException when
+                // last_login is null. Therefore we check if last_login is null before assigning it to the .parse method
+                LocalDate last_login;
+                if (result.getString("last_login") == null) {
+                    last_login = null;
+                } else {
+                    last_login = LocalDate.parse(result.getString("last_login"));
+                }
 
-            return returnUser;
+                LocalDate created_on = LocalDate.parse(result.getString("created_on"));
+                User returnUser = new User(returnId, email, password, last_login, created_on);
+
+                return returnUser;
     }
 
     /**
