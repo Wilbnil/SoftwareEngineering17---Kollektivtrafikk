@@ -56,28 +56,30 @@ public class RouteController {
     }
 
     /**
-     * Serves the admin HTML page from {@code /public/admin.html}
-     * If the file cannot be loaded, a 500 error is returned.
-     * @param context Javalin HTTP request context
-     */
-    public void serveAdminPage(Context context) {
-        try {
-            String html = new String(
-                    getClass().getResourceAsStream("/public/admin.html").readAllBytes()
-            );
-            context.contentType("text/html").result(html);
-        } catch (Exception e) {
-            context.status(500).result("Error loading admin page: " + e.getMessage());
-        }
-    }
-
-    /**
      * Return all available routes as JSON.
      * @param context Javalin HTTP request context
      */
     public void getAllRoutes(Context context) {
         ArrayList<Route> routes = routeService.getAllRoutes();
         context.json(routes);
+    }
+
+    public void getAllStops(Context context) {
+        String stringId = context.queryParam("Id");
+
+        int route_id = Integer.parseInt(stringId);
+
+        ArrayList<Stop> stopsInRoute = routeService.getAllStopsInRoute(route_id);
+        context.json(stopsInRoute);
+    }
+
+    public void getAllStops(Context context) {
+        String stringId = context.queryParam("Id");
+
+        int route_id = Integer.parseInt(stringId);
+
+        ArrayList<Stop> stopsInRoute = routeService.getAllStopsInRoute(route_id);
+        context.json(stopsInRoute);
     }
 
     /**
@@ -94,6 +96,9 @@ public class RouteController {
             String fromName = context.formParam("from");
             String toName = context.formParam("to");
 
+            boolean roofFilter = Boolean.parseBoolean(context.formParam("roofFilter"));
+            boolean accessibilityFilter = Boolean.parseBoolean(context.formParam("accFilter"));
+
             if (fromName == null || toName == null || fromName.isBlank() || toName.isBlank()) {
                 context.status(400).result("Missing input.");
                 return;
@@ -108,6 +113,35 @@ public class RouteController {
             if (fromStop == null || toStop == null) {
                 context.status(404).result("Stop not found.");
                 return;
+            }
+
+            if(roofFilter && accessibilityFilter) {
+                if (!toStop.getRoof()) {
+                    toStop = stopService.getNearestStopWithRoof(toStop);
+                }
+                if (!fromStop.getRoof()) {
+                    fromStop = stopService.getNearestStopWithRoof(fromStop);
+                }
+                if (!toStop.getAccessibility()) {
+                    toStop = stopService.getNearestStopWithAccessibility(toStop);
+                }
+                if (!fromStop.getAccessibility()) {
+                    fromStop = stopService.getNearestStopWithAccessibility(fromStop);
+                }
+            } else if(roofFilter && !accessibilityFilter) {
+                if (!toStop.getRoof()) {
+                    toStop = stopService.getNearestStopWithRoof(toStop);
+                }
+                if (!fromStop.getRoof()) {
+                    fromStop = stopService.getNearestStopWithRoof(fromStop);
+                }
+            } else if(accessibilityFilter && !roofFilter) {
+                if (!toStop.getAccessibility()) {
+                    toStop = stopService.getNearestStopWithAccessibility(toStop);
+                }
+                if (!fromStop.getAccessibility()) {
+                    fromStop = stopService.getNearestStopWithAccessibility(fromStop);
+                }
             }
 
             ArrayList<Route> routes = routeService.getRouteBetweenStops(
@@ -141,7 +175,7 @@ public class RouteController {
             Timetable timetable = timetableService.getTimetableForRoute(route.getId());
             if (timetable == null) {
                 context.status(404).result("No timetable found.");
-                return;
+                timetable = null;
             }
 
             //Next departure
@@ -166,13 +200,14 @@ public class RouteController {
             }
 
             context.json(Map.of(
-                    "route", fromName + " → " + toName,
+                    "route", fromStop.getName() + " → " + toStop.getName(),
                     "distance", distance,
                     "departure", departure,
                     "arrival", arrival,
                     "duration", durationMinutes + " min",
                     "type", route.getType(),
-                    "timetableId", timetable.getId()));
+                    "timetableId", timetable.getId(),
+                    "access", toStop.getAccessibility()));
 
 
         } catch (Exception e) {
@@ -192,16 +227,20 @@ public class RouteController {
         try {
 
             String name = context.formParam("name");
-            String[] stopIds = context.formParams("stopIds").toArray(new String[0]);
+
+            String stopIds = context.formParam("stopIds");
+
+            String[] values = stopIds.split(",");
+            //String[] stopIds2 = context.queryParams("stopIds").toArray(new String[0]);
 
             ArrayList<Stop> stops = new ArrayList<>();
-            for (String idStr : stopIds) {
+            for (String idStr : values) {
                 Stop stop = stopService.getStopById(Integer.parseInt(idStr));
                 if (stop != null)
                     stops.add(stop);
             }
 
-            Route newRoute = new Route(0, name, stops, null);
+            Route newRoute = new Route(name, stops, null);
             routeService.addRoute(newRoute);
 
             context.status(201).result("Route added");
@@ -220,9 +259,14 @@ public class RouteController {
     public void updateRoute(Context context) {
         try {
 
-            int id = Integer.parseInt(context.pathParam("id"));
-            String name = context.formParam("name");
-            String[] stopIds = context.formParams("stopIds").toArray(new String[0]);
+            int id = Integer.parseInt(context.queryParam("id"));
+            String name = context.queryParam("name");
+
+            String stopIds = context.queryParam("stopIds");
+
+            String[] values = stopIds.split(",");
+
+            //String[] stopIds = context.formParams("stopIds").toArray(new String[0]);
 
             Route oldRoute = routeService.getRouteById(id);
             if (oldRoute == null) {
@@ -231,7 +275,7 @@ public class RouteController {
             }
 
             ArrayList<Stop> stops = new ArrayList<>();
-            for (String idStr : stopIds) {
+            for (String idStr : values) {
                 Stop stop = stopService.getStopById(Integer.parseInt(idStr));
                 if (stop != null) {
                     stops.add(stop);

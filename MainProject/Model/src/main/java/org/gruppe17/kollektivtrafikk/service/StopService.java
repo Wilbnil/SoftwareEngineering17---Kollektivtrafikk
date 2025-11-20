@@ -195,4 +195,42 @@ public class StopService {
         }
         return null;
     }
+
+    /**
+     * Finds the nearest replacement stop that has both accessibility and roof
+     *
+     * @param {Stop} stop - Stop without accessibility
+     * @return {Stop} - Nearest Stop with accessibility
+     */
+    // Finds the nearest replacement stop that has accessibility help
+    public Stop getNearestStopWithBothAccAndRoof(Stop stop) {
+        try {
+            ArrayList<Stop> allStopsWithBoth = stopRepository.getAll();
+
+            // Removes all stops from the ArrayList where the .getAccessibility() == false statement is true
+            allStopsWithBoth.removeIf(stopX -> stopX.getAccessibility() == false);
+            allStopsWithBoth.removeIf(stopX -> stopX.getRoof() == false);
+
+            double shortest = 10000;
+            double distance;
+            int index = 0;
+
+            // Cycles through the Stops with accessibility = True and finds the one with the shortest distance
+            for(Stop stopX : allStopsWithBoth) {
+
+                distance = DistanceCalculator.getDistance(stop.getLatitude(), stop.getLongitude(), stopX.getLatitude(), stopX.getLongitude());
+
+                if(distance < shortest) {
+                    shortest = distance;
+                    index = allStopsWithBoth.indexOf(stopX);
+                }
+            }
+
+            return allStopsWithBoth.get(index);
+
+        } catch(Exception e) {
+            System.err.println(e);
+        }
+        return null;
+    }
 }

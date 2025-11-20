@@ -263,13 +263,15 @@
 
         //validates inputs
         if (from && to && from !== to) {
+            const body = new FormData();
+            body.append("from", from);
+            body.append("to", to);
+            body.append("roofFilter", "false");
+            body.append("accFilter", "true");
+
             fetch('/search', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: new URLSearchParams({
-                    from: from, to: to,
-                    time: document.getElementById("checkTime").value
-                })
+                body: body
             })
                 .then(response => {
                     if (!response.ok) throw new Error('No direct connection');
@@ -285,10 +287,6 @@
                     //displays route details returned by backend
                     document.getElementById('output').innerHTML = `
                     Route: ${data.route},
-                    Distance: ${data.distance.toFixed(2)} km,
-                    Departure: ${formatTime(data.departure)},
-                    Arrival: ${formatTime(data.arrival)},
-                    Duration: ${data.duration},
                     Mode: ${data.type || 'N/A'}
                     `;
 
@@ -340,7 +338,8 @@
                body: new URLSearchParams({ email: email, password: password })
            });
            if (res.ok) {
-               window.location.href = "/admin?loggedIn=true";
+               localStorage.setItem("loggedIn", "true");
+               window.location.href = "/admin";
            } else {
                document.getElementById('loginError').innerText = "Wrong email or password!";
            }
