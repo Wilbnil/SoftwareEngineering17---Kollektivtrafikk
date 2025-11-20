@@ -64,7 +64,12 @@ public class RouteController {
         context.json(routes);
     }
 
-    public void getAllStops(Context context) {
+    /**
+     *
+     * Return all available stops in route as JSON.
+     * @param context Javalin HTTP request context
+     */
+    public void getStopsInRoute(Context context) {
         String stringId = context.queryParam("Id");
 
         int route_id = Integer.parseInt(stringId);

@@ -1,4 +1,4 @@
-package model;
+package org.gruppe17.kollektivtrafikk.model;
 
 import org.gruppe17.kollektivtrafikk.model.User;
 import org.gruppe17.kollektivtrafikk.repository.UserRepository;

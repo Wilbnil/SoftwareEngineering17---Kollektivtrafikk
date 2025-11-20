@@ -52,6 +52,12 @@ public class RouteService {
         this.timetableRepository = timetableRepository;
     }
 
+    /**
+     * Gets a route by its id
+     *
+     * @param id The identifier of the route
+     * @return The route if found, or null otherwise
+     */
     public Route getRouteById(int id) {
         try {
             return routeRepository.getById(id);
@@ -85,12 +91,12 @@ public class RouteService {
     }
 
     /**
-     * Gets a route by its id
+     * Gets all stops in route
      *
      * @param id The identifier of the route
-     * @return The route if found, or null otherwise
+     * @return An ArrayList with all the stops in a route, or an empty ArrayList if it fails
      */
-    public Route getRouteById(int id) {
+    public ArrayList<Stop> getAllStopsInRoute(int id) {
         try {
             return routeRepository.getAllStopsInRoute(id);
         } catch (Exception e) {

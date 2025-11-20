@@ -1,4 +1,4 @@
-package model;
+package org.gruppe17.kollektivtrafikk.model;
 
 import org.gruppe17.kollektivtrafikk.model.Route;
 import org.junit.jupiter.api.Test;

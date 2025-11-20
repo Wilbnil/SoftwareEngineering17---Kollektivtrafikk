@@ -84,7 +84,7 @@ public class Application {
             // Route
             app.get("/api/routes", routeController::getAllRoutes);
             app.get("/search", routeController::searchRoute);
-            app.get("/api/routes/stops", routeController::getAllStops);
+            app.get("/api/routes/stops", routeController::getStopsInRoute);
             app.post("/admin/routes", routeController::addRoute);
             app.put("/admin/routes", routeController::updateRoute);
             app.delete("/admin/routes/{id}", routeController::deleteRoute);
