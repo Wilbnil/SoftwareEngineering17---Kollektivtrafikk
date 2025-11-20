@@ -89,11 +89,11 @@ public class RouteController {
      */
     public void searchRoute(Context context) {
         try {
-            String fromName = context.formParam("from");
-            String toName = context.formParam("to");
+            String fromName = context.queryParam("from");
+            String toName = context.queryParam("to");
 
-            boolean roofFilter = Boolean.parseBoolean(context.formParam("roofFilter"));
-            boolean accessibilityFilter = Boolean.parseBoolean(context.formParam("accFilter"));
+            boolean roofFilter = Boolean.parseBoolean(context.queryParam("roofFilter"));
+            boolean accessibilityFilter = Boolean.parseBoolean(context.queryParam("accFilter"));
 
             if (fromName == null || toName == null || fromName.isBlank() || toName.isBlank()) {
                 context.status(400).result("Missing input.");
@@ -211,6 +211,7 @@ public class RouteController {
             context.status(500).result("Server error: " + e.getMessage());
         }
     }
+
 
     /**
      * Creates a new route with selected stops.
