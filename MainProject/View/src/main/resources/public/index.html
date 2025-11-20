@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Input</title>
+    <!--
+    FRONTEND DOCUMENTATION:
+        This page is the main user interface for searching transport routes. It allows user to:
+        - select starting and destination stops
+        - use autocompelte suggestions
+        - filter stops by roof and accessibility
+        - check departure times and travel information
+        - receive vehicle notifications
+        - log in as an admin (redirects to adin dashboard)
+
+        All communication with the backend happens through REST endpoints implemented in Javalin Application.
+    -->
+    <style>
+        /* Page styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f9f9f9;
+            color: #302d2d;
+        }
+        h2 {
+            color: #302d2d;
+            border-bottom: 2px solid #302d2d;
+            padding-bottom: 5px;
+        }
+        h3 {
+            color: #302d2d;
+            margin-top: 25px;
+        }
+        /* input and button styles */
+        input, button {
+            margin: 5px;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        input[type="text"] {
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background: #302d2d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #302d2d;
+        }
+        /* table */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 700px;
+            margin-top: 15px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #302d2d;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+        /* autocomplete dropdown */
+        .suggestions {
+            position: absolute;
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 1000;
+            width: 224px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .suggestion-item:hover {
+            background: #f0f0f0;
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+    </style>
+</head>
+<body>
+<h2>Enter Transport Route</h2>
+<!--SECTION: STOP FILTERS. Allows user to filter autocomplete suggestions: - roof stops only - accessible stops only -->
+<div style="max-width: 580px; margin: 20px 0; padding: 15px; background: #f0f0f0; border-radius: 8px;">
+    <strong style="color: #302d2d; font-size: 1.1em;">Stops filter</strong><br><br>
+    <label style="margin: 0 15px; font-size: 0.95em;">
+        <input type="checkbox" id="filterRoof"> Roof stops only
+    </label>
+    <label style="margin: 0 15px; font-size: 0.95em;">
+        <input type="checkbox" id="filterAccess"> Accessible stops only
+    </label>
+</div>
+<!-- SECTION: MAIN SEARCH FORM. Allows uder to type "from" and "to" stops and get route details -->
+<form id="transportForm">
+    <!-- FROM INPUT + AUTOCOMPLETE -->
+    <div style="position: relative; display: inline-block;">
+        <label for="from">From:</label><br>
+        <input type="text" id="from" name="from" required autocomplete="off">
+        <div id="from-suggestions" class="suggestions" style="display: none;"></div>
+    </div>
+    <br><br>
+    <!-- TO INPUT + AUTOCOMPLETE -->
+    <div style="position: relative; display: inline-block;">
+        <label for="to">To:</label><br>
+        <input type="text" id="to" name="to" required autocomplete="off">
+        <div id="to-suggestions" class="suggestions" style="display: none;"></div><br>
+    </div>
+    <br><br>
+    <!-- OPTIONAL TIME FIELD -->
+        <label for="checkTime">Check at time (optional):</label><br>
+        <input type="time" id="checkTime" name="checkTime" style="padding:8px; margin-top:5px;">
+        <br><br>
+    <br><br>
+    <button type="submit">Search</button>
+</form>
+
+<!-- OUTPUT AREAS -->
+<div id="output"></div>
+<div id="notificationOutput" style="margin-top: 15px; font-weight: bold;"></div>
+<!-- NOTIFICATION BUTTON -->
+<button id="notifButton" style="display:none; margin-top:10px;">
+    Check Vehicle Notification
+</button>
+<!--
+    SECTION: ADMIN LOGIN
+    Simple frontend login form that sends POST /login
+-->
+<div style="margin-top: 30px; text-align: center;">
+    <button onclick="this.style.display='none'; document.getElementById('adminLoginForm').style.display='block';">
+        Log in as Admin
+    </button>
+
+    <div id="adminLoginForm" style="display:none; margin-top:20px; padding:20px; background:#f0f0f0; border-radius:10px; max-width:280px; margin-left:auto; margin-right:auto;">
+        <h3 style="color:#302d2d; margin-top:0;">Admin Login</h3>
+        <input type="email" id="adminEmail" placeholder="Email" value="withPassword@publictransport.com" style="width:90%; padding:10px; margin:8px 0; font-size:15px;"><br>
+        <input type="password" id="adminPassword" placeholder="Password" value="password"  style="width:90%; padding:10px; margin:8px 0; font-size:15px;"><br>
+        <button onclick="loginAsAdmin()" style="background:#f0f0f0; color:black; padding:12px 24px; border:none; border-radius:6px; font-size:16px; cursor:pointer;">
+            Log in as admin
+        </button>
+        <p id="loginError" style="margin-top:12px; font-weight:bold;"></p>
+    </div>
+</div>
+<!-- DEV LINK (hidden) -->
+<a href="/admin?dev=1" id="devLink" style="display:none;">DEV ADMIN</a>
+<script>
+    /**
+     * STOPS will store all stops fetched from backend /api/stops
+     *
+     */
+    let STOPS = [];
+
+    /**
+     * Fetch all stops from backend and store them in STOPS array.
+     * Called once on page load.
+     */
+    async function fetchStops() {
+        try {
+            const response = await fetch('/api/stops');
+            STOPS = await response.json(); // assign list of stops
+        } catch (error) {
+            console.error("Error fetching stops:", error);
+        }
+    }
+
+    fetchStops();
+    /**
+     * Display autocomplete suggestions based on input field.
+     * Applies stop filters (roof + accessibility).
+     */
+    function showSuggestions(inputId, suggestionsId) {
+        const input = document.getElementById(inputId);
+        const suggestionsDiv = document.getElementById(suggestionsId);
+        const query = input.value.toLowerCase();
+
+        const filterRoof = document.getElementById('filterRoof').checked;
+        const filterAccess = document.getElementById('filterAccess').checked;
+
+        suggestionsDiv.innerHTML = '';
+
+        if (query) {
+            let filteredStops = STOPS.filter(stop =>
+                stop.name.toLowerCase().includes(query)
+            );
+
+            if (filterRoof) {
+                filteredStops = filteredStops.filter(stop => stop.roof);
+            }
+            if (filterAccess) {
+                filteredStops = filteredStops.filter(stop => stop.accessibility);
+            }
+
+            filteredStops.forEach(stop => {
+                const div = document.createElement('div');
+                div.className = 'suggestion-item';
+                div.textContent = stop.name;
+
+                let icons = '';
+                if (stop.roof) icons += ' [Roof]';
+                if (stop.accessibility) icons += ' [Ramp]';
+                div.textContent += icons;
+
+                div.onclick = () => {
+                    input.value = stop.name;
+                    suggestionsDiv.innerHTML = '';
+                };
+                suggestionsDiv.appendChild(div);
+            });
+
+            suggestionsDiv.style.display = filteredStops.length ? 'block' : 'none';
+        } else {
+            suggestionsDiv.style.display = 'none';
+        }
+    }
+
+    /**
+     * Hide autocomplete suggestions when the user clicks outside the form.
+     */
+    document.addEventListener('click', (event) => {
+        const fromSuggestions = document.getElementById('from-suggestions');
+        const toSuggestions = document.getElementById('to-suggestions');
+        if (!event.target.closest('#transportForm')) {
+            fromSuggestions.style.display = 'none';
+            toSuggestions.style.display = 'none';
+        }
+    });
+
+    /**
+     * Handle form submission: send search request to backend.
+     * Shows route, travel time, distance, etc.
+     */
+    function handleSubmit(event) {
+        event.preventDefault();
+        const from = document.getElementById("from").value;
+        const to = document.getElementById("to").value;
+
+        //validates inputs
+        if (from && to && from !== to) {
+            const body = new FormData();
+            body.append("from", from);
+            body.append("to", to);
+            body.append("roofFilter", "false");
+            body.append("accFilter", "true");
+
+            fetch('/search', {
+                method: 'POST',
+                body: body
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('No direct connection');
+                    return response.json();
+                })
+                .then(data => {
+                    //helping function to clean up datetime format
+                    const formatTime = (datetime) => {
+                        if (!datetime || datetime === "N/A") return "N/A";
+                        const parts = datetime.split('T');
+                        return parts.length > 1 ? parts[1].substring(0, 5) : datetime;
+                    };
+                    //displays route details returned by backend
+                    document.getElementById('output').innerHTML = `
+                    Route: ${data.route},
+                    Mode: ${data.type || 'N/A'}
+                    `;
+
+                    const notifBtn = document.getElementById('notifButton');
+
+
+                    if (data.timetableId) {
+                        notifBtn.style.display = "inline-block";
+                        notifBtn.onclick = () => checkNotification(data.timetableId);
+                    } else {
+                        notifBtn.style.display = "none";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('output').innerHTML = `Error: ${error.message}`;
+                });
+        } else {
+            document.getElementById('output').innerHTML = 'Please select different start and destination stops.';
+        }
+    }
+
+    /**
+    * Ask backend for real-time notification about next vehicle arrival.
+    */
+    async function checkNotification(timetableId) {
+        try {
+            const res = await fetch(`/api/notification?timetableId=${timetableId}`);
+            const data = await res.json();
+
+            document.getElementById("notificationOutput").innerText =
+                data.notification || data.error;
+
+        } catch (err) {
+            console.error("Error fetching notification:", err);
+        }
+    }
+    /**
+     * ADMIN LOGIN — requests /login endpoint.
+     */
+    async function loginAsAdmin() {
+        const email = document.getElementById("adminEmail").value;
+        const password = document.getElementById("adminPassword").value;
+
+        try {
+           const res = await fetch('/login', {
+               method: 'POST',
+               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+               body: new URLSearchParams({ email: email, password: password })
+           });
+           if (res.ok) {
+               localStorage.setItem("loggedIn", "true");
+               window.location.href = "/admin";
+           } else {
+               document.getElementById('loginError').innerText = "Wrong email or password!";
+           }
+        } catch (err) {
+            document.getElementById("loginError").innerText = "Connection failed";
+        }
+    }
+
+    /** Attach listeners for typing + submitting */
+    document.getElementById('from').addEventListener('input', () => {
+        showSuggestions('from', 'from-suggestions');
+    });
+    document.getElementById('to').addEventListener('input', () => {
+        showSuggestions('to', 'to-suggestions');
+    });
+
+    document.getElementById('transportForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        handleSubmit(event);
+    });
+    document.getElementById('filterRoof').addEventListener('change', () => {
+        showSuggestions('from', 'from-suggestions');
+        showSuggestions('to', 'to-suggestions');
+    });
+    document.getElementById('filterAccess').addEventListener('change', () => {
+        showSuggestions('from', 'from-suggestions');
+        showSuggestions('to', 'to-suggestions');
+    });
+
+
+</script>
+
+</body>
+</html>

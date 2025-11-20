@@ -1,0 +1,10 @@
+The user database consists of one table: administrators.
+Email and password is saved as text. To safely store passwords, hashing should be used.
+This is not implemented due to this being an MVP and development constraints.
+
+There is no data type for handling dates specifically in SQLite.
+Instead the TEXT type is used with the following format: yyyy-mm-dd
+This is to allow an easier conversion to a date-object in Java.
+
+Three basic users are provided as dummy data for testing.
+
