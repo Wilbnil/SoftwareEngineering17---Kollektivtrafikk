@@ -48,14 +48,20 @@ public class Application {
         try {
             //create Javalin
             Javalin app = Javalin.create(config -> {
-                config.staticFiles.add("MainProject\\View\\src\\main\\resources\\public", Location.EXTERNAL);
-            }).start(7000);
+                config.staticFiles.add("MainProject/View/src/main/resources/public", Location.EXTERNAL);
+            }).start(7070);
 
             /*
             Javalin app = Javalin.create(config -> {
                 config.staticFiles.add("Insert absolute path here", Location.EXTERNAL);
             }).start(7000);
              */
+            /* for macOS:
+            Javalin app = Javalin.create(config -> {
+                config.staticFiles.add("MainProject/View/src/main/resources/public", Location.EXTERNAL);
+            }).start(7070);
+            */
+
 
             SQLiteDatabase database = new SQLiteDatabase(DB_URL.kollektiv_DB_URL);
             SQLiteDatabase userDatabase = new SQLiteDatabase(DB_URL.user_DB_URL);

@@ -153,7 +153,7 @@ public class RouteController {
             Route route = routes.get(0);
 
             //Parse optional time
-            String timeParam = context.formParam("time");
+            String timeParam = context.queryParam("time");
             LocalTime userTime = null;
 
             if (timeParam!= null && !timeParam.isBlank()) {
